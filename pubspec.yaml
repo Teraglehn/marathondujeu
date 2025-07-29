@@ -1,0 +1,49 @@
+name: marathondujeu
+description: "Application de gestion des participants du Marathon du Jeu"
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+isar_version: &isar_version 3.1.8 # define the version to be used
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  isar:
+    version: *isar_version
+    hosted: https://pub.isar-community.dev
+  isar_flutter_libs:
+    version: *isar_version
+    hosted: https://pub.isar-community.dev
+  freezed_annotation: any
+  path_provider: any
+  google_fonts: any
+  go_router: any
+  flutter_riverpod: any
+  riverpod_annotation: any
+  flex_color_picker: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: any
+  isar_generator:
+    version: *isar_version
+    hosted: https://pub.isar-community.dev
+  build_runner: any
+  freezed: any
+  riverpod_generator: any
+  custom_lint: any
+  riverpod_lint: any
+  go_router_builder: any
+
+flutter:
+  generate: true
+  uses-material-design: true

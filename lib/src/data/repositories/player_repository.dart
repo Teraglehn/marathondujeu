@@ -1,0 +1,24 @@
+import 'package:marathondujeu/src/data/data.dart';
+import 'package:marathondujeu/src/data/repositories/repository_base.dart';
+import 'package:isar/isar.dart';
+
+class PlayerRepository extends RepositoryBase<Player> {
+  PlayerRepository(super.isarClient);
+
+  @override
+  Future<IsarCollection<Player>> getCollection() async {
+    return (await isarClient.db).players;
+  }
+
+  @override
+  Iterable<FilterOperation> getFiltersOnKeyword(String keyword) => [FilterCondition.contains(property: "name", value: keyword, caseSensitive: false)];
+
+  
+
+  Future<Player?> getByUUID(String uuid) async {
+    final collection = await getCollection();
+    final obj = await collection.getByUuid(uuid);
+    return obj != null ? await postGet(obj) : null;
+  }
+
+}
