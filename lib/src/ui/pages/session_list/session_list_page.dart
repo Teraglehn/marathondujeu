@@ -6,14 +6,14 @@ import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlayerListPage extends ConsumerStatefulWidget       {
-  const PlayerListPage({super.key});
+class SessionListPage extends ConsumerStatefulWidget       {
+  const SessionListPage({super.key});
 
   @override
-  ConsumerState<PlayerListPage> createState() => _PlayerListPageState();
+  ConsumerState<SessionListPage> createState() => _SessionistPageState();
 }
 
-class _PlayerListPageState extends ConsumerState<PlayerListPage> {
+class _SessionistPageState extends ConsumerState<SessionListPage> {
 
   late SearchCriteria criteria;
 
@@ -36,7 +36,7 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
     final players = ref.watch(playersProvider(criteria: criteria));
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).page_playerList_title),
+        title: Text(S.of(context).page_sessionList_title),
       ),
       body: Column(
         children: [

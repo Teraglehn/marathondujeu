@@ -15,9 +15,9 @@ class PlayerRepository extends RepositoryBase<Player> {
 
   
 
-  Future<Player?> getByUUID(String uuid) async {
+  Future<Player?> getByQRCode(String qrcode) async {
     final collection = await getCollection();
-    final obj = await collection.getByUuid(uuid);
+    final obj = await collection.getByQrcode(qrcode);
     return obj != null ? await postGet(obj) : null;
   }
 

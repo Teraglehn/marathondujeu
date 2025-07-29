@@ -22,9 +22,9 @@ const PlayerSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'uuid': PropertySchema(
+    r'qrcode': PropertySchema(
       id: 1,
-      name: r'uuid',
+      name: r'qrcode',
       type: IsarType.string,
     )
   },
@@ -34,14 +34,14 @@ const PlayerSchema = CollectionSchema(
   deserializeProp: _playerDeserializeProp,
   idName: r'id',
   indexes: {
-    r'uuid': IndexSchema(
-      id: 2134397340427724972,
-      name: r'uuid',
+    r'qrcode': IndexSchema(
+      id: -4708187592274247200,
+      name: r'qrcode',
       unique: true,
       replace: false,
       properties: [
         IndexPropertySchema(
-          name: r'uuid',
+          name: r'qrcode',
           type: IndexType.hash,
           caseSensitive: true,
         )
@@ -63,7 +63,7 @@ int _playerEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 + object.uuid.length * 3;
+  bytesCount += 3 + object.qrcode.length * 3;
   return bytesCount;
 }
 
@@ -74,7 +74,7 @@ void _playerSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.name);
-  writer.writeString(offsets[1], object.uuid);
+  writer.writeString(offsets[1], object.qrcode);
 }
 
 Player _playerDeserialize(
@@ -86,7 +86,7 @@ Player _playerDeserialize(
   final object = Player();
   object.id = id;
   object.name = reader.readString(offsets[0]);
-  object.uuid = reader.readString(offsets[1]);
+  object.qrcode = reader.readString(offsets[1]);
   return object;
 }
 
@@ -119,56 +119,56 @@ void _playerAttach(IsarCollection<dynamic> col, Id id, Player object) {
 }
 
 extension PlayerByIndex on IsarCollection<Player> {
-  Future<Player?> getByUuid(String uuid) {
-    return getByIndex(r'uuid', [uuid]);
+  Future<Player?> getByQrcode(String qrcode) {
+    return getByIndex(r'qrcode', [qrcode]);
   }
 
-  Player? getByUuidSync(String uuid) {
-    return getByIndexSync(r'uuid', [uuid]);
+  Player? getByQrcodeSync(String qrcode) {
+    return getByIndexSync(r'qrcode', [qrcode]);
   }
 
-  Future<bool> deleteByUuid(String uuid) {
-    return deleteByIndex(r'uuid', [uuid]);
+  Future<bool> deleteByQrcode(String qrcode) {
+    return deleteByIndex(r'qrcode', [qrcode]);
   }
 
-  bool deleteByUuidSync(String uuid) {
-    return deleteByIndexSync(r'uuid', [uuid]);
+  bool deleteByQrcodeSync(String qrcode) {
+    return deleteByIndexSync(r'qrcode', [qrcode]);
   }
 
-  Future<List<Player?>> getAllByUuid(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return getAllByIndex(r'uuid', values);
+  Future<List<Player?>> getAllByQrcode(List<String> qrcodeValues) {
+    final values = qrcodeValues.map((e) => [e]).toList();
+    return getAllByIndex(r'qrcode', values);
   }
 
-  List<Player?> getAllByUuidSync(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'uuid', values);
+  List<Player?> getAllByQrcodeSync(List<String> qrcodeValues) {
+    final values = qrcodeValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'qrcode', values);
   }
 
-  Future<int> deleteAllByUuid(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'uuid', values);
+  Future<int> deleteAllByQrcode(List<String> qrcodeValues) {
+    final values = qrcodeValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'qrcode', values);
   }
 
-  int deleteAllByUuidSync(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'uuid', values);
+  int deleteAllByQrcodeSync(List<String> qrcodeValues) {
+    final values = qrcodeValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'qrcode', values);
   }
 
-  Future<Id> putByUuid(Player object) {
-    return putByIndex(r'uuid', object);
+  Future<Id> putByQrcode(Player object) {
+    return putByIndex(r'qrcode', object);
   }
 
-  Id putByUuidSync(Player object, {bool saveLinks = true}) {
-    return putByIndexSync(r'uuid', object, saveLinks: saveLinks);
+  Id putByQrcodeSync(Player object, {bool saveLinks = true}) {
+    return putByIndexSync(r'qrcode', object, saveLinks: saveLinks);
   }
 
-  Future<List<Id>> putAllByUuid(List<Player> objects) {
-    return putAllByIndex(r'uuid', objects);
+  Future<List<Id>> putAllByQrcode(List<Player> objects) {
+    return putAllByIndex(r'qrcode', objects);
   }
 
-  List<Id> putAllByUuidSync(List<Player> objects, {bool saveLinks = true}) {
-    return putAllByIndexSync(r'uuid', objects, saveLinks: saveLinks);
+  List<Id> putAllByQrcodeSync(List<Player> objects, {bool saveLinks = true}) {
+    return putAllByIndexSync(r'qrcode', objects, saveLinks: saveLinks);
   }
 }
 
@@ -246,43 +246,44 @@ extension PlayerQueryWhere on QueryBuilder<Player, Player, QWhereClause> {
     });
   }
 
-  QueryBuilder<Player, Player, QAfterWhereClause> uuidEqualTo(String uuid) {
+  QueryBuilder<Player, Player, QAfterWhereClause> qrcodeEqualTo(String qrcode) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'uuid',
-        value: [uuid],
+        indexName: r'qrcode',
+        value: [qrcode],
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterWhereClause> uuidNotEqualTo(String uuid) {
+  QueryBuilder<Player, Player, QAfterWhereClause> qrcodeNotEqualTo(
+      String qrcode) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
+              indexName: r'qrcode',
               lower: [],
-              upper: [uuid],
+              upper: [qrcode],
               includeUpper: false,
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [uuid],
+              indexName: r'qrcode',
+              lower: [qrcode],
               includeLower: false,
               upper: [],
             ));
       } else {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [uuid],
+              indexName: r'qrcode',
+              lower: [qrcode],
               includeLower: false,
               upper: [],
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
+              indexName: r'qrcode',
               lower: [],
-              upper: [uuid],
+              upper: [qrcode],
               includeUpper: false,
             ));
       }
@@ -472,20 +473,20 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidEqualTo(
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uuid',
+        property: r'qrcode',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidGreaterThan(
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -493,14 +494,14 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'uuid',
+        property: r'qrcode',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidLessThan(
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -508,14 +509,14 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'uuid',
+        property: r'qrcode',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidBetween(
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -524,7 +525,7 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'uuid',
+        property: r'qrcode',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -534,68 +535,69 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidStartsWith(
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'uuid',
+        property: r'qrcode',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidEndsWith(
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'uuid',
+        property: r'qrcode',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidContains(String value,
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'uuid',
+        property: r'qrcode',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidMatches(
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'uuid',
+        property: r'qrcode',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidIsEmpty() {
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uuid',
+        property: r'qrcode',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Player, Player, QAfterFilterCondition> uuidIsNotEmpty() {
+  QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'uuid',
+        property: r'qrcode',
         value: '',
       ));
     });
@@ -619,15 +621,15 @@ extension PlayerQuerySortBy on QueryBuilder<Player, Player, QSortBy> {
     });
   }
 
-  QueryBuilder<Player, Player, QAfterSortBy> sortByUuid() {
+  QueryBuilder<Player, Player, QAfterSortBy> sortByQrcode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.asc);
+      return query.addSortBy(r'qrcode', Sort.asc);
     });
   }
 
-  QueryBuilder<Player, Player, QAfterSortBy> sortByUuidDesc() {
+  QueryBuilder<Player, Player, QAfterSortBy> sortByQrcodeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.desc);
+      return query.addSortBy(r'qrcode', Sort.desc);
     });
   }
 }
@@ -657,15 +659,15 @@ extension PlayerQuerySortThenBy on QueryBuilder<Player, Player, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Player, Player, QAfterSortBy> thenByUuid() {
+  QueryBuilder<Player, Player, QAfterSortBy> thenByQrcode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.asc);
+      return query.addSortBy(r'qrcode', Sort.asc);
     });
   }
 
-  QueryBuilder<Player, Player, QAfterSortBy> thenByUuidDesc() {
+  QueryBuilder<Player, Player, QAfterSortBy> thenByQrcodeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.desc);
+      return query.addSortBy(r'qrcode', Sort.desc);
     });
   }
 }
@@ -678,10 +680,10 @@ extension PlayerQueryWhereDistinct on QueryBuilder<Player, Player, QDistinct> {
     });
   }
 
-  QueryBuilder<Player, Player, QDistinct> distinctByUuid(
+  QueryBuilder<Player, Player, QDistinct> distinctByQrcode(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'uuid', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'qrcode', caseSensitive: caseSensitive);
     });
   }
 }
@@ -699,9 +701,9 @@ extension PlayerQueryProperty on QueryBuilder<Player, Player, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Player, String, QQueryOperations> uuidProperty() {
+  QueryBuilder<Player, String, QQueryOperations> qrcodeProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'uuid');
+      return query.addPropertyName(r'qrcode');
     });
   }
 }

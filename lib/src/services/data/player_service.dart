@@ -9,8 +9,8 @@ class PlayerService {
     return await _playerRepository.getById(id);
   }
 
-  Future<Player?> getByUUID(String uuid) async {
-    return await _playerRepository.getByUUID(uuid);
+  Future<Player?> getByQRCode(String qrcode) async {
+    return await _playerRepository.getByQRCode(qrcode);
   }
 
   Future<List<Player>> getAll() async {

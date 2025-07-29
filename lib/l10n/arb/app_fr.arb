@@ -26,12 +26,19 @@
     
     "data_player_objName": "{count, plural, one {Joueur} other {Joueurs}}",
     "data_player_name": "Nom",
+    "data_player_qrcode": "QRCode",
 
     "data_player_error_name_required": "Le nom est requis",
     
     
     "page_playerList_title": "Joueurs",
     "page_playerList_menuItem": "Joueurs",
+
+    "page_sessionList_title": "Sessions",
+    "page_sessionList_menuItem": "Sessions",
+
+    "page_cardGenerator_title": "Générateur de Carte",
+    "page_cardGenerator_menuItem": "Générateur de Carte",
 
 
     "widget_colorSelector_selectTitle": "Sélectionner une couleur",

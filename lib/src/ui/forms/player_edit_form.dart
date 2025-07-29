@@ -4,6 +4,8 @@ import 'package:marathondujeu/src/pods/players.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:marathondujeu/src/services/services.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class PlayerEditForm extends ConsumerStatefulWidget {
 
@@ -25,9 +27,14 @@ class PlayerEditForm extends ConsumerStatefulWidget {
 class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
   final _formKey = GlobalKey<FormState>();
 
+  @protected
+  late QrImage qrImage;
+
   @override
   void initState(){
     super.initState();
+
+    qrImage = PlayerCardService.getCardFromPlayer(widget.player).getQrImage();
   }
 
   void save(){
@@ -77,6 +84,39 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
                 widget.player.name = value!;
               },
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              initialValue: widget.player.qrcode,
+              decoration: InputDecoration(
+                labelText: S.of(context).data_player_qrcode,
+                border: const OutlineInputBorder(),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return S.of(context).data_player_error_name_required;
+                }
+                return null;
+              },
+              onSaved: (value) {
+                widget.player.qrcode = value!;
+              },
+              onChanged: (value) {
+                setState(() {
+                  qrImage = PlayerCard(code: value).getQrImage();
+                });
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox.square(
+              dimension: 200,
+              child: PrettyQrView(
+                qrImage: qrImage
+              ),
+            )
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),

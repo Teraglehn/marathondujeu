@@ -9,11 +9,15 @@ part 'routes.g.dart';
 
 class Routes {
   static const playerList = 'playerList';
+  static const cardGenerator = 'cardGenerator';
+  static const sessionList = 'sessionList';
 }
 
 @TypedShellRoute<TopShellRoute>(
   routes: <TypedRoute<RouteData>>[
     TypedGoRoute<PlayerListRoute>(path: '/', name: Routes.playerList),
+    TypedGoRoute<SessionListRoute>(path: '/sessions', name: Routes.sessionList),
+    TypedGoRoute<CardGeneratorRoute>(path: '/cardGenerator', name: Routes.cardGenerator),
   ]
 )
 @immutable
@@ -39,5 +43,22 @@ class PlayerListRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const PlayerListPage();
+  }
+}
+
+@immutable
+class SessionListRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SessionListPage();
+  }
+}
+
+
+@immutable
+class CardGeneratorRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CardGeneratorPage();
   }
 }

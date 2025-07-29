@@ -29,6 +29,10 @@ dependencies:
   flutter_riverpod: any
   riverpod_annotation: any
   flex_color_picker: any
+  pretty_qr_code: ^3.4.0
+  uuid: ^4.5.1
+  pdf: ^3.10.0
+  printing: ^5.10.0
 
 dev_dependencies:
   flutter_test:

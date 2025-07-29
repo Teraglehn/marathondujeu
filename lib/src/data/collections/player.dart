@@ -8,14 +8,14 @@ class Player {
   late String name;
 
   @Index(unique: true)
-  late String uuid;
+  late String qrcode;
 
   Player();
 
   factory Player.empty() {
     return Player()
       ..name = ''
-      ..uuid = '';
+      ..qrcode = '';
   }
 
   @ignore

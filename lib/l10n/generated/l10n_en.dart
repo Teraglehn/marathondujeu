@@ -87,6 +87,9 @@ class SEn extends S {
   String get data_player_name => 'Name';
 
   @override
+  String get data_player_qrcode => 'QRCode';
+
+  @override
   String get data_player_error_name_required => 'Name is required';
 
   @override
@@ -94,6 +97,18 @@ class SEn extends S {
 
   @override
   String get page_playerList_menuItem => 'Players';
+
+  @override
+  String get page_sessionList_title => 'Sessions';
+
+  @override
+  String get page_sessionList_menuItem => 'Sessions';
+
+  @override
+  String get page_cardGenerator_title => 'Card Generator';
+
+  @override
+  String get page_cardGenerator_menuItem => 'Card Generator';
 
   @override
   String get widget_colorSelector_selectTitle => 'Select Color';

@@ -18,6 +18,16 @@ RouteBase get $topShellRoute => ShellRouteData.$route(
           name: 'playerList',
           factory: $PlayerListRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: '/sessions',
+          name: 'sessionList',
+          factory: $SessionListRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: '/cardGenerator',
+          name: 'cardGenerator',
+          factory: $CardGeneratorRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -30,6 +40,41 @@ extension $PlayerListRouteExtension on PlayerListRoute {
 
   String get location => GoRouteData.$location(
         '/',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SessionListRouteExtension on SessionListRoute {
+  static SessionListRoute _fromState(GoRouterState state) => SessionListRoute();
+
+  String get location => GoRouteData.$location(
+        '/sessions',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $CardGeneratorRouteExtension on CardGeneratorRoute {
+  static CardGeneratorRoute _fromState(GoRouterState state) =>
+      CardGeneratorRoute();
+
+  String get location => GoRouteData.$location(
+        '/cardGenerator',
       );
 
   void go(BuildContext context) => context.go(location);

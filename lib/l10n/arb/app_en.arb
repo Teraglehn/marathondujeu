@@ -43,12 +43,19 @@
         }
     },
     "data_player_name": "Name",
+    "data_player_qrcode": "QRCode",
 
     "data_player_error_name_required": "Name is required",
     
 
     "page_playerList_title": "Players",
     "page_playerList_menuItem": "Players",
+
+    "page_sessionList_title": "Sessions",
+    "page_sessionList_menuItem": "Sessions",
+
+    "page_cardGenerator_title": "Card Generator",
+    "page_cardGenerator_menuItem": "Card Generator",
 
 
     "widget_colorSelector_selectTitle": "Select Color",

@@ -19,7 +19,8 @@ class IsarClient {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationDocumentsDirectory();
       return Isar.open([
-          PlayerSchema
+          PlayerSchema,
+          SessionSchema
         ], 
         inspector: isTesting, 
         directory: isWeb ? "" : dir.path

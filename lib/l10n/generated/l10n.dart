@@ -227,6 +227,12 @@ abstract class S {
   /// **'Name'**
   String get data_player_name;
 
+  /// No description provided for @data_player_qrcode.
+  ///
+  /// In en, this message translates to:
+  /// **'QRCode'**
+  String get data_player_qrcode;
+
   /// No description provided for @data_player_error_name_required.
   ///
   /// In en, this message translates to:
@@ -244,6 +250,30 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Players'**
   String get page_playerList_menuItem;
+
+  /// No description provided for @page_sessionList_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions'**
+  String get page_sessionList_title;
+
+  /// No description provided for @page_sessionList_menuItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions'**
+  String get page_sessionList_menuItem;
+
+  /// No description provided for @page_cardGenerator_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Generator'**
+  String get page_cardGenerator_title;
+
+  /// No description provided for @page_cardGenerator_menuItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Generator'**
+  String get page_cardGenerator_menuItem;
 
   /// No description provided for @widget_colorSelector_selectTitle.
   ///

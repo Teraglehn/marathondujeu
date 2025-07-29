@@ -87,6 +87,9 @@ class SFr extends S {
   String get data_player_name => 'Nom';
 
   @override
+  String get data_player_qrcode => 'QRCode';
+
+  @override
   String get data_player_error_name_required => 'Le nom est requis';
 
   @override
@@ -94,6 +97,18 @@ class SFr extends S {
 
   @override
   String get page_playerList_menuItem => 'Joueurs';
+
+  @override
+  String get page_sessionList_title => 'Sessions';
+
+  @override
+  String get page_sessionList_menuItem => 'Sessions';
+
+  @override
+  String get page_cardGenerator_title => 'Générateur de Carte';
+
+  @override
+  String get page_cardGenerator_menuItem => 'Générateur de Carte';
 
   @override
   String get widget_colorSelector_selectTitle => 'Sélectionner une couleur';
