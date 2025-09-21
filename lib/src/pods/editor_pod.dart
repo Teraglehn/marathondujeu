@@ -17,6 +17,12 @@ class EditorPod extends _$EditorPod {
     state = EditorState(player: player);
   }
 
+  void editEvent(Event? event) {
+    event ??= Event.empty();
+
+    state = EditorState(event: event);
+  }
+
   void close() {
     state = const EditorState();
   }

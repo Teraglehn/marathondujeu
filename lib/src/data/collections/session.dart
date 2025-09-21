@@ -8,8 +8,10 @@ class Session {
   Id id = Isar.autoIncrement;
   late DateTime startTime;
   DateTime? endTime;
-  
+
   final players = IsarLinks<Player>();
+
+  final event = IsarLink<Event>();
 
   Session();
 
@@ -18,14 +20,25 @@ class Session {
       ..startTime = DateTime.now();
   }
 
+  factory Session.fromEvent(DateTime startTime, int sessionTimeMinute) {
+    return Session()
+      ..startTime = startTime
+      ..endTime = startTime.add(Duration(minutes: sessionTimeMinute));
+  }
+
   endSession(){
     endTime = DateTime.now();
   }
 
   addPlayer(Player player){
-    if(endTime == null || DateTime.now().isBefore(endTime!)) {
+    if(isOpen()) {
       players.add(player);
     }
+  }
+
+  bool isOpen(){
+    var now = DateTime.now();
+    return startTime.isBefore(now) && (endTime == null || endTime!.isAfter(now));
   }
 
   @ignore

@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$EditorState {
   Player? get player => throw _privateConstructorUsedError;
+  Event? get event => throw _privateConstructorUsedError;
 
   /// Create a copy of EditorState
   /// with the given fields replaced by the non-null parameter values.
@@ -31,7 +32,7 @@ abstract class $EditorStateCopyWith<$Res> {
           EditorState value, $Res Function(EditorState) then) =
       _$EditorStateCopyWithImpl<$Res, EditorState>;
   @useResult
-  $Res call({Player? player});
+  $Res call({Player? player, Event? event});
 }
 
 /// @nodoc
@@ -50,12 +51,17 @@ class _$EditorStateCopyWithImpl<$Res, $Val extends EditorState>
   @override
   $Res call({
     Object? player = freezed,
+    Object? event = freezed,
   }) {
     return _then(_value.copyWith(
       player: freezed == player
           ? _value.player
           : player // ignore: cast_nullable_to_non_nullable
               as Player?,
+      event: freezed == event
+          ? _value.event
+          : event // ignore: cast_nullable_to_non_nullable
+              as Event?,
     ) as $Val);
   }
 }
@@ -68,7 +74,7 @@ abstract class _$$EditorStateImplCopyWith<$Res>
       __$$EditorStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Player? player});
+  $Res call({Player? player, Event? event});
 }
 
 /// @nodoc
@@ -85,12 +91,17 @@ class __$$EditorStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? player = freezed,
+    Object? event = freezed,
   }) {
     return _then(_$EditorStateImpl(
       player: freezed == player
           ? _value.player
           : player // ignore: cast_nullable_to_non_nullable
               as Player?,
+      event: freezed == event
+          ? _value.event
+          : event // ignore: cast_nullable_to_non_nullable
+              as Event?,
     ));
   }
 }
@@ -98,14 +109,16 @@ class __$$EditorStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$EditorStateImpl extends _EditorState {
-  const _$EditorStateImpl({this.player}) : super._();
+  const _$EditorStateImpl({this.player, this.event}) : super._();
 
   @override
   final Player? player;
+  @override
+  final Event? event;
 
   @override
   String toString() {
-    return 'EditorState(player: $player)';
+    return 'EditorState(player: $player, event: $event)';
   }
 
   @override
@@ -113,11 +126,12 @@ class _$EditorStateImpl extends _EditorState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$EditorStateImpl &&
-            (identical(other.player, player) || other.player == player));
+            (identical(other.player, player) || other.player == player) &&
+            (identical(other.event, event) || other.event == event));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, player);
+  int get hashCode => Object.hash(runtimeType, player, event);
 
   /// Create a copy of EditorState
   /// with the given fields replaced by the non-null parameter values.
@@ -129,11 +143,14 @@ class _$EditorStateImpl extends _EditorState {
 }
 
 abstract class _EditorState extends EditorState {
-  const factory _EditorState({final Player? player}) = _$EditorStateImpl;
+  const factory _EditorState({final Player? player, final Event? event}) =
+      _$EditorStateImpl;
   const _EditorState._() : super._();
 
   @override
   Player? get player;
+  @override
+  Event? get event;
 
   /// Create a copy of EditorState
   /// with the given fields replaced by the non-null parameter values.

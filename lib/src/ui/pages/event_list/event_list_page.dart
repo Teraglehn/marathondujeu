@@ -1,18 +1,19 @@
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
-import 'package:marathondujeu/src/pods/sessions.dart';
+import 'package:marathondujeu/src/pods/events.dart';
+import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SessionListPage extends ConsumerStatefulWidget       {
-  const SessionListPage({super.key});
+class EventListPage extends ConsumerStatefulWidget       {
+  const EventListPage({super.key});
 
   @override
-  ConsumerState<SessionListPage> createState() => _SessionListPageState();
+  ConsumerState<EventListPage> createState() => _EventListPageState();
 }
 
-class _SessionListPageState extends ConsumerState<SessionListPage> {
+class _EventListPageState extends ConsumerState<EventListPage> {
 
   late SearchCriteria criteria;
 
@@ -31,10 +32,11 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final sessions = ref.watch(sessionsProvider(criteria: criteria));
+    final editor = ref.read(editorPodProvider.notifier);
+    final events = ref.watch(eventsProvider(criteria: criteria));
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).page_sessionList_title),
+        title: Text(S.of(context).page_eventList_title),
       ),
       body: Column(
         children: [
@@ -58,7 +60,7 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
           ),
           const Divider(),
           Expanded(
-            child: sessions.when(
+            child: events.when(
               data: (data) => ListView.separated(
                 padding: const EdgeInsets.all(8.0),
                 itemCount: data.length,
@@ -66,9 +68,9 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
                   height: 1.0,
                 ),
                 itemBuilder: (context, index) {
-                  Session session = data.elementAt(index);
+                  Event event = data.elementAt(index);
                   return ListTile(
-                    title: Text("${session.startTime.toIso8601String()} ${session.endTime?.toIso8601String() ?? ""}"),
+                    title: Text(event.name),
                   );
                 },
               ), 
@@ -78,6 +80,10 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => editor.editEvent(null),
+        child: const Icon(Icons.add),
+      )
     );
   }
 }

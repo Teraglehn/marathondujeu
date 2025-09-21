@@ -93,6 +93,47 @@ class SEn extends S {
   String get data_player_error_name_required => 'Name is required';
 
   @override
+  String data_event_objName(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Events',
+      one: 'Event',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get data_event_name => 'Name';
+
+  @override
+  String get data_event_datetime_start => 'Start time';
+
+  @override
+  String get data_event_datetime_end => 'End time';
+
+  @override
+  String get data_event_session_duration_minute => 'Session duration (min)';
+
+  @override
+  String get data_event_session_interval_minute => 'Session interval (min)';
+
+  @override
+  String get data_event_error_name_required => 'Name is required';
+
+  @override
+  String get data_event_error_datetime_start_required => 'Start time is required';
+
+  @override
+  String get data_event_error_datetime_end_required => 'End time is required';
+
+  @override
+  String get data_event_error_session_duration_minute_required => 'Session duration is required';
+
+  @override
+  String get data_event_error_session_interval_minute_required => 'Session interval is required';
+
+  @override
   String get page_playerList_title => 'Players';
 
   @override
@@ -103,6 +144,12 @@ class SEn extends S {
 
   @override
   String get page_sessionList_menuItem => 'Sessions';
+
+  @override
+  String get page_eventList_title => 'Events';
+
+  @override
+  String get page_eventList_menuItem => 'Events';
 
   @override
   String get page_cardGenerator_title => 'Card Generator';

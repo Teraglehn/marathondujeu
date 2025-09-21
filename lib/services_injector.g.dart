@@ -40,6 +40,41 @@ final _playerRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef _PlayerRepositoryRef = AutoDisposeProviderRef<PlayerRepository>;
+String _$sessionRepositoryHash() => r'257d94309d832412cda86b81fc9d1ddaefbba6d2';
+
+/// See also [_sessionRepository].
+@ProviderFor(_sessionRepository)
+final _sessionRepositoryProvider =
+    AutoDisposeProvider<SessionRepository>.internal(
+  _sessionRepository,
+  name: r'_sessionRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$sessionRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef _SessionRepositoryRef = AutoDisposeProviderRef<SessionRepository>;
+String _$eventRepositoryHash() => r'f237063097f2a01699cfd4e58ad80c9afe47cf57';
+
+/// See also [_eventRepository].
+@ProviderFor(_eventRepository)
+final _eventRepositoryProvider = AutoDisposeProvider<EventRepository>.internal(
+  _eventRepository,
+  name: r'_eventRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$eventRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef _EventRepositoryRef = AutoDisposeProviderRef<EventRepository>;
 String _$playerServiceHash() => r'615d2bc007d41c520979694935ea68a95230d055';
 
 /// See also [playerService].
@@ -57,5 +92,38 @@ final playerServiceProvider = AutoDisposeProvider<PlayerService>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PlayerServiceRef = AutoDisposeProviderRef<PlayerService>;
+String _$sessionServiceHash() => r'183900c8d401bc89891ad78fc622ab2a5666f085';
+
+/// See also [sessionService].
+@ProviderFor(sessionService)
+final sessionServiceProvider = AutoDisposeProvider<SessionService>.internal(
+  sessionService,
+  name: r'sessionServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$sessionServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SessionServiceRef = AutoDisposeProviderRef<SessionService>;
+String _$eventServiceHash() => r'bdcce812a26b8db66efef5018fd061268ed6adc8';
+
+/// See also [eventService].
+@ProviderFor(eventService)
+final eventServiceProvider = AutoDisposeProvider<EventService>.internal(
+  eventService,
+  name: r'eventServiceProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$eventServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef EventServiceRef = AutoDisposeProviderRef<EventService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

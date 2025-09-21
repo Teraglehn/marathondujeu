@@ -38,8 +38,15 @@ const SessionSchema = CollectionSchema(
     r'players': LinkSchema(
       id: 6063580692655038029,
       name: r'players',
-      target: r'Player',
+      target: r'Event',
       single: false,
+    ),
+    r'event': LinkSchema(
+      id: -3418857710919765517,
+      name: r'event',
+      target: r'Event',
+      single: false,
+      linkName: r'sessions',
     )
   },
   embeddedSchemas: {},
@@ -102,12 +109,13 @@ Id _sessionGetId(Session object) {
 }
 
 List<IsarLinkBase<dynamic>> _sessionGetLinks(Session object) {
-  return [object.players];
+  return [object.players, object.event];
 }
 
 void _sessionAttach(IsarCollection<dynamic> col, Id id, Session object) {
   object.id = id;
-  object.players.attach(col, col.isar.collection<Player>(), r'players', id);
+  object.players.attach(col, col.isar.collection<Event>(), r'players', id);
+  object.event.attach(col, col.isar.collection<Event>(), r'event', id);
 }
 
 extension SessionQueryWhereSort on QueryBuilder<Session, Session, QWhere> {
@@ -368,7 +376,7 @@ extension SessionQueryObject
 extension SessionQueryLinks
     on QueryBuilder<Session, Session, QFilterCondition> {
   QueryBuilder<Session, Session, QAfterFilterCondition> players(
-      FilterQuery<Player> q) {
+      FilterQuery<Event> q) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'players');
     });
@@ -421,6 +429,62 @@ extension SessionQueryLinks
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
           r'players', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> event(
+      FilterQuery<Event> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'event');
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> eventLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'event', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> eventIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'event', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> eventIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'event', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> eventLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'event', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> eventLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'event', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> eventLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'event', lower, includeLower, upper, includeUpper);
     });
   }
 }

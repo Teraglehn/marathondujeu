@@ -20,7 +20,9 @@ class IsarClient {
       final dir = await getApplicationDocumentsDirectory();
       return Isar.open([
           PlayerSchema,
-          SessionSchema
+          SessionSchema,
+          EventSchema,
+          DrawSchema
         ], 
         inspector: isTesting, 
         directory: isWeb ? "" : dir.path

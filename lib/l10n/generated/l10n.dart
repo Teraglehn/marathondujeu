@@ -239,6 +239,72 @@ abstract class S {
   /// **'Name is required'**
   String get data_player_error_name_required;
 
+  /// No description provided for @data_event_objName.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {Event} other {Events}}'**
+  String data_event_objName(num count);
+
+  /// No description provided for @data_event_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get data_event_name;
+
+  /// No description provided for @data_event_datetime_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time'**
+  String get data_event_datetime_start;
+
+  /// No description provided for @data_event_datetime_end.
+  ///
+  /// In en, this message translates to:
+  /// **'End time'**
+  String get data_event_datetime_end;
+
+  /// No description provided for @data_event_session_duration_minute.
+  ///
+  /// In en, this message translates to:
+  /// **'Session duration (min)'**
+  String get data_event_session_duration_minute;
+
+  /// No description provided for @data_event_session_interval_minute.
+  ///
+  /// In en, this message translates to:
+  /// **'Session interval (min)'**
+  String get data_event_session_interval_minute;
+
+  /// No description provided for @data_event_error_name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get data_event_error_name_required;
+
+  /// No description provided for @data_event_error_datetime_start_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time is required'**
+  String get data_event_error_datetime_start_required;
+
+  /// No description provided for @data_event_error_datetime_end_required.
+  ///
+  /// In en, this message translates to:
+  /// **'End time is required'**
+  String get data_event_error_datetime_end_required;
+
+  /// No description provided for @data_event_error_session_duration_minute_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Session duration is required'**
+  String get data_event_error_session_duration_minute_required;
+
+  /// No description provided for @data_event_error_session_interval_minute_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Session interval is required'**
+  String get data_event_error_session_interval_minute_required;
+
   /// No description provided for @page_playerList_title.
   ///
   /// In en, this message translates to:
@@ -262,6 +328,18 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Sessions'**
   String get page_sessionList_menuItem;
+
+  /// No description provided for @page_eventList_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get page_eventList_title;
+
+  /// No description provided for @page_eventList_menuItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get page_eventList_menuItem;
 
   /// No description provided for @page_cardGenerator_title.
   ///

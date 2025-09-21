@@ -46,6 +46,25 @@
     "data_player_qrcode": "QRCode",
 
     "data_player_error_name_required": "Name is required",
+
+    
+    "data_event_objName": "{count, plural, one {Event} other {Events}}",
+    "@data_event_objName": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "data_event_name": "Name",
+    "data_event_datetime_start": "Start time",
+    "data_event_datetime_end": "End time",
+    "data_event_session_duration_minute": "Session duration (min)",
+    "data_event_session_interval_minute": "Session interval (min)",
+
+    "data_event_error_name_required": "Name is required",
+    "data_event_error_datetime_start_required": "Start time is required",
+    "data_event_error_datetime_end_required": "End time is required",
+    "data_event_error_session_duration_minute_required": "Session duration is required",
+    "data_event_error_session_interval_minute_required": "Session interval is required",
     
 
     "page_playerList_title": "Players",
@@ -53,6 +72,9 @@
 
     "page_sessionList_title": "Sessions",
     "page_sessionList_menuItem": "Sessions",
+
+    "page_eventList_title": "Events",
+    "page_eventList_menuItem": "Events",
 
     "page_cardGenerator_title": "Card Generator",
     "page_cardGenerator_menuItem": "Card Generator",

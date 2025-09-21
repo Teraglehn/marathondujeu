@@ -30,12 +30,28 @@
 
     "data_player_error_name_required": "Le nom est requis",
     
+    "data_event_objName": "{count, plural, one {Evénement} other {Evénements}}",
+    "data_event_name": "Nom",
+    "data_event_datetime_start": "Début",
+    "data_event_datetime_end": "Fin",
+    "data_event_session_duration_minute": "Durée de session (min)",
+    "data_event_session_interval_minute": "Interval de session (min)",
+
+    "data_event_error_name_required": "Le nom est requis",
+    "data_event_error_datetime_start_required": "Le début est requis",
+    "data_event_error_datetime_end_required": "La fin est requise",
+    "data_event_error_session_duration_minute_required": "La durée de session est requise",
+    "data_event_error_session_interval_minute_required": "L'interval de session est requis",
+    
     
     "page_playerList_title": "Joueurs",
     "page_playerList_menuItem": "Joueurs",
 
     "page_sessionList_title": "Sessions",
     "page_sessionList_menuItem": "Sessions",
+
+    "page_eventList_title": "Evénements",
+    "page_eventList_menuItem": "Evénements",
 
     "page_cardGenerator_title": "Générateur de Carte",
     "page_cardGenerator_menuItem": "Générateur de Carte",

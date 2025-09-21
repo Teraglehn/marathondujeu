@@ -9,7 +9,8 @@ class EditorState with _$EditorState{
 
   const factory EditorState({
     Player? player,
+    Event? event,
 }) = _EditorState;
 
-  bool get isEditing => player != null;
+  bool get isEditing => player != null && event != null;
 }

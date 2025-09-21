@@ -14,6 +14,13 @@ class PlayerRepository extends RepositoryBase<Player> {
   Iterable<FilterOperation> getFiltersOnKeyword(String keyword) => [FilterCondition.contains(property: "name", value: keyword, caseSensitive: false)];
 
   
+  @override
+  Future<void> write(Player obj) async {
+    await Future.wait([
+      if (obj.event.isChanged) obj.event.save(),
+    ]);
+  }
+  
 
   Future<Player?> getByQRCode(String qrcode) async {
     final collection = await getCollection();
