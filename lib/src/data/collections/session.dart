@@ -17,13 +17,14 @@ class Session {
 
   factory Session.empty() {
     return Session()
-      ..startTime = DateTime.now();
+      ..startTime = DateTime.now(); 
   }
 
-  factory Session.fromEvent(DateTime startTime, int sessionTimeMinute) {
+  factory Session.fromEvent(DateTime startTime, Event event) {
     return Session()
       ..startTime = startTime
-      ..endTime = startTime.add(Duration(minutes: sessionTimeMinute));
+      ..endTime = startTime.add(Duration(minutes: event.sessionTimeMinutes))
+      ..event.value = event;
   }
 
   endSession(){

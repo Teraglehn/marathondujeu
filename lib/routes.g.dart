@@ -15,6 +15,11 @@ RouteBase get $topShellRoute => ShellRouteData.$route(
       routes: [
         GoRouteData.$route(
           path: '/',
+          name: 'eventList',
+          factory: $EventListRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: '/players',
           name: 'playerList',
           factory: $PlayerListRouteExtension._fromState,
         ),
@@ -35,11 +40,28 @@ extension $TopShellRouteExtension on TopShellRoute {
   static TopShellRoute _fromState(GoRouterState state) => TopShellRoute();
 }
 
+extension $EventListRouteExtension on EventListRoute {
+  static EventListRoute _fromState(GoRouterState state) => EventListRoute();
+
+  String get location => GoRouteData.$location(
+        '/',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
 extension $PlayerListRouteExtension on PlayerListRoute {
   static PlayerListRoute _fromState(GoRouterState state) => PlayerListRoute();
 
   String get location => GoRouteData.$location(
-        '/',
+        '/players',
       );
 
   void go(BuildContext context) => context.go(location);

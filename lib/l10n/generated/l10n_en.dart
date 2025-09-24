@@ -158,6 +158,9 @@ class SEn extends S {
   String get page_cardGenerator_menuItem => 'Card Generator';
 
   @override
+  String get widget_eventSelector_selectTitle => 'Select event';
+
+  @override
   String get widget_colorSelector_selectTitle => 'Select Color';
 
   @override

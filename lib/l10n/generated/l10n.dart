@@ -353,6 +353,12 @@ abstract class S {
   /// **'Card Generator'**
   String get page_cardGenerator_menuItem;
 
+  /// No description provided for @widget_eventSelector_selectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select event'**
+  String get widget_eventSelector_selectTitle;
+
   /// No description provided for @widget_colorSelector_selectTitle.
   ///
   /// In en, this message translates to:

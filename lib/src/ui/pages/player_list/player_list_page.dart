@@ -1,7 +1,10 @@
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
+import 'package:marathondujeu/src/pods/main_pod.dart';
 import 'package:marathondujeu/src/pods/players.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
+import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
+import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,11 +37,26 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
   Widget build(BuildContext context) {
     final editor = ref.read(editorPodProvider.notifier);
     final players = ref.watch(playersProvider(criteria: criteria));
+    final main = ref.watch(mainPodProvider);
+    final mainNotifier = ref.watch(mainPodProvider.notifier);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).page_playerList_title),
+        actions: [
+          Container(
+            width: 350,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: EventSelector(
+              initialValue: main.event,
+              onChanged: (event) => mainNotifier.setEvent(event),
+            ),
+          )
+        ],
       ),
-      body: Column(
+      body: EventSelectedGuard(child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
@@ -71,8 +89,8 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
+      )),
+      floatingActionButton: main.event == null ? null : FloatingActionButton(
         onPressed: () => editor.editPlayer(null),
         child: const Icon(Icons.add),
       )

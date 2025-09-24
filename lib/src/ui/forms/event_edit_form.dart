@@ -1,10 +1,12 @@
+import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/events.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:marathondujeu/src/ui/widgets/fields/date_form_field.dart';
+import 'package:marathondujeu/src/services/formatters_service.dart';
+import 'package:marathondujeu/src/ui/widgets/fields/datetime_form_field.dart';
 
 class EventEditForm extends ConsumerStatefulWidget {
 
@@ -25,16 +27,23 @@ class EventEditForm extends ConsumerStatefulWidget {
 
 class _EventEditFormState extends ConsumerState<EventEditForm> {
   final _formKey = GlobalKey<FormState>();
+  final _sessionTimeMinuteController = TextEditingController();
+  final _sessionIntervalMinuteController = TextEditingController();
 
   @override
   void initState(){
     super.initState();
+    _sessionTimeMinuteController.text = widget.event.sessionTimeMinutes.toString();
+    _sessionIntervalMinuteController.text = widget.event.sessionIntervalMinutes.toString();
   }
 
   void save(){
     if (!_formKey.currentState!.validate()) {
       return;
     }
+
+    widget.event.sessionTimeMinutes = int.parse(_sessionTimeMinuteController.text);
+    widget.event.sessionIntervalMinutes = int.parse(_sessionIntervalMinuteController.text);
 
     _formKey.currentState!.save();
     
@@ -81,7 +90,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: DateFormField(
+            child: DateTimeFormField(
               initialValue: widget.event.startDateTime,
               firstDate: DateTime.now(),
               lastDate: DateTime.now().add(const Duration(days: 30)),
@@ -99,39 +108,55 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              initialValue: widget.event.name,
-              decoration: InputDecoration(
-                labelText: S.of(context).data_event_name,
-                border: const OutlineInputBorder(),
-              ),
+            child: DateTimeFormField(
+              initialValue: widget.event.endDateTime,
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(const Duration(days: 30)),
+              label: S.of(context).data_event_datetime_end,
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return S.of(context).data_event_error_name_required;
+                if (value == null) {
+                  return S.of(context).data_event_error_datetime_end_required;
                 }
                 return null;
               },
               onSaved: (value) {
-                widget.event.name = value!;
+                widget.event.endDateTime = value!;
               },
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              initialValue: widget.event.name,
+              controller: _sessionTimeMinuteController,
+              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+              inputFormatters: <TextInputFormatter>[FormattersService.integer],
               decoration: InputDecoration(
-                labelText: S.of(context).data_event_name,
+                labelText: S.of(context).data_event_session_duration_minute,
                 border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return S.of(context).data_event_error_name_required;
+                  return S.of(context).data_event_error_session_duration_minute_required;
                 }
                 return null;
               },
-              onSaved: (value) {
-                widget.event.name = value!;
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _sessionIntervalMinuteController,
+              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+              inputFormatters: <TextInputFormatter>[FormattersService.integer],
+              decoration: InputDecoration(
+                labelText: S.of(context).data_event_session_interval_minute,
+                border: const OutlineInputBorder(),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return S.of(context).data_event_error_session_interval_minute_required;
+                }
+                return null;
               },
             ),
           ),

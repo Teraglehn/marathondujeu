@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';

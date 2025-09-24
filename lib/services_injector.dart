@@ -17,10 +17,12 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<Scaffol
 @riverpod PlayerRepository _playerRepository(Ref ref) => PlayerRepository(ref.watch(_isarClientProvider));
 @riverpod SessionRepository _sessionRepository(Ref ref) => SessionRepository(ref.watch(_isarClientProvider));
 @riverpod EventRepository _eventRepository(Ref ref) => EventRepository(ref.watch(_isarClientProvider));
+@riverpod DrawRepository _drawRepository(Ref ref) => DrawRepository(ref.watch(_isarClientProvider));
 
 @riverpod PlayerService playerService(Ref ref) => PlayerService(ref.watch(_playerRepositoryProvider));
 @riverpod SessionService sessionService(Ref ref) => SessionService(ref.watch(_sessionRepositoryProvider));
-@riverpod EventService eventService(Ref ref) => EventService(ref.watch(_sessionRepositoryProvider), ref.watch(_eventRepositoryProvider));
+@riverpod DrawService drawService(Ref ref) => DrawService(ref.watch(_drawRepositoryProvider));
+@riverpod EventService eventService(Ref ref) => EventService(ref.watch(_sessionRepositoryProvider), ref.watch(_eventRepositoryProvider), ref.watch(_playerRepositoryProvider));
 
 
 class EagerInitialization extends ConsumerWidget {

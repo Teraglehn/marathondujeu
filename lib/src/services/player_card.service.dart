@@ -1,5 +1,4 @@
 import 'package:marathondujeu/src/data/data.dart';
-import 'package:uuid/uuid.dart';
 
 abstract class PlayerCardService {
 
@@ -7,8 +6,8 @@ abstract class PlayerCardService {
     return PlayerCard(code: player.qrcode);
   }
 
-  static PlayerCard generatePlayerCard(){
-    return PlayerCard(code: Uuid().v4());
+  static List<PlayerCard> getCardsFromPlayers(List<Player> players){
+    return players.map(getCardFromPlayer).toList();
   }
 
 }

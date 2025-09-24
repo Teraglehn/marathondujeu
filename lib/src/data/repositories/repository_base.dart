@@ -79,14 +79,19 @@ abstract class RepositoryBase<T> {
 
   Iterable<FilterOperation> getFiltersOnKeyword(String keyword) => [];
 
+  Iterable<FilterOperation> getFiltersOnEvent(Event event) => [];
+
   List<SortProperty> getSortProperties() => [];
 
-  Future<Query<T>> _searchQuery(SearchCriteria searchCriteria, {int? offset, int? limit}) async {
+  Future<Query<T>> searchQuery(SearchCriteria searchCriteria, {int? offset, int? limit}) async {
     final collection = await getCollection();
     final List<FilterOperation> filters = [];
 
     if (searchCriteria.keyword.isNotEmpty) {
       filters.addAll([...getFiltersOnKeyword(searchCriteria.keyword)]);
+    }
+    if (searchCriteria.event != null) {
+      filters.addAll([...getFiltersOnEvent(searchCriteria.event!)]);
     }
 
     return collection.buildQuery<T>(
@@ -98,13 +103,13 @@ abstract class RepositoryBase<T> {
   }
 
   Future<List<T>> search(SearchCriteria searchCriteria, {int? offset, int? limit}) async {
-    final query = await _searchQuery(searchCriteria, offset: offset, limit: limit);
+    final query = await searchQuery(searchCriteria, offset: offset, limit: limit);
 
     return await query.findAll();
   }
 
   Future<Stream<List<T>>> searchStream(SearchCriteria searchCriteria, {int? offset, int? limit}) async {
-    final query = await _searchQuery(searchCriteria, offset: offset, limit: limit);
+    final query = await searchQuery(searchCriteria, offset: offset, limit: limit);
 
     return query.watchLazy(fireImmediately: true).asyncMap((_) async => await query.findAll());
   }

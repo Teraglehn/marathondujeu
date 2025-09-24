@@ -14,7 +14,7 @@ class Draw {
 
   final excludedPlayers = IsarLinks<Player>();
 
-  final List<String> results = [];
+  final winner = IsarLink<Player>();
 
   final event = IsarLink<Event>();
 

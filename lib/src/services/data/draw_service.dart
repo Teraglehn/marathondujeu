@@ -25,12 +25,30 @@ class DrawService {
     return await _drawRepository.searchStream(searchCriteria, offset: offset, limit: limit);
   }
 
-  Future<void> save(Draw event) async {
-    await _drawRepository.save(event);
+  Future<void> save(Draw draw) async {
+    await _drawRepository.save(draw);
   }
 
-  Future<void> delete(Draw event) async {
-    await _drawRepository.delete(event.id);
+  Future<void> delete(Draw draw) async {
+    await _drawRepository.delete(draw.id);
+  }
+
+  Future<void> createDrawFromDraw(Draw previousDraw) async {
+    Draw nextDraw = Draw.empty()
+      ..minSessionNumber = previousDraw.minSessionNumber
+      ..maxSessionNumber = previousDraw.maxSessionNumber
+      ..excludedPlayers.addAll(previousDraw.excludedPlayers)
+      ..requiredSessions.addAll(previousDraw.requiredSessions)
+      ..excludedSessions.addAll(previousDraw.excludedSessions)
+      ..event.value = previousDraw.event.value;
+
+    if(previousDraw.winner.value != null){
+      nextDraw.excludedPlayers.add(previousDraw.winner.value!);
+    }
+  }
+
+  Future<void> calculateDraw(Draw draw) async {
+
   }
 
 }

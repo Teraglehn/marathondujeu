@@ -17,13 +17,18 @@ const PlayerSchema = CollectionSchema(
   name: r'Player',
   id: -1052842935974721688,
   properties: {
-    r'name': PropertySchema(
+    r'bonusSession': PropertySchema(
       id: 0,
+      name: r'bonusSession',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 1,
       name: r'name',
       type: IsarType.string,
     ),
     r'qrcode': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'qrcode',
       type: IsarType.string,
     )
@@ -48,7 +53,14 @@ const PlayerSchema = CollectionSchema(
       ],
     )
   },
-  links: {},
+  links: {
+    r'event': LinkSchema(
+      id: -8216783935477353659,
+      name: r'event',
+      target: r'Event',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _playerGetId,
   getLinks: _playerGetLinks,
@@ -73,8 +85,9 @@ void _playerSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.name);
-  writer.writeString(offsets[1], object.qrcode);
+  writer.writeLong(offsets[0], object.bonusSession);
+  writer.writeString(offsets[1], object.name);
+  writer.writeString(offsets[2], object.qrcode);
 }
 
 Player _playerDeserialize(
@@ -84,9 +97,10 @@ Player _playerDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Player();
+  object.bonusSession = reader.readLong(offsets[0]);
   object.id = id;
-  object.name = reader.readString(offsets[0]);
-  object.qrcode = reader.readString(offsets[1]);
+  object.name = reader.readString(offsets[1]);
+  object.qrcode = reader.readString(offsets[2]);
   return object;
 }
 
@@ -98,8 +112,10 @@ P _playerDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 1:
+      return (reader.readString(offset)) as P;
+    case 2:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -111,11 +127,12 @@ Id _playerGetId(Player object) {
 }
 
 List<IsarLinkBase<dynamic>> _playerGetLinks(Player object) {
-  return [];
+  return [object.event];
 }
 
 void _playerAttach(IsarCollection<dynamic> col, Id id, Player object) {
   object.id = id;
+  object.event.attach(col, col.isar.collection<Event>(), r'event', id);
 }
 
 extension PlayerByIndex on IsarCollection<Player> {
@@ -292,6 +309,59 @@ extension PlayerQueryWhere on QueryBuilder<Player, Player, QWhereClause> {
 }
 
 extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
+  QueryBuilder<Player, Player, QAfterFilterCondition> bonusSessionEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'bonusSession',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> bonusSessionGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'bonusSession',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> bonusSessionLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'bonusSession',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> bonusSessionBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'bonusSession',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Player, Player, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -606,9 +676,34 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
 
 extension PlayerQueryObject on QueryBuilder<Player, Player, QFilterCondition> {}
 
-extension PlayerQueryLinks on QueryBuilder<Player, Player, QFilterCondition> {}
+extension PlayerQueryLinks on QueryBuilder<Player, Player, QFilterCondition> {
+  QueryBuilder<Player, Player, QAfterFilterCondition> event(
+      FilterQuery<Event> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'event');
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> eventIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'event', 0, true, 0, true);
+    });
+  }
+}
 
 extension PlayerQuerySortBy on QueryBuilder<Player, Player, QSortBy> {
+  QueryBuilder<Player, Player, QAfterSortBy> sortByBonusSession() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bonusSession', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy> sortByBonusSessionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bonusSession', Sort.desc);
+    });
+  }
+
   QueryBuilder<Player, Player, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -635,6 +730,18 @@ extension PlayerQuerySortBy on QueryBuilder<Player, Player, QSortBy> {
 }
 
 extension PlayerQuerySortThenBy on QueryBuilder<Player, Player, QSortThenBy> {
+  QueryBuilder<Player, Player, QAfterSortBy> thenByBonusSession() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bonusSession', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy> thenByBonusSessionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bonusSession', Sort.desc);
+    });
+  }
+
   QueryBuilder<Player, Player, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -673,6 +780,12 @@ extension PlayerQuerySortThenBy on QueryBuilder<Player, Player, QSortThenBy> {
 }
 
 extension PlayerQueryWhereDistinct on QueryBuilder<Player, Player, QDistinct> {
+  QueryBuilder<Player, Player, QDistinct> distinctByBonusSession() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'bonusSession');
+    });
+  }
+
   QueryBuilder<Player, Player, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -692,6 +805,12 @@ extension PlayerQueryProperty on QueryBuilder<Player, Player, QQueryProperty> {
   QueryBuilder<Player, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Player, int, QQueryOperations> bonusSessionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'bonusSession');
     });
   }
 

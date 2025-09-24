@@ -1,6 +1,9 @@
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
+import 'package:marathondujeu/src/pods/main_pod.dart';
 import 'package:marathondujeu/src/pods/sessions.dart';
+import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
+import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,11 +35,25 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
   @override
   Widget build(BuildContext context) {
     final sessions = ref.watch(sessionsProvider(criteria: criteria));
+    final main = ref.watch(mainPodProvider);
+    final mainNotifier = ref.watch(mainPodProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).page_sessionList_title),
+        actions: [
+          Container(
+            width: 350,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: EventSelector(
+              initialValue: main.event,
+              onChanged: (event) => mainNotifier.setEvent(event),
+            ),
+          )
+        ],
       ),
-      body: Column(
+      body: EventSelectedGuard(child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
@@ -77,7 +94,7 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
             ),
           ),
         ],
-      ),
+      )),
     );
   }
 }

@@ -6,8 +6,9 @@ part 'event.g.dart';
 @collection
 class Event {
   Id id = Isar.autoIncrement;
-  late String name;
-  late String qrSalt;
+  String name ="";
+  String qrSalt = "";
+
   int sessionTimeMinutes = 15;
   int sessionIntervalMinutes = 60;
 
@@ -17,6 +18,9 @@ class Event {
   int playerCardHeight = 0;
   int playerCardWidth = 0;
 
+  List<byte>? playerCardBackgroundImage;
+
+  int qrCodeSize = 0;
   int qrCodePosX = 0;
   int qrCodePosY = 0;
 

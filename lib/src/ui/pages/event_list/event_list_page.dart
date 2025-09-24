@@ -2,6 +2,8 @@ import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/events.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
+import 'package:marathondujeu/src/pods/main_pod.dart';
+import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,9 +36,23 @@ class _EventListPageState extends ConsumerState<EventListPage> {
   Widget build(BuildContext context) {
     final editor = ref.read(editorPodProvider.notifier);
     final events = ref.watch(eventsProvider(criteria: criteria));
+    final main = ref.watch(mainPodProvider);
+    final mainNotifier = ref.watch(mainPodProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).page_eventList_title),
+        actions: [
+          Container(
+            width: 350,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: EventSelector(
+              initialValue: main.event,
+              onChanged: (event) => mainNotifier.setEvent(event),
+            ),
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -47,18 +63,6 @@ class _EventListPageState extends ConsumerState<EventListPage> {
               onSearchCriteriaChanged: search,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ListTile(
-              tileColor: Theme.of(context).colorScheme.inversePrimary,
-              leading: const CircleAvatar(
-                child: Icon(Icons.add)
-              ),
-              title: const Text("Start a session"),
-              onTap: () => "",
-            ),
-          ),
-          const Divider(),
           Expanded(
             child: events.when(
               data: (data) => ListView.separated(
@@ -70,7 +74,11 @@ class _EventListPageState extends ConsumerState<EventListPage> {
                 itemBuilder: (context, index) {
                   Event event = data.elementAt(index);
                   return ListTile(
+                    leading: CircleAvatar(
+                      child: Text(event.name.toUpperCase().split(" ").take(2).map((s) => s.substring(0,1)).join(""))
+                    ),
                     title: Text(event.name),
+                    onTap: () => editor.editEvent(event),
                   );
                 },
               ), 

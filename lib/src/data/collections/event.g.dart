@@ -22,28 +22,63 @@ const EventSchema = CollectionSchema(
       name: r'endDateTime',
       type: IsarType.dateTime,
     ),
-    r'name': PropertySchema(
+    r'idPosX': PropertySchema(
       id: 1,
+      name: r'idPosX',
+      type: IsarType.long,
+    ),
+    r'idPosY': PropertySchema(
+      id: 2,
+      name: r'idPosY',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 3,
       name: r'name',
       type: IsarType.string,
     ),
+    r'playerCardBackgroundImage': PropertySchema(
+      id: 4,
+      name: r'playerCardBackgroundImage',
+      type: IsarType.byteList,
+    ),
+    r'playerCardHeight': PropertySchema(
+      id: 5,
+      name: r'playerCardHeight',
+      type: IsarType.long,
+    ),
+    r'playerCardWidth': PropertySchema(
+      id: 6,
+      name: r'playerCardWidth',
+      type: IsarType.long,
+    ),
+    r'qrCodePosX': PropertySchema(
+      id: 7,
+      name: r'qrCodePosX',
+      type: IsarType.long,
+    ),
+    r'qrCodePosY': PropertySchema(
+      id: 8,
+      name: r'qrCodePosY',
+      type: IsarType.long,
+    ),
     r'qrSalt': PropertySchema(
-      id: 2,
+      id: 9,
       name: r'qrSalt',
       type: IsarType.string,
     ),
     r'sessionIntervalMinutes': PropertySchema(
-      id: 3,
+      id: 10,
       name: r'sessionIntervalMinutes',
       type: IsarType.long,
     ),
     r'sessionTimeMinutes': PropertySchema(
-      id: 4,
+      id: 11,
       name: r'sessionTimeMinutes',
       type: IsarType.long,
     ),
     r'startDateTime': PropertySchema(
-      id: 5,
+      id: 12,
       name: r'startDateTime',
       type: IsarType.dateTime,
     )
@@ -56,16 +91,18 @@ const EventSchema = CollectionSchema(
   indexes: {},
   links: {
     r'players': LinkSchema(
-      id: -8897587274887186095,
+      id: -3573644783869504560,
       name: r'players',
       target: r'Player',
       single: false,
+      linkName: r'event',
     ),
     r'sessions': LinkSchema(
-      id: -8126969924818880892,
+      id: 4192683325109520066,
       name: r'sessions',
       target: r'Session',
       single: false,
+      linkName: r'event',
     )
   },
   embeddedSchemas: {},
@@ -82,6 +119,12 @@ int _eventEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.name.length * 3;
+  {
+    final value = object.playerCardBackgroundImage;
+    if (value != null) {
+      bytesCount += 3 + value.length;
+    }
+  }
   bytesCount += 3 + object.qrSalt.length * 3;
   return bytesCount;
 }
@@ -93,11 +136,18 @@ void _eventSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.endDateTime);
-  writer.writeString(offsets[1], object.name);
-  writer.writeString(offsets[2], object.qrSalt);
-  writer.writeLong(offsets[3], object.sessionIntervalMinutes);
-  writer.writeLong(offsets[4], object.sessionTimeMinutes);
-  writer.writeDateTime(offsets[5], object.startDateTime);
+  writer.writeLong(offsets[1], object.idPosX);
+  writer.writeLong(offsets[2], object.idPosY);
+  writer.writeString(offsets[3], object.name);
+  writer.writeByteList(offsets[4], object.playerCardBackgroundImage);
+  writer.writeLong(offsets[5], object.playerCardHeight);
+  writer.writeLong(offsets[6], object.playerCardWidth);
+  writer.writeLong(offsets[7], object.qrCodePosX);
+  writer.writeLong(offsets[8], object.qrCodePosY);
+  writer.writeString(offsets[9], object.qrSalt);
+  writer.writeLong(offsets[10], object.sessionIntervalMinutes);
+  writer.writeLong(offsets[11], object.sessionTimeMinutes);
+  writer.writeDateTime(offsets[12], object.startDateTime);
 }
 
 Event _eventDeserialize(
@@ -109,11 +159,18 @@ Event _eventDeserialize(
   final object = Event();
   object.endDateTime = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.name = reader.readString(offsets[1]);
-  object.qrSalt = reader.readString(offsets[2]);
-  object.sessionIntervalMinutes = reader.readLong(offsets[3]);
-  object.sessionTimeMinutes = reader.readLong(offsets[4]);
-  object.startDateTime = reader.readDateTime(offsets[5]);
+  object.idPosX = reader.readLong(offsets[1]);
+  object.idPosY = reader.readLong(offsets[2]);
+  object.name = reader.readString(offsets[3]);
+  object.playerCardBackgroundImage = reader.readByteList(offsets[4]);
+  object.playerCardHeight = reader.readLong(offsets[5]);
+  object.playerCardWidth = reader.readLong(offsets[6]);
+  object.qrCodePosX = reader.readLong(offsets[7]);
+  object.qrCodePosY = reader.readLong(offsets[8]);
+  object.qrSalt = reader.readString(offsets[9]);
+  object.sessionIntervalMinutes = reader.readLong(offsets[10]);
+  object.sessionTimeMinutes = reader.readLong(offsets[11]);
+  object.startDateTime = reader.readDateTime(offsets[12]);
   return object;
 }
 
@@ -127,14 +184,28 @@ P _eventDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readLong(offset)) as P;
+      return (reader.readByteList(offset)) as P;
     case 5:
+      return (reader.readLong(offset)) as P;
+    case 6:
+      return (reader.readLong(offset)) as P;
+    case 7:
+      return (reader.readLong(offset)) as P;
+    case 8:
+      return (reader.readLong(offset)) as P;
+    case 9:
+      return (reader.readString(offset)) as P;
+    case 10:
+      return (reader.readLong(offset)) as P;
+    case 11:
+      return (reader.readLong(offset)) as P;
+    case 12:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -336,6 +407,110 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosXEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'idPosX',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosXGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'idPosX',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosXLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'idPosX',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosXBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'idPosX',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosYEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'idPosY',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosYGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'idPosY',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosYLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'idPosY',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosYBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'idPosY',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterFilterCondition> nameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -460,6 +635,381 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'playerCardBackgroundImage',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'playerCardBackgroundImage',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageElementEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'playerCardBackgroundImage',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageElementGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'playerCardBackgroundImage',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageElementLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'playerCardBackgroundImage',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageElementBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'playerCardBackgroundImage',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerCardBackgroundImage',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerCardBackgroundImage',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerCardBackgroundImage',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerCardBackgroundImage',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerCardBackgroundImage',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+      playerCardBackgroundImageLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerCardBackgroundImage',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardHeightEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'playerCardHeight',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardHeightGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'playerCardHeight',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardHeightLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'playerCardHeight',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardHeightBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'playerCardHeight',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'playerCardWidth',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'playerCardWidth',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'playerCardWidth',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'playerCardWidth',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'qrCodePosX',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'qrCodePosX',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'qrCodePosX',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'qrCodePosX',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'qrCodePosY',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'qrCodePosY',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'qrCodePosY',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'qrCodePosY',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -886,6 +1436,30 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdPosX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPosX', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdPosXDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPosX', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdPosY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPosY', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdPosYDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPosY', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -895,6 +1469,54 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
   QueryBuilder<Event, Event, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardHeight() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardHeight', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardHeightDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardHeight', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardWidth() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardWidth', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardWidthDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardWidth', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodePosX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePosX', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodePosXDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePosX', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodePosY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePosY', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodePosYDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePosY', Sort.desc);
     });
   }
 
@@ -972,6 +1594,30 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdPosX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPosX', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdPosXDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPosX', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdPosY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPosY', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdPosYDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPosY', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -981,6 +1627,54 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
   QueryBuilder<Event, Event, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardHeight() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardHeight', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardHeightDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardHeight', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardWidth() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardWidth', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardWidthDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardWidth', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodePosX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePosX', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodePosXDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePosX', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodePosY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePosY', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodePosYDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePosY', Sort.desc);
     });
   }
 
@@ -1040,10 +1734,52 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
+  QueryBuilder<Event, Event, QDistinct> distinctByIdPosX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idPosX');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByIdPosY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idPosY');
+    });
+  }
+
   QueryBuilder<Event, Event, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardBackgroundImage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerCardBackgroundImage');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardHeight() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerCardHeight');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardWidth() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerCardWidth');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByQrCodePosX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'qrCodePosX');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByQrCodePosY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'qrCodePosY');
     });
   }
 
@@ -1086,9 +1822,52 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Event, int, QQueryOperations> idPosXProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idPosX');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> idPosYProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idPosY');
+    });
+  }
+
   QueryBuilder<Event, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Event, List<int>?, QQueryOperations>
+      playerCardBackgroundImageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerCardBackgroundImage');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> playerCardHeightProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerCardHeight');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> playerCardWidthProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerCardWidth');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> qrCodePosXProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'qrCodePosX');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> qrCodePosYProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'qrCodePosY');
     });
   }
 

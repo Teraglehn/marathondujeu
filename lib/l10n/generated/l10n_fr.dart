@@ -158,6 +158,9 @@ class SFr extends S {
   String get page_cardGenerator_menuItem => 'Générateur de Carte';
 
   @override
+  String get widget_eventSelector_selectTitle => 'Sélectionner un évènement';
+
+  @override
   String get widget_colorSelector_selectTitle => 'Sélectionner une couleur';
 
   @override

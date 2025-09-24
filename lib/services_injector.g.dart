@@ -75,6 +75,23 @@ final _eventRepositoryProvider = AutoDisposeProvider<EventRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef _EventRepositoryRef = AutoDisposeProviderRef<EventRepository>;
+String _$drawRepositoryHash() => r'110c74f4b64b7285add28cb69732972479552c52';
+
+/// See also [_drawRepository].
+@ProviderFor(_drawRepository)
+final _drawRepositoryProvider = AutoDisposeProvider<DrawRepository>.internal(
+  _drawRepository,
+  name: r'_drawRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$drawRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef _DrawRepositoryRef = AutoDisposeProviderRef<DrawRepository>;
 String _$playerServiceHash() => r'615d2bc007d41c520979694935ea68a95230d055';
 
 /// See also [playerService].
@@ -109,7 +126,23 @@ final sessionServiceProvider = AutoDisposeProvider<SessionService>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SessionServiceRef = AutoDisposeProviderRef<SessionService>;
-String _$eventServiceHash() => r'bdcce812a26b8db66efef5018fd061268ed6adc8';
+String _$drawServiceHash() => r'a907f843c7f1eb32f7450a35fc828a00ec8bf4a3';
+
+/// See also [drawService].
+@ProviderFor(drawService)
+final drawServiceProvider = AutoDisposeProvider<DrawService>.internal(
+  drawService,
+  name: r'drawServiceProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$drawServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef DrawServiceRef = AutoDisposeProviderRef<DrawService>;
+String _$eventServiceHash() => r'afea9e59c23a4432b2151d32b0248e5ee69a3b00';
 
 /// See also [eventService].
 @ProviderFor(eventService)
