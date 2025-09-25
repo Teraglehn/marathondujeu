@@ -7,13 +7,15 @@ part 'event.g.dart';
 class Event {
   Id id = Isar.autoIncrement;
   String name ="";
-  String qrSalt = "";
+
+  DateTime startDateTime = DateTime.now();
+  DateTime endDateTime = DateTime.now().add(const Duration(days: 1));
 
   int sessionTimeMinutes = 15;
   int sessionIntervalMinutes = 60;
 
-  DateTime startDateTime = DateTime.now();
-  DateTime endDateTime = DateTime.now().add(const Duration(days: 1));
+
+  String qrSalt = "";
 
   int playerCardHeight = 0;
   int playerCardWidth = 0;

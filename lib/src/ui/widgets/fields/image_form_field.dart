@@ -12,12 +12,14 @@ class ImageFormField extends FormField<List<byte>> {
   final String? label;
   final TextStyle? labelStyle;
   final bool allowRemove;
+  final FormFieldSetter<List<byte>>? onChanged;
 
   ImageFormField({
     this.label,
     this.labelStyle,
     this.allowRemove = false,
     required super.initialValue,
+    this.onChanged,
     super.autovalidateMode,
     super.onSaved,
     super.validator,
@@ -34,6 +36,9 @@ class ImageFormField extends FormField<List<byte>> {
         );
         if (result != null) {
           state.didChange(await File(result.files.first.path!).readAsBytes());
+          if(onChanged != null){
+            onChanged(state.value);
+          }
         }
       },
       child: InputDecorator(
