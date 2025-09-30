@@ -16,11 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MainState {
-  Event? get event => throw _privateConstructorUsedError;
+  int? get selectedEventId => throw _privateConstructorUsedError;
+  int? get selectedSessionId => throw _privateConstructorUsedError;
 
-  /// Create a copy of MainState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $MainStateCopyWith<MainState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -30,7 +29,7 @@ abstract class $MainStateCopyWith<$Res> {
   factory $MainStateCopyWith(MainState value, $Res Function(MainState) then) =
       _$MainStateCopyWithImpl<$Res, MainState>;
   @useResult
-  $Res call({Event? event});
+  $Res call({int? selectedEventId, int? selectedSessionId});
 }
 
 /// @nodoc
@@ -43,18 +42,21 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of MainState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? event = freezed,
+    Object? selectedEventId = freezed,
+    Object? selectedSessionId = freezed,
   }) {
     return _then(_value.copyWith(
-      event: freezed == event
-          ? _value.event
-          : event // ignore: cast_nullable_to_non_nullable
-              as Event?,
+      selectedEventId: freezed == selectedEventId
+          ? _value.selectedEventId
+          : selectedEventId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      selectedSessionId: freezed == selectedSessionId
+          ? _value.selectedSessionId
+          : selectedSessionId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -67,7 +69,7 @@ abstract class _$$MainStateImplCopyWith<$Res>
       __$$MainStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Event? event});
+  $Res call({int? selectedEventId, int? selectedSessionId});
 }
 
 /// @nodoc
@@ -78,18 +80,21 @@ class __$$MainStateImplCopyWithImpl<$Res>
       _$MainStateImpl _value, $Res Function(_$MainStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of MainState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? event = freezed,
+    Object? selectedEventId = freezed,
+    Object? selectedSessionId = freezed,
   }) {
     return _then(_$MainStateImpl(
-      event: freezed == event
-          ? _value.event
-          : event // ignore: cast_nullable_to_non_nullable
-              as Event?,
+      selectedEventId: freezed == selectedEventId
+          ? _value.selectedEventId
+          : selectedEventId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      selectedSessionId: freezed == selectedSessionId
+          ? _value.selectedSessionId
+          : selectedSessionId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -97,14 +102,17 @@ class __$$MainStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MainStateImpl extends _MainState {
-  const _$MainStateImpl({this.event}) : super._();
+  const _$MainStateImpl({this.selectedEventId, this.selectedSessionId})
+      : super._();
 
   @override
-  final Event? event;
+  final int? selectedEventId;
+  @override
+  final int? selectedSessionId;
 
   @override
   String toString() {
-    return 'MainState(event: $event)';
+    return 'MainState(selectedEventId: $selectedEventId, selectedSessionId: $selectedSessionId)';
   }
 
   @override
@@ -112,15 +120,17 @@ class _$MainStateImpl extends _MainState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MainStateImpl &&
-            (identical(other.event, event) || other.event == event));
+            (identical(other.selectedEventId, selectedEventId) ||
+                other.selectedEventId == selectedEventId) &&
+            (identical(other.selectedSessionId, selectedSessionId) ||
+                other.selectedSessionId == selectedSessionId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, event);
+  int get hashCode =>
+      Object.hash(runtimeType, selectedEventId, selectedSessionId);
 
-  /// Create a copy of MainState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
@@ -128,16 +138,17 @@ class _$MainStateImpl extends _MainState {
 }
 
 abstract class _MainState extends MainState {
-  const factory _MainState({final Event? event}) = _$MainStateImpl;
+  const factory _MainState(
+      {final int? selectedEventId,
+      final int? selectedSessionId}) = _$MainStateImpl;
   const _MainState._() : super._();
 
   @override
-  Event? get event;
-
-  /// Create a copy of MainState
-  /// with the given fields replaced by the non-null parameter values.
+  int? get selectedEventId;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  int? get selectedSessionId;
+  @override
+  @JsonKey(ignore: true)
   _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

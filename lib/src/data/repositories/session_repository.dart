@@ -18,18 +18,24 @@ class SessionRepository extends RepositoryBase<Session> {
     ]);
   }
 
+  Future<Stream<List<Session>>> getByEventIdStream(int eventId) async{
+    return makeStream((collection) => collection
+      .filter()
+      .event((q) => q.idEqualTo(eventId))
+      .build()
+    );
+  }
   
-  Future<List<Session>> getOpenned(DateTime time) async {
+  Future<List<Session>> getOpenned(int eventId, DateTime time) async {
     final collection = await getCollection();
     final objs = await collection
       .filter()
+      .event((q) => q.idEqualTo(eventId))
+      .and()
       .startTimeLessThan(time, include: true)
       .and()
-      .group((q) => q
-        .endTimeIsNull()
-        .or()
-        .endTimeGreaterThan(time, include: true)
-      ).findAll();
+      .endTimeGreaterThan(time, include: true)
+      .findAll();
     return await Future.wait(objs.map(postGet));
   }
 }

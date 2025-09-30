@@ -9,10 +9,12 @@ class Player {
   late String name;
   int bonusSession = 0;
 
-  @Index(unique: true)
   late String qrcode;
 
   final event = IsarLink<Event>();
+
+  @Backlink(to: 'players')
+  final sessions = IsarLinks<Session>();
 
   Player();
 
@@ -37,4 +39,9 @@ class Player {
 
   @ignore
   bool get exist => id != Isar.autoIncrement;
+
+
+  int getTokenNumber(){
+    return sessions.toSet().length + bonusSession;
+  }
 }

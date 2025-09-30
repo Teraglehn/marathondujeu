@@ -1,5 +1,5 @@
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'l10n.dart';
 
 // ignore_for_file: type=lint
@@ -90,6 +90,9 @@ class SFr extends S {
   String get data_player_qrcode => 'QRCode';
 
   @override
+  String get data_player_bonus => 'Bonus';
+
+  @override
   String get data_player_error_name_required => 'Le nom est requis';
 
   @override
@@ -128,10 +131,12 @@ class SFr extends S {
   String get data_event_error_datetime_end_required => 'La fin est requise';
 
   @override
-  String get data_event_error_session_duration_minute_required => 'La durée de session est requise';
+  String get data_event_error_session_duration_minute_required =>
+      'La durée de session est requise';
 
   @override
-  String get data_event_error_session_interval_minute_required => 'L\'interval de session est requis';
+  String get data_event_error_session_interval_minute_required =>
+      'L\'interval de session est requis';
 
   @override
   String get page_playerList_title => 'Joueurs';

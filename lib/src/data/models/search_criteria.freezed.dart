@@ -19,9 +19,7 @@ mixin _$SearchCriteria {
   String get keyword => throw _privateConstructorUsedError;
   Event? get event => throw _privateConstructorUsedError;
 
-  /// Create a copy of SearchCriteria
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SearchCriteriaCopyWith<SearchCriteria> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,8 +43,6 @@ class _$SearchCriteriaCopyWithImpl<$Res, $Val extends SearchCriteria>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SearchCriteria
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,8 +81,6 @@ class __$$SearchCriteriaImplCopyWithImpl<$Res>
       _$SearchCriteriaImpl _value, $Res Function(_$SearchCriteriaImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SearchCriteria
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -134,9 +128,7 @@ class _$SearchCriteriaImpl extends _SearchCriteria {
   @override
   int get hashCode => Object.hash(runtimeType, keyword, event);
 
-  /// Create a copy of SearchCriteria
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SearchCriteriaImplCopyWith<_$SearchCriteriaImpl> get copyWith =>
@@ -153,11 +145,8 @@ abstract class _SearchCriteria extends SearchCriteria {
   String get keyword;
   @override
   Event? get event;
-
-  /// Create a copy of SearchCriteria
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SearchCriteriaImplCopyWith<_$SearchCriteriaImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

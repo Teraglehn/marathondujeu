@@ -3,6 +3,7 @@ import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/events.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:marathondujeu/src/pods/main_pod.dart';
+import 'package:marathondujeu/src/pods/selected_event.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
   Widget build(BuildContext context) {
     final editor = ref.read(editorPodProvider.notifier);
     final events = ref.watch(eventsProvider(criteria: criteria));
-    final main = ref.watch(mainPodProvider);
+    final selectedEvent = ref.watch(selectedEventProvider);
     final mainNotifier = ref.watch(mainPodProvider.notifier);
     return Scaffold(
       appBar: AppBar(
@@ -48,8 +49,8 @@ class _EventListPageState extends ConsumerState<EventListPage> {
               color: Theme.of(context).colorScheme.surface,
             ),
             child: EventSelector(
-              initialValue: main.event,
-              onChanged: (event) => mainNotifier.setEvent(event),
+              initialValue: selectedEvent.value,
+              onChanged: (event) => mainNotifier.setEventId(event?.id),
             ),
           )
         ],

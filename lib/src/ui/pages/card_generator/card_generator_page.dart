@@ -4,6 +4,7 @@ import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/pods/main_pod.dart';
+import 'package:marathondujeu/src/pods/selected_event.dart';
 import 'package:marathondujeu/src/services/services.dart';
 import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
@@ -30,7 +31,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final main = ref.watch(mainPodProvider);
+    final selectedEvent = ref.watch(selectedEventProvider);
     final mainNotifier = ref.watch(mainPodProvider.notifier);
 
     return Scaffold(
@@ -43,15 +44,15 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
               color: Theme.of(context).colorScheme.surface,
             ),
             child: EventSelector(
-              initialValue: main.event,
-              onChanged: (event) => mainNotifier.setEvent(event),
+              initialValue: selectedEvent.value,
+              onChanged: (event) => mainNotifier.setEventId(event?.id),
             ),
           )
         ],
       ),
-      body: EventSelectedGuard(child: Column(
+      body: EventSelectedGuard(builder: (selectedEvent) => Column(
         children: [
-          Container(
+          SizedBox(
             height: 50,
             child: ImageFormField(
               initialValue: null,

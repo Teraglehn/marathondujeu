@@ -34,6 +34,7 @@ dependencies:
   pdf: ^3.10.0
   printing: ^5.10.0
   file_picker: ^10.3.3
+  flutter_barcode_listener: ^0.1.4
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +49,7 @@ dev_dependencies:
   custom_lint: any
   riverpod_lint: any
   go_router_builder: any
+  analyzer: ^6.4.1
 
 flutter:
   generate: true

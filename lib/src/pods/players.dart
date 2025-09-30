@@ -11,9 +11,11 @@ class Players extends _$Players {
   PlayerService get _service => ref.watch(playerServiceProvider);
 
   @override
-  Stream<List<Player>> build({SearchCriteria? criteria, int? offset, int? limit}) async* {
-    criteria ??= const SearchCriteria();
-    yield* await _service.searchStream(criteria, offset: offset, limit: limit);
+  Stream<List<Player>> build({int? eventId}) async* {
+    if(eventId == null){
+      yield [];
+    }
+    yield* await _service.getByEventIdStream(eventId!);
   }
 
   Future<void> save(Player item) {

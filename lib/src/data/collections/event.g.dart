@@ -62,23 +62,28 @@ const EventSchema = CollectionSchema(
       name: r'qrCodePosY',
       type: IsarType.long,
     ),
-    r'qrSalt': PropertySchema(
+    r'qrCodeSize': PropertySchema(
       id: 9,
+      name: r'qrCodeSize',
+      type: IsarType.long,
+    ),
+    r'qrSalt': PropertySchema(
+      id: 10,
       name: r'qrSalt',
       type: IsarType.string,
     ),
     r'sessionIntervalMinutes': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'sessionIntervalMinutes',
       type: IsarType.long,
     ),
     r'sessionTimeMinutes': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'sessionTimeMinutes',
       type: IsarType.long,
     ),
     r'startDateTime': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'startDateTime',
       type: IsarType.dateTime,
     )
@@ -144,10 +149,11 @@ void _eventSerialize(
   writer.writeLong(offsets[6], object.playerCardWidth);
   writer.writeLong(offsets[7], object.qrCodePosX);
   writer.writeLong(offsets[8], object.qrCodePosY);
-  writer.writeString(offsets[9], object.qrSalt);
-  writer.writeLong(offsets[10], object.sessionIntervalMinutes);
-  writer.writeLong(offsets[11], object.sessionTimeMinutes);
-  writer.writeDateTime(offsets[12], object.startDateTime);
+  writer.writeLong(offsets[9], object.qrCodeSize);
+  writer.writeString(offsets[10], object.qrSalt);
+  writer.writeLong(offsets[11], object.sessionIntervalMinutes);
+  writer.writeLong(offsets[12], object.sessionTimeMinutes);
+  writer.writeDateTime(offsets[13], object.startDateTime);
 }
 
 Event _eventDeserialize(
@@ -167,10 +173,11 @@ Event _eventDeserialize(
   object.playerCardWidth = reader.readLong(offsets[6]);
   object.qrCodePosX = reader.readLong(offsets[7]);
   object.qrCodePosY = reader.readLong(offsets[8]);
-  object.qrSalt = reader.readString(offsets[9]);
-  object.sessionIntervalMinutes = reader.readLong(offsets[10]);
-  object.sessionTimeMinutes = reader.readLong(offsets[11]);
-  object.startDateTime = reader.readDateTime(offsets[12]);
+  object.qrCodeSize = reader.readLong(offsets[9]);
+  object.qrSalt = reader.readString(offsets[10]);
+  object.sessionIntervalMinutes = reader.readLong(offsets[11]);
+  object.sessionTimeMinutes = reader.readLong(offsets[12]);
+  object.startDateTime = reader.readDateTime(offsets[13]);
   return object;
 }
 
@@ -200,12 +207,14 @@ P _eventDeserializeProp<P>(
     case 8:
       return (reader.readLong(offset)) as P;
     case 9:
-      return (reader.readString(offset)) as P;
-    case 10:
       return (reader.readLong(offset)) as P;
+    case 10:
+      return (reader.readString(offset)) as P;
     case 11:
       return (reader.readLong(offset)) as P;
     case 12:
+      return (reader.readLong(offset)) as P;
+    case 13:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1014,6 +1023,59 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'qrCodeSize',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'qrCodeSize',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'qrCodeSize',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'qrCodeSize',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterFilterCondition> qrSaltEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1520,6 +1582,18 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodeSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodeSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodeSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodeSize', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> sortByQrSalt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qrSalt', Sort.asc);
@@ -1678,6 +1752,18 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodeSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodeSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodeSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodeSize', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> thenByQrSalt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qrSalt', Sort.asc);
@@ -1783,6 +1869,12 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
+  QueryBuilder<Event, Event, QDistinct> distinctByQrCodeSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'qrCodeSize');
+    });
+  }
+
   QueryBuilder<Event, Event, QDistinct> distinctByQrSalt(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1868,6 +1960,12 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
   QueryBuilder<Event, int, QQueryOperations> qrCodePosYProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'qrCodePosY');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> qrCodeSizeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'qrCodeSize');
     });
   }
 

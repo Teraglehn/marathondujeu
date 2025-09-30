@@ -9,8 +9,8 @@ class PlayerService {
     return await _playerRepository.getById(id);
   }
 
-  Future<Player?> getByQRCode(String qrcode) async {
-    return await _playerRepository.getByQRCode(qrcode);
+  Future<Player?> getByQRCode(int enventId, String qrcode) async {
+    return await _playerRepository.getByQRCode(enventId, qrcode);
   }
 
   Future<List<Player>> getAll() async {
@@ -19,6 +19,10 @@ class PlayerService {
 
   Future<Stream<List<Player>>> getAllStream() async {
     return _playerRepository.getAllStream();
+  }
+
+  Future<Stream<List<Player>>> getByEventIdStream(int eventId) async {
+    return _playerRepository.getByEventIdStream(eventId);
   }
 
   Future<List<Player>> search(SearchCriteria searchCriteria, {int? offset, int? limit}) async {

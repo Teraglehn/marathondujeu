@@ -1,5 +1,5 @@
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'l10n.dart';
 
 // ignore_for_file: type=lint
@@ -90,6 +90,9 @@ class SEn extends S {
   String get data_player_qrcode => 'QRCode';
 
   @override
+  String get data_player_bonus => 'Bonus';
+
+  @override
   String get data_player_error_name_required => 'Name is required';
 
   @override
@@ -122,16 +125,19 @@ class SEn extends S {
   String get data_event_error_name_required => 'Name is required';
 
   @override
-  String get data_event_error_datetime_start_required => 'Start time is required';
+  String get data_event_error_datetime_start_required =>
+      'Start time is required';
 
   @override
   String get data_event_error_datetime_end_required => 'End time is required';
 
   @override
-  String get data_event_error_session_duration_minute_required => 'Session duration is required';
+  String get data_event_error_session_duration_minute_required =>
+      'Session duration is required';
 
   @override
-  String get data_event_error_session_interval_minute_required => 'Session interval is required';
+  String get data_event_error_session_interval_minute_required =>
+      'Session interval is required';
 
   @override
   String get page_playerList_title => 'Players';

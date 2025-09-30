@@ -19,9 +19,7 @@ mixin _$EditorState {
   Player? get player => throw _privateConstructorUsedError;
   Event? get event => throw _privateConstructorUsedError;
 
-  /// Create a copy of EditorState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $EditorStateCopyWith<EditorState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,8 +43,6 @@ class _$EditorStateCopyWithImpl<$Res, $Val extends EditorState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of EditorState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,8 +81,6 @@ class __$$EditorStateImplCopyWithImpl<$Res>
       _$EditorStateImpl _value, $Res Function(_$EditorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of EditorState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -133,9 +127,7 @@ class _$EditorStateImpl extends _EditorState {
   @override
   int get hashCode => Object.hash(runtimeType, player, event);
 
-  /// Create a copy of EditorState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$EditorStateImplCopyWith<_$EditorStateImpl> get copyWith =>
@@ -151,11 +143,8 @@ abstract class _EditorState extends EditorState {
   Player? get player;
   @override
   Event? get event;
-
-  /// Create a copy of EditorState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$EditorStateImplCopyWith<_$EditorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

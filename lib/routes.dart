@@ -12,6 +12,7 @@ class Routes {
   static const playerList = 'playerList';
   static const cardGenerator = 'cardGenerator';
   static const sessionList = 'sessionList';
+  static const session = 'session';
 }
 
 @TypedShellRoute<TopShellRoute>(
@@ -19,6 +20,7 @@ class Routes {
     TypedGoRoute<EventListRoute>(path: '/', name: Routes.eventList),
     TypedGoRoute<PlayerListRoute>(path: '/players', name: Routes.playerList),
     TypedGoRoute<SessionListRoute>(path: '/sessions', name: Routes.sessionList),
+    TypedGoRoute<SessionRoute>(path: '/session', name: Routes.session),
     TypedGoRoute<CardGeneratorRoute>(path: '/cardGenerator', name: Routes.cardGenerator),
   ]
 )
@@ -61,6 +63,14 @@ class SessionListRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SessionListPage();
+  }
+}
+
+@immutable
+class SessionRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SessionPage();
   }
 }
 

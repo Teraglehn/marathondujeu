@@ -7,7 +7,8 @@ part 'session.g.dart';
 class Session {
   Id id = Isar.autoIncrement;
   late DateTime startTime;
-  DateTime? endTime;
+  late DateTime endTime;
+  late int number;
 
   final players = IsarLinks<Player>();
 
@@ -20,26 +21,30 @@ class Session {
       ..startTime = DateTime.now(); 
   }
 
-  factory Session.fromEvent(DateTime startTime, Event event) {
+  factory Session.fromEvent(DateTime startTime, int number, Event event) {
     return Session()
+      ..number = number
       ..startTime = startTime
       ..endTime = startTime.add(Duration(minutes: event.sessionTimeMinutes))
       ..event.value = event;
   }
 
-  endSession(){
-    endTime = DateTime.now();
-  }
-
-  addPlayer(Player player){
+  void addPlayer(Player player){
     if(isOpen()) {
       players.add(player);
     }
   }
 
+  void forceAddPlayer(Player player){
+    players.add(player);
+  }
+
   bool isOpen(){
-    var now = DateTime.now();
-    return startTime.isBefore(now) && (endTime == null || endTime!.isAfter(now));
+    return isOpenAt(DateTime.now());
+  }
+
+  bool isOpenAt(DateTime time){
+    return startTime.isBefore(time) && endTime.isAfter(time);
   }
 
   @ignore

@@ -1,5 +1,3 @@
-
-import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/states/main_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,9 +10,11 @@ class MainPod extends _$MainPod {
     return const MainState();
   }
 
-  void setEvent(Event? event) {
-    event ??= Event.empty();
+  void setEventId(int? eventId) {
+    state = state.copyWith(selectedEventId: eventId);
+  }
 
-    state = MainState(event: event);
+  void setSessionId(int? sessionId) {
+    state = state.copyWith(selectedSessionId: sessionId);
   }
 }

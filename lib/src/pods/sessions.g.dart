@@ -6,7 +6,7 @@ part of 'sessions.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sessionsHash() => r'10e965e6b2620ef3bd02124da161d71f2c1bf841';
+String _$sessionsHash() => r'77205c6f4cd334d1707b06aa3c88c4f264d0a82f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,14 +31,10 @@ class _SystemHash {
 
 abstract class _$Sessions
     extends BuildlessAutoDisposeStreamNotifier<List<Session>> {
-  late final SearchCriteria? criteria;
-  late final int? offset;
-  late final int? limit;
+  late final int? eventId;
 
   Stream<List<Session>> build({
-    SearchCriteria? criteria,
-    int? offset,
-    int? limit,
+    int? eventId,
   });
 }
 
@@ -53,14 +49,10 @@ class SessionsFamily extends Family<AsyncValue<List<Session>>> {
 
   /// See also [Sessions].
   SessionsProvider call({
-    SearchCriteria? criteria,
-    int? offset,
-    int? limit,
+    int? eventId,
   }) {
     return SessionsProvider(
-      criteria: criteria,
-      offset: offset,
-      limit: limit,
+      eventId: eventId,
     );
   }
 
@@ -69,9 +61,7 @@ class SessionsFamily extends Family<AsyncValue<List<Session>>> {
     covariant SessionsProvider provider,
   ) {
     return call(
-      criteria: provider.criteria,
-      offset: provider.offset,
-      limit: provider.limit,
+      eventId: provider.eventId,
     );
   }
 
@@ -95,14 +85,9 @@ class SessionsProvider
     extends AutoDisposeStreamNotifierProviderImpl<Sessions, List<Session>> {
   /// See also [Sessions].
   SessionsProvider({
-    SearchCriteria? criteria,
-    int? offset,
-    int? limit,
+    int? eventId,
   }) : this._internal(
-          () => Sessions()
-            ..criteria = criteria
-            ..offset = offset
-            ..limit = limit,
+          () => Sessions()..eventId = eventId,
           from: sessionsProvider,
           name: r'sessionsProvider',
           debugGetCreateSourceHash:
@@ -111,9 +96,7 @@ class SessionsProvider
                   : _$sessionsHash,
           dependencies: SessionsFamily._dependencies,
           allTransitiveDependencies: SessionsFamily._allTransitiveDependencies,
-          criteria: criteria,
-          offset: offset,
-          limit: limit,
+          eventId: eventId,
         );
 
   SessionsProvider._internal(
@@ -123,23 +106,17 @@ class SessionsProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.criteria,
-    required this.offset,
-    required this.limit,
+    required this.eventId,
   }) : super.internal();
 
-  final SearchCriteria? criteria;
-  final int? offset;
-  final int? limit;
+  final int? eventId;
 
   @override
   Stream<List<Session>> runNotifierBuild(
     covariant Sessions notifier,
   ) {
     return notifier.build(
-      criteria: criteria,
-      offset: offset,
-      limit: limit,
+      eventId: eventId,
     );
   }
 
@@ -148,18 +125,13 @@ class SessionsProvider
     return ProviderOverride(
       origin: this,
       override: SessionsProvider._internal(
-        () => create()
-          ..criteria = criteria
-          ..offset = offset
-          ..limit = limit,
+        () => create()..eventId = eventId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        criteria: criteria,
-        offset: offset,
-        limit: limit,
+        eventId: eventId,
       ),
     );
   }
@@ -172,34 +144,21 @@ class SessionsProvider
 
   @override
   bool operator ==(Object other) {
-    return other is SessionsProvider &&
-        other.criteria == criteria &&
-        other.offset == offset &&
-        other.limit == limit;
+    return other is SessionsProvider && other.eventId == eventId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, criteria.hashCode);
-    hash = _SystemHash.combine(hash, offset.hashCode);
-    hash = _SystemHash.combine(hash, limit.hashCode);
+    hash = _SystemHash.combine(hash, eventId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin SessionsRef on AutoDisposeStreamNotifierProviderRef<List<Session>> {
-  /// The parameter `criteria` of this provider.
-  SearchCriteria? get criteria;
-
-  /// The parameter `offset` of this provider.
-  int? get offset;
-
-  /// The parameter `limit` of this provider.
-  int? get limit;
+  /// The parameter `eventId` of this provider.
+  int? get eventId;
 }
 
 class _SessionsProviderElement
@@ -208,11 +167,7 @@ class _SessionsProviderElement
   _SessionsProviderElement(super.provider);
 
   @override
-  SearchCriteria? get criteria => (origin as SessionsProvider).criteria;
-  @override
-  int? get offset => (origin as SessionsProvider).offset;
-  @override
-  int? get limit => (origin as SessionsProvider).limit;
+  int? get eventId => (origin as SessionsProvider).eventId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

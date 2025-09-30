@@ -1,9 +1,11 @@
+import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/players.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/services/services.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
@@ -26,6 +28,7 @@ class PlayerEditForm extends ConsumerStatefulWidget {
 
 class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
   final _formKey = GlobalKey<FormState>();
+  final _playerBonusController = TextEditingController();
 
   @protected
   late QrImage qrImage;
@@ -35,12 +38,15 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
     super.initState();
 
     qrImage = PlayerCardService.getCardFromPlayer(widget.player).getQrImage();
+    _playerBonusController.text = widget.player.bonusSession.toString();
   }
 
   void save(){
     if (!_formKey.currentState!.validate()) {
       return;
     }
+
+    widget.player.bonusSession = int.parse(_playerBonusController.text);
 
     _formKey.currentState!.save();
     
@@ -88,6 +94,7 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
+              readOnly: true,
               initialValue: widget.player.qrcode,
               decoration: InputDecoration(
                 labelText: S.of(context).data_player_qrcode,
@@ -111,12 +118,29 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SizedBox.square(
-              dimension: 200,
-              child: PrettyQrView(
-                qrImage: qrImage
+            child: TextFormField(
+              controller: _playerBonusController,
+              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+              inputFormatters: <TextInputFormatter>[FormattersService.integer],
+              decoration: InputDecoration(
+                labelText: S.of(context).data_player_bonus,
+                border: const OutlineInputBorder(),
               ),
-            )
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return S.of(context).data_player_error_name_required;
+                }
+                return null;
+              },
+              onSaved: (value) {
+                widget.player.qrcode = value!;
+              },
+              onChanged: (value) {
+                setState(() {
+                  qrImage = PlayerCard(code: value).getQrImage();
+                });
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),

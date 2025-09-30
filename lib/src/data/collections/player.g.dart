@@ -38,27 +38,20 @@ const PlayerSchema = CollectionSchema(
   deserialize: _playerDeserialize,
   deserializeProp: _playerDeserializeProp,
   idName: r'id',
-  indexes: {
-    r'qrcode': IndexSchema(
-      id: -4708187592274247200,
-      name: r'qrcode',
-      unique: true,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'qrcode',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    )
-  },
+  indexes: {},
   links: {
     r'event': LinkSchema(
       id: -8216783935477353659,
       name: r'event',
       target: r'Event',
       single: true,
+    ),
+    r'sessions': LinkSchema(
+      id: 318514121768170300,
+      name: r'sessions',
+      target: r'Session',
+      single: false,
+      linkName: r'players',
     )
   },
   embeddedSchemas: {},
@@ -127,66 +120,13 @@ Id _playerGetId(Player object) {
 }
 
 List<IsarLinkBase<dynamic>> _playerGetLinks(Player object) {
-  return [object.event];
+  return [object.event, object.sessions];
 }
 
 void _playerAttach(IsarCollection<dynamic> col, Id id, Player object) {
   object.id = id;
   object.event.attach(col, col.isar.collection<Event>(), r'event', id);
-}
-
-extension PlayerByIndex on IsarCollection<Player> {
-  Future<Player?> getByQrcode(String qrcode) {
-    return getByIndex(r'qrcode', [qrcode]);
-  }
-
-  Player? getByQrcodeSync(String qrcode) {
-    return getByIndexSync(r'qrcode', [qrcode]);
-  }
-
-  Future<bool> deleteByQrcode(String qrcode) {
-    return deleteByIndex(r'qrcode', [qrcode]);
-  }
-
-  bool deleteByQrcodeSync(String qrcode) {
-    return deleteByIndexSync(r'qrcode', [qrcode]);
-  }
-
-  Future<List<Player?>> getAllByQrcode(List<String> qrcodeValues) {
-    final values = qrcodeValues.map((e) => [e]).toList();
-    return getAllByIndex(r'qrcode', values);
-  }
-
-  List<Player?> getAllByQrcodeSync(List<String> qrcodeValues) {
-    final values = qrcodeValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'qrcode', values);
-  }
-
-  Future<int> deleteAllByQrcode(List<String> qrcodeValues) {
-    final values = qrcodeValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'qrcode', values);
-  }
-
-  int deleteAllByQrcodeSync(List<String> qrcodeValues) {
-    final values = qrcodeValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'qrcode', values);
-  }
-
-  Future<Id> putByQrcode(Player object) {
-    return putByIndex(r'qrcode', object);
-  }
-
-  Id putByQrcodeSync(Player object, {bool saveLinks = true}) {
-    return putByIndexSync(r'qrcode', object, saveLinks: saveLinks);
-  }
-
-  Future<List<Id>> putAllByQrcode(List<Player> objects) {
-    return putAllByIndex(r'qrcode', objects);
-  }
-
-  List<Id> putAllByQrcodeSync(List<Player> objects, {bool saveLinks = true}) {
-    return putAllByIndexSync(r'qrcode', objects, saveLinks: saveLinks);
-  }
+  object.sessions.attach(col, col.isar.collection<Session>(), r'sessions', id);
 }
 
 extension PlayerQueryWhereSort on QueryBuilder<Player, Player, QWhere> {
@@ -260,50 +200,6 @@ extension PlayerQueryWhere on QueryBuilder<Player, Player, QWhereClause> {
         upper: upperId,
         includeUpper: includeUpper,
       ));
-    });
-  }
-
-  QueryBuilder<Player, Player, QAfterWhereClause> qrcodeEqualTo(String qrcode) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'qrcode',
-        value: [qrcode],
-      ));
-    });
-  }
-
-  QueryBuilder<Player, Player, QAfterWhereClause> qrcodeNotEqualTo(
-      String qrcode) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'qrcode',
-              lower: [],
-              upper: [qrcode],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'qrcode',
-              lower: [qrcode],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'qrcode',
-              lower: [qrcode],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'qrcode',
-              lower: [],
-              upper: [qrcode],
-              includeUpper: false,
-            ));
-      }
     });
   }
 }
@@ -687,6 +583,62 @@ extension PlayerQueryLinks on QueryBuilder<Player, Player, QFilterCondition> {
   QueryBuilder<Player, Player, QAfterFilterCondition> eventIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'event', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> sessions(
+      FilterQuery<Session> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'sessions');
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> sessionsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'sessions', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> sessionsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'sessions', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> sessionsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'sessions', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> sessionsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'sessions', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> sessionsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'sessions', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> sessionsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'sessions', lower, includeLower, upper, includeUpper);
     });
   }
 }

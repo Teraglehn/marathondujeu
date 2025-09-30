@@ -1,24 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'main_pod.dart';
+part of 'clock_pod.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mainPodHash() => r'abc0f64f3ab1e7026225ac8067d321f01a315ecd';
+String _$clockPodHash() => r'a5de9097e923289ba44535a706ba75cafde94bde';
 
-/// See also [MainPod].
-@ProviderFor(MainPod)
-final mainPodProvider = NotifierProvider<MainPod, MainState>.internal(
-  MainPod.new,
-  name: r'mainPodProvider',
+/// See also [ClockPod].
+@ProviderFor(ClockPod)
+final clockPodProvider =
+    AutoDisposeStreamNotifierProvider<ClockPod, DateTime>.internal(
+  ClockPod.new,
+  name: r'clockPodProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$mainPodHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$clockPodHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$MainPod = Notifier<MainState>;
+typedef _$ClockPod = AutoDisposeStreamNotifier<DateTime>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

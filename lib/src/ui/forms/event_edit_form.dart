@@ -92,8 +92,6 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
             padding: const EdgeInsets.all(8.0),
             child: DateTimeFormField(
               initialValue: widget.event.startDateTime,
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 30)),
               label: S.of(context).data_event_datetime_start,
               validator: (value) {
                 if (value == null) {
@@ -110,8 +108,6 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
             padding: const EdgeInsets.all(8.0),
             child: DateTimeFormField(
               initialValue: widget.event.endDateTime,
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 30)),
               label: S.of(context).data_event_datetime_end,
               validator: (value) {
                 if (value == null) {

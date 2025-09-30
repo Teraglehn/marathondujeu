@@ -6,7 +6,7 @@ part of 'players.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playersHash() => r'f70aa5837860782d33f3a16a8c68a0707177d5d9';
+String _$playersHash() => r'1493a456242eebc8fd7452e01b83e81748adc97c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,14 +31,10 @@ class _SystemHash {
 
 abstract class _$Players
     extends BuildlessAutoDisposeStreamNotifier<List<Player>> {
-  late final SearchCriteria? criteria;
-  late final int? offset;
-  late final int? limit;
+  late final int? eventId;
 
   Stream<List<Player>> build({
-    SearchCriteria? criteria,
-    int? offset,
-    int? limit,
+    int? eventId,
   });
 }
 
@@ -53,14 +49,10 @@ class PlayersFamily extends Family<AsyncValue<List<Player>>> {
 
   /// See also [Players].
   PlayersProvider call({
-    SearchCriteria? criteria,
-    int? offset,
-    int? limit,
+    int? eventId,
   }) {
     return PlayersProvider(
-      criteria: criteria,
-      offset: offset,
-      limit: limit,
+      eventId: eventId,
     );
   }
 
@@ -69,9 +61,7 @@ class PlayersFamily extends Family<AsyncValue<List<Player>>> {
     covariant PlayersProvider provider,
   ) {
     return call(
-      criteria: provider.criteria,
-      offset: provider.offset,
-      limit: provider.limit,
+      eventId: provider.eventId,
     );
   }
 
@@ -95,14 +85,9 @@ class PlayersProvider
     extends AutoDisposeStreamNotifierProviderImpl<Players, List<Player>> {
   /// See also [Players].
   PlayersProvider({
-    SearchCriteria? criteria,
-    int? offset,
-    int? limit,
+    int? eventId,
   }) : this._internal(
-          () => Players()
-            ..criteria = criteria
-            ..offset = offset
-            ..limit = limit,
+          () => Players()..eventId = eventId,
           from: playersProvider,
           name: r'playersProvider',
           debugGetCreateSourceHash:
@@ -111,9 +96,7 @@ class PlayersProvider
                   : _$playersHash,
           dependencies: PlayersFamily._dependencies,
           allTransitiveDependencies: PlayersFamily._allTransitiveDependencies,
-          criteria: criteria,
-          offset: offset,
-          limit: limit,
+          eventId: eventId,
         );
 
   PlayersProvider._internal(
@@ -123,23 +106,17 @@ class PlayersProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.criteria,
-    required this.offset,
-    required this.limit,
+    required this.eventId,
   }) : super.internal();
 
-  final SearchCriteria? criteria;
-  final int? offset;
-  final int? limit;
+  final int? eventId;
 
   @override
   Stream<List<Player>> runNotifierBuild(
     covariant Players notifier,
   ) {
     return notifier.build(
-      criteria: criteria,
-      offset: offset,
-      limit: limit,
+      eventId: eventId,
     );
   }
 
@@ -148,18 +125,13 @@ class PlayersProvider
     return ProviderOverride(
       origin: this,
       override: PlayersProvider._internal(
-        () => create()
-          ..criteria = criteria
-          ..offset = offset
-          ..limit = limit,
+        () => create()..eventId = eventId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        criteria: criteria,
-        offset: offset,
-        limit: limit,
+        eventId: eventId,
       ),
     );
   }
@@ -172,34 +144,21 @@ class PlayersProvider
 
   @override
   bool operator ==(Object other) {
-    return other is PlayersProvider &&
-        other.criteria == criteria &&
-        other.offset == offset &&
-        other.limit == limit;
+    return other is PlayersProvider && other.eventId == eventId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, criteria.hashCode);
-    hash = _SystemHash.combine(hash, offset.hashCode);
-    hash = _SystemHash.combine(hash, limit.hashCode);
+    hash = _SystemHash.combine(hash, eventId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin PlayersRef on AutoDisposeStreamNotifierProviderRef<List<Player>> {
-  /// The parameter `criteria` of this provider.
-  SearchCriteria? get criteria;
-
-  /// The parameter `offset` of this provider.
-  int? get offset;
-
-  /// The parameter `limit` of this provider.
-  int? get limit;
+  /// The parameter `eventId` of this provider.
+  int? get eventId;
 }
 
 class _PlayersProviderElement
@@ -208,11 +167,7 @@ class _PlayersProviderElement
   _PlayersProviderElement(super.provider);
 
   @override
-  SearchCriteria? get criteria => (origin as PlayersProvider).criteria;
-  @override
-  int? get offset => (origin as PlayersProvider).offset;
-  @override
-  int? get limit => (origin as PlayersProvider).limit;
+  int? get eventId => (origin as PlayersProvider).eventId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

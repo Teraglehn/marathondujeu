@@ -7,8 +7,8 @@ class DateFormField extends FormField<DateTime> {
   final String? label;
   final TextStyle? labelStyle;
   final String dateFormat;
-  final DateTime firstDate;
-  final DateTime lastDate;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
   final bool allowRemove;
 
   DateFormField({
@@ -16,8 +16,8 @@ class DateFormField extends FormField<DateTime> {
     this.labelStyle,
     this.dateFormat = 'yMd',
     this.allowRemove = false,
-    required this.firstDate,
-    required this.lastDate,
+    this.firstDate,
+    this.lastDate,
     required super.initialValue,
     super.autovalidateMode,
     super.onSaved,
@@ -28,11 +28,20 @@ class DateFormField extends FormField<DateTime> {
   }) : super(
     builder: (state) => InkWell(
       onTap: () async {
-        final date = await showDatePicker(
+        final firstDateActual = firstDate ?? DateTime(2000);
+        final lastDateActual = lastDate ?? DateTime(2100);
+        var initialDate = state.value ?? DateTime.now();
+        if(initialDate.isBefore(firstDateActual)){
+          initialDate = firstDateActual;
+        } else if (initialDate.isAfter(lastDateActual)){
+          initialDate = lastDateActual;
+        }
+
+        var date = await showDatePicker(
           context: state.context,
-          initialDate: state.value,
-          firstDate: firstDate,
-          lastDate: lastDate,
+          initialDate: initialDate,
+          firstDate: firstDateActual,
+          lastDate: lastDateActual,
         );
         if (date != null) {
           state.didChange(date);

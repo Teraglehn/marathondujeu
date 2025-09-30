@@ -22,8 +22,13 @@ const SessionSchema = CollectionSchema(
       name: r'endTime',
       type: IsarType.dateTime,
     ),
-    r'startTime': PropertySchema(
+    r'number': PropertySchema(
       id: 1,
+      name: r'number',
+      type: IsarType.long,
+    ),
+    r'startTime': PropertySchema(
+      id: 2,
       name: r'startTime',
       type: IsarType.dateTime,
     )
@@ -71,7 +76,8 @@ void _sessionSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.endTime);
-  writer.writeDateTime(offsets[1], object.startTime);
+  writer.writeLong(offsets[1], object.number);
+  writer.writeDateTime(offsets[2], object.startTime);
 }
 
 Session _sessionDeserialize(
@@ -81,9 +87,10 @@ Session _sessionDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Session();
-  object.endTime = reader.readDateTimeOrNull(offsets[0]);
+  object.endTime = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.startTime = reader.readDateTime(offsets[1]);
+  object.number = reader.readLong(offsets[1]);
+  object.startTime = reader.readDateTime(offsets[2]);
   return object;
 }
 
@@ -95,8 +102,10 @@ P _sessionDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 1:
+      return (reader.readLong(offset)) as P;
+    case 2:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -194,24 +203,8 @@ extension SessionQueryWhere on QueryBuilder<Session, Session, QWhereClause> {
 
 extension SessionQueryFilter
     on QueryBuilder<Session, Session, QFilterCondition> {
-  QueryBuilder<Session, Session, QAfterFilterCondition> endTimeIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'endTime',
-      ));
-    });
-  }
-
-  QueryBuilder<Session, Session, QAfterFilterCondition> endTimeIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'endTime',
-      ));
-    });
-  }
-
   QueryBuilder<Session, Session, QAfterFilterCondition> endTimeEqualTo(
-      DateTime? value) {
+      DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'endTime',
@@ -221,7 +214,7 @@ extension SessionQueryFilter
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition> endTimeGreaterThan(
-    DateTime? value, {
+    DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -234,7 +227,7 @@ extension SessionQueryFilter
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition> endTimeLessThan(
-    DateTime? value, {
+    DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -247,8 +240,8 @@ extension SessionQueryFilter
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition> endTimeBetween(
-    DateTime? lower,
-    DateTime? upper, {
+    DateTime lower,
+    DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -307,6 +300,59 @@ extension SessionQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> numberEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'number',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> numberGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'number',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> numberLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'number',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterFilterCondition> numberBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'number',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -458,6 +504,18 @@ extension SessionQuerySortBy on QueryBuilder<Session, Session, QSortBy> {
     });
   }
 
+  QueryBuilder<Session, Session, QAfterSortBy> sortByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterSortBy> sortByNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.desc);
+    });
+  }
+
   QueryBuilder<Session, Session, QAfterSortBy> sortByStartTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'startTime', Sort.asc);
@@ -497,6 +555,18 @@ extension SessionQuerySortThenBy
     });
   }
 
+  QueryBuilder<Session, Session, QAfterSortBy> thenByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Session, Session, QAfterSortBy> thenByNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.desc);
+    });
+  }
+
   QueryBuilder<Session, Session, QAfterSortBy> thenByStartTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'startTime', Sort.asc);
@@ -518,6 +588,12 @@ extension SessionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Session, Session, QDistinct> distinctByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'number');
+    });
+  }
+
   QueryBuilder<Session, Session, QDistinct> distinctByStartTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'startTime');
@@ -533,9 +609,15 @@ extension SessionQueryProperty
     });
   }
 
-  QueryBuilder<Session, DateTime?, QQueryOperations> endTimeProperty() {
+  QueryBuilder<Session, DateTime, QQueryOperations> endTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'endTime');
+    });
+  }
+
+  QueryBuilder<Session, int, QQueryOperations> numberProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'number');
     });
   }
 

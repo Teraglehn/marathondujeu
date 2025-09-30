@@ -29,6 +29,11 @@ RouteBase get $topShellRoute => ShellRouteData.$route(
           factory: $SessionListRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: '/session',
+          name: 'session',
+          factory: $SessionRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: '/cardGenerator',
           name: 'cardGenerator',
           factory: $CardGeneratorRouteExtension._fromState,
@@ -79,6 +84,23 @@ extension $SessionListRouteExtension on SessionListRoute {
 
   String get location => GoRouteData.$location(
         '/sessions',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SessionRouteExtension on SessionRoute {
+  static SessionRoute _fromState(GoRouterState state) => SessionRoute();
+
+  String get location => GoRouteData.$location(
+        '/session',
       );
 
   void go(BuildContext context) => context.go(location);

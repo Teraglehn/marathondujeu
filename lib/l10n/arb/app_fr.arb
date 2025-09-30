@@ -27,6 +27,7 @@
     "data_player_objName": "{count, plural, one {Joueur} other {Joueurs}}",
     "data_player_name": "Nom",
     "data_player_qrcode": "QRCode",
+    "data_player_bonus": "Bonus",
 
     "data_player_error_name_required": "Le nom est requis",
     

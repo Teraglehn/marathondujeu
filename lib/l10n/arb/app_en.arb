@@ -44,6 +44,7 @@
     },
     "data_player_name": "Name",
     "data_player_qrcode": "QRCode",
+    "data_player_bonus": "Bonus",
 
     "data_player_error_name_required": "Name is required",
 

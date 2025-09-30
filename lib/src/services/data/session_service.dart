@@ -9,8 +9,12 @@ class SessionService {
     return await _sessionRepository.getById(id);
   }
 
-  Future<List<Session>> getOpenedSession(DateTime time) async {
-    return await _sessionRepository.getOpenned(time);
+  Future<Stream<Session?>> getByIdStream(int id) async {
+    return await _sessionRepository.getByIdStream(id);
+  }
+
+  Future<List<Session>> getOpenedSession(int eventId, DateTime time) async {
+    return await _sessionRepository.getOpenned(eventId, time);
   }
 
   Future<List<Session>> getAll() async {
@@ -19,6 +23,10 @@ class SessionService {
 
   Future<Stream<List<Session>>> getAllStream() async {
     return _sessionRepository.getAllStream();
+  }
+
+  Future<Stream<List<Session>>> getByEventIdStream(int eventId) async {
+    return _sessionRepository.getByEventIdStream(eventId);
   }
 
   Future<List<Session>> search(SearchCriteria searchCriteria, {int? offset, int? limit}) async {

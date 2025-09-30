@@ -23,9 +23,21 @@ class PlayerRepository extends RepositoryBase<Player> {
     ]);
   }
 
-  Future<Player?> getByQRCode(String qrcode) async {
+  Future<Stream<List<Player>>> getByEventIdStream(int eventId) async{
+    return makeStream((collection) => collection
+      .filter()
+      .event((q) => q.idEqualTo(eventId))
+      .build()
+    );
+  }
+
+  Future<Player?> getByQRCode(int eventId, String qrcode) async {
     final collection = await getCollection();
-    final obj = await collection.getByQrcode(qrcode);
+    final obj = await collection.filter()
+      .qrcodeEqualTo(qrcode)
+      .and()
+      .event((q) => q.idEqualTo(eventId))
+      .findFirst();
     return obj != null ? await postGet(obj) : null;
   }
 

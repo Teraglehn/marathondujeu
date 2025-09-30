@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/data/isar_client.dart';
 import 'package:isar/isar.dart';
@@ -105,12 +107,18 @@ abstract class RepositoryBase<T> {
   Future<List<T>> search(SearchCriteria searchCriteria, {int? offset, int? limit}) async {
     final query = await searchQuery(searchCriteria, offset: offset, limit: limit);
 
-    return await query.findAll();
+    return Future.wait((await query.findAll()).map(postGet));
   }
 
   Future<Stream<List<T>>> searchStream(SearchCriteria searchCriteria, {int? offset, int? limit}) async {
     final query = await searchQuery(searchCriteria, offset: offset, limit: limit);
 
-    return query.watchLazy(fireImmediately: true).asyncMap((_) async => await query.findAll());
+    return query.watchLazy(fireImmediately: true).asyncMap((_) async => Future.wait((await query.findAll()).map(postGet)));
+  }
+
+  Future<Stream<List<T>>> makeStream(FutureOr<Query<T>> Function(IsarCollection<T> collection) getQuery) async {
+    final query = await getQuery(await getCollection());
+
+    return query.watchLazy(fireImmediately: true).asyncMap((_) async => Future.wait((await query.findAll()).map(postGet)));
   }
 }

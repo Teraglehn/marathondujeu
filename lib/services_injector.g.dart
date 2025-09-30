@@ -19,8 +19,6 @@ final _isarClientProvider = Provider<IsarClient>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef _IsarClientRef = ProviderRef<IsarClient>;
 String _$playerRepositoryHash() => r'41ba7377bf5591061177e693bc96d71906baa949';
 
@@ -37,8 +35,6 @@ final _playerRepositoryProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef _PlayerRepositoryRef = AutoDisposeProviderRef<PlayerRepository>;
 String _$sessionRepositoryHash() => r'257d94309d832412cda86b81fc9d1ddaefbba6d2';
 
@@ -55,8 +51,6 @@ final _sessionRepositoryProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef _SessionRepositoryRef = AutoDisposeProviderRef<SessionRepository>;
 String _$eventRepositoryHash() => r'f237063097f2a01699cfd4e58ad80c9afe47cf57';
 
@@ -72,8 +66,6 @@ final _eventRepositoryProvider = AutoDisposeProvider<EventRepository>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef _EventRepositoryRef = AutoDisposeProviderRef<EventRepository>;
 String _$drawRepositoryHash() => r'110c74f4b64b7285add28cb69732972479552c52';
 
@@ -89,8 +81,6 @@ final _drawRepositoryProvider = AutoDisposeProvider<DrawRepository>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef _DrawRepositoryRef = AutoDisposeProviderRef<DrawRepository>;
 String _$playerServiceHash() => r'615d2bc007d41c520979694935ea68a95230d055';
 
@@ -106,8 +96,6 @@ final playerServiceProvider = AutoDisposeProvider<PlayerService>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef PlayerServiceRef = AutoDisposeProviderRef<PlayerService>;
 String _$sessionServiceHash() => r'183900c8d401bc89891ad78fc622ab2a5666f085';
 
@@ -123,8 +111,6 @@ final sessionServiceProvider = AutoDisposeProvider<SessionService>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef SessionServiceRef = AutoDisposeProviderRef<SessionService>;
 String _$drawServiceHash() => r'a907f843c7f1eb32f7450a35fc828a00ec8bf4a3';
 
@@ -139,8 +125,6 @@ final drawServiceProvider = AutoDisposeProvider<DrawService>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef DrawServiceRef = AutoDisposeProviderRef<DrawService>;
 String _$eventServiceHash() => r'afea9e59c23a4432b2151d32b0248e5ee69a3b00';
 
@@ -155,8 +139,6 @@ final eventServiceProvider = AutoDisposeProvider<EventService>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef EventServiceRef = AutoDisposeProviderRef<EventService>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

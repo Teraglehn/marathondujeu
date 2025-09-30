@@ -19,4 +19,12 @@ class DrawRepository extends RepositoryBase<Draw> {
       if (obj.requiredSessions.isChanged) obj.requiredSessions.save(),
     ]);
   }
+
+  Future<Stream<List<Draw>>> getByEventIdStream(int eventId) async{
+    return makeStream((collection) => collection
+      .filter()
+      .event((q) => q.idEqualTo(eventId))
+      .build()
+    );
+  }
 }
