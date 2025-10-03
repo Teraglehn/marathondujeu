@@ -17,7 +17,7 @@ class IsarClient {
 
   Future<Isar> openDB() async {
     if (Isar.instanceNames.isEmpty) {
-      final dir = await getApplicationDocumentsDirectory();
+      final dir = await getApplicationCacheDirectory();
       return Isar.open([
           PlayerSchema,
           SessionSchema,
