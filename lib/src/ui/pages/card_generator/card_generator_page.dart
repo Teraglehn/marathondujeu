@@ -77,8 +77,8 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
                   padding: EdgeInsets.zero,
                   build: (format) => PlayerCardService.generateDocument(
                     format: format,
-                    startId : 1,
-                    endId : 200,
+                    startId : 201,
+                    endId : 304,
                     backgroundImage : backgroundImage!,
                     qrCodeSize : 116,
                     qrCodePosX : 82,

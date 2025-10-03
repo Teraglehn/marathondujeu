@@ -82,6 +82,23 @@ final _drawRepositoryProvider = AutoDisposeProvider<DrawRepository>.internal(
 );
 
 typedef _DrawRepositoryRef = AutoDisposeProviderRef<DrawRepository>;
+String _$drawWinnerRepositoryHash() =>
+    r'35f90923222b7d22dfb30413f25c7d77ce1fe485';
+
+/// See also [_drawWinnerRepository].
+@ProviderFor(_drawWinnerRepository)
+final _drawWinnerRepositoryProvider =
+    AutoDisposeProvider<DrawWinnerRepository>.internal(
+  _drawWinnerRepository,
+  name: r'_drawWinnerRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$drawWinnerRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _DrawWinnerRepositoryRef = AutoDisposeProviderRef<DrawWinnerRepository>;
 String _$playerServiceHash() => r'615d2bc007d41c520979694935ea68a95230d055';
 
 /// See also [playerService].
@@ -112,7 +129,7 @@ final sessionServiceProvider = AutoDisposeProvider<SessionService>.internal(
 );
 
 typedef SessionServiceRef = AutoDisposeProviderRef<SessionService>;
-String _$drawServiceHash() => r'a907f843c7f1eb32f7450a35fc828a00ec8bf4a3';
+String _$drawServiceHash() => r'2fb774b73787ab605171b5ee8108dc8b2fc42923';
 
 /// See also [drawService].
 @ProviderFor(drawService)

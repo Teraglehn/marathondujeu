@@ -5,6 +5,7 @@
 
     "utils_button_cancel": "Cancel",
     "utils_button_save": "Save",
+    "utils_button_save_and_draw": "Save and draw",
     "utils_button_saveAll": "Save All",
     "utils_button_saveNItems": "Save {count} {objName}",
     "@utils_button_saveNItems": {
@@ -45,8 +46,32 @@
     "data_player_name": "Name",
     "data_player_qrcode": "QRCode",
     "data_player_bonus": "Bonus",
+    "data_player_tokens": "{count, plural, one {Token} other {Tokens}}",
+    "@data_player_tokens": {
+        "placeholders": {
+            "count": {}
+        }
+    },
 
     "data_player_error_name_required": "Name is required",
+    "data_player_error_qrCode_required": "QrCode is required",
+
+    
+    "data_draw_objName": "{count, plural, one {Draw} other {Draws}}",
+    "@data_draw_objName": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "data_draw_name": "Name",
+    "data_draw_minSessionNumber": "Min number of session",
+    "data_draw_maxSessionNumber": "Max number of session",
+    "data_draw_excludedSessions": "Excluded sessions",
+    "data_draw_requiredSessions": "Required sessions",
+    "data_draw_excludedPlayers": "Excluded players",
+    "data_draw_winnerCount": "Number of winners to draw",
+
+    "data_draw_error_name_required": "Name is required",
 
     
     "data_event_objName": "{count, plural, one {Event} other {Events}}",
@@ -66,19 +91,40 @@
     "data_event_error_datetime_end_required": "End time is required",
     "data_event_error_session_duration_minute_required": "Session duration is required",
     "data_event_error_session_interval_minute_required": "Session interval is required",
+
+    
+    "data_session_objName": "{count, plural, one {Session} other {Sessions}}",
+    "@data_session_objName": {
+        "placeholders": {
+            "count": {}
+        }
+    },
     
 
     "page_playerList_title": "Players",
     "page_playerList_menuItem": "Players",
+    "page_playerList_playerCount": "Players count",
+    "page_playerList_generateMissingPlayers": "Generate missing players",
+    "page_playerList_deletePlayers": "Delete players",
 
     "page_sessionList_title": "Sessions",
     "page_sessionList_menuItem": "Sessions",
+    "page_sessionList_generateSessions": "Generate sessions",
+    "page_sessionList_deleteSessions": "Delete sessions",
+
+    "page_session_title": "Session",
+    "page_session_manualAdd": "Manual mode",
+    "page_session_manualAddActive": "Manual mode - active",
 
     "page_eventList_title": "Events",
     "page_eventList_menuItem": "Events",
+    "page_eventList_generateSessions": "Generate sessions",
 
     "page_cardGenerator_title": "Card Generator",
     "page_cardGenerator_menuItem": "Card Generator",
+
+    "page_drawList_title": "Draws",
+    "page_drawList_menuItem": "Draws",
 
     
     "widget_eventSelector_selectTitle": "Select event",
@@ -94,6 +140,13 @@
     "save_failed": "Failed to save",
     "save_successful": "Saved successfully",
     "delete_failed": "Failed to delete",
-    "delete_successful": "Deleted successfully"
+    "delete_successful": "Deleted successfully",
 
+    
+    "message_player_scanned": "Player {pnumber} has been scanned",
+    "@message_player": {
+        "placeholders": {
+            "pnumber": {}
+        }
+    }
 }

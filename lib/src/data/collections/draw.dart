@@ -6,22 +6,25 @@ part 'draw.g.dart';
 @collection
 class Draw {
   Id id = Isar.autoIncrement;
+  late String name;
   int minSessionNumber = 0;
   int maxSessionNumber = 0;
+  int winnerCount = 1;
   
   final excludedSessions = IsarLinks<Session>();
   final requiredSessions = IsarLinks<Session>();
 
   final excludedPlayers = IsarLinks<Player>();
 
-  final winner = IsarLink<Player>();
+  @Backlink(to: "draw")
+  final winners = IsarLinks<DrawWinner>();
 
   final event = IsarLink<Event>();
 
   Draw();
 
   factory Draw.empty() {
-    return Draw();
+    return Draw()..name ="Tirage";
   }
 
   @ignore

@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/routes.dart';
-import 'package:marathondujeu/services_injector.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/clock_pod.dart';
 import 'package:marathondujeu/src/pods/main_pod.dart';
@@ -40,7 +39,6 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
 
     final selectedEvent = ref.watch(selectedEventProvider);
     final mainNotifier = ref.watch(mainPodProvider.notifier);
-    final eventService = ref.watch(eventServiceProvider);
     final clock = ref.watch(clockPodProvider);
 
     final sessions = ref.watch(sessionsProvider(eventId: selectedEvent.value?.id));
@@ -63,7 +61,7 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
         forceSelectedSession: false,
-        success: (player) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Joueur ${player.name} a été scanné"))),
+        success: (player) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).message_player_scanned(player.name)))),
         child : Column(
           children: [
             Container(
@@ -71,51 +69,50 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
               color: Theme.of(context).colorScheme.secondaryContainer,
               child: Row(children: [
                 Text(DateFormat("Hms", S.of(context).localeName).format(clock.value ?? DateTime.now())),
-                ElevatedButton(onPressed: () => eventService.generateSessions(selectedEvent), child: const Text("generate sessions")),
-                ElevatedButton(onPressed: () => eventService.destroySession(selectedEvent), child: const Text("destroy sessions"))
               ])
             ),
             Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  // Calculate the number of columns based on screen width
-                  int columns = (constraints.maxWidth / 150).floor();
-
-                  return sessions.when(
-                    data: (data) => GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: columns,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        Session session = data.elementAt(index);
-                        return Card(
-                          clipBehavior: Clip.hardEdge,
-                          color: session.isOpenAt(clock.value ?? DateTime.now()) ? Theme.of(context).colorScheme.primaryContainer : session.endTime.isBefore(clock.value ?? DateTime.now()) ? Colors.grey.shade400 : null,
-                          elevation: 8,
-                          child: InkWell(
-                            onTap:() => goToSession(session),
-                            child: Column(children: [
-                              ListTile(
-                                leading: CircleAvatar(
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                                  child: Text(session.number.toString())
-                                ),
-                                title: Text("${DateFormat("Hm", S.of(context).localeName).format(session.startTime)} - ${DateFormat("Hm", S.of(context).localeName).format(session.endTime)}"),
+              child: sessions.when(
+                data: (sessions) => GridView.extent(
+                  maxCrossAxisExtent: 155.0,
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 5,
+                  children: sessions.map((session) {
+                    return SizedBox(
+                      width: 150,
+                      child: Card(
+                        clipBehavior: Clip.hardEdge,
+                        color: session.isOpenAt(clock.value ?? DateTime.now()) ? Theme.of(context).colorScheme.primaryContainer : session.endTime.isBefore(clock.value ?? DateTime.now()) ? Colors.grey.shade400 : null,
+                        elevation: 8,
+                        child: InkWell(
+                          onTap:() => goToSession(session),
+                          child: Column(children: [
+                            ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                foregroundColor: Theme.of(context).colorScheme.onSecondary,
+                                child: Text(session.number.toString())
                               ),
-                            ])
-                          )
-                        );
-                      },
-                    ),
-                    error: (_, e) => Center(child: Text(e.toString())),
-                    loading: () => const SizedBox.shrink() 
+                              title: Text(DateFormat("Hm", S.of(context).localeName).format(session.startTime)),
+                              subtitle: Text(DateFormat("Hm", S.of(context).localeName).format(session.endTime)),
+                            ),
+                            ListTile(
+                              leading: CircleAvatar(
+                                radius: 12,
+                                child: Text(session.players.length.toString(), style: Theme.of(context).textTheme.bodySmall)
+                              ),
+                              title: Text(S.of(context).data_player_objName(session.players.length), style: Theme.of(context).textTheme.bodySmall),
+                              dense: true
+                            ),
+                          ])
+                        )
+                      )
                   );
-                },
-              ),
+                  }).toList(),
+                ),
+                error: (_, e) => Center(child: Text(e.toString())),
+                loading: () => const SizedBox.shrink() 
+              )
             ),
           ],
         )

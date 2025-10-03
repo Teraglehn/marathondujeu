@@ -67,9 +67,7 @@ abstract class RepositoryBase<T> {
   }
 
   Future<List<T>> getAll() async {
-    final collection = await getCollection();
-    final objs = await collection.where().findAll();
-    return await Future.wait(objs.map(postGet));
+    return makeList((collection) => collection.where().build());
   }
 
   Future<Stream<List<T>>> getAllStream() async {
@@ -120,5 +118,11 @@ abstract class RepositoryBase<T> {
     final query = await getQuery(await getCollection());
 
     return query.watchLazy(fireImmediately: true).asyncMap((_) async => Future.wait((await query.findAll()).map(postGet)));
+  }
+
+  Future<List<T>> makeList(FutureOr<Query<T>> Function(IsarCollection<T> collection) getQuery) async {
+    final query = await getQuery(await getCollection());
+
+    return Future.wait((await query.findAll()).map(postGet));
   }
 }

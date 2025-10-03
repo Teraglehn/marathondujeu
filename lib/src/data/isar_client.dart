@@ -22,7 +22,8 @@ class IsarClient {
           PlayerSchema,
           SessionSchema,
           EventSchema,
-          DrawSchema
+          DrawSchema,
+          DrawWinnerSchema
         ], 
         inspector: isTesting, 
         directory: isWeb ? "" : dir.path

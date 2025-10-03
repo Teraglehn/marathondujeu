@@ -16,8 +16,8 @@ class Events extends _$Events {
     yield* await _service.searchStream(criteria, offset: offset, limit: limit);
   }
 
-  Future<void> save(Event item) {
-    return _service.save(item);
+  Future<void> save(Event item, {bool generateSessions = false}) {
+    return _service.save(item, generateSessions: generateSessions);
   }
 
   Future<void> delete(Event item) {

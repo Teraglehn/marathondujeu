@@ -1,5 +1,6 @@
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:marathondujeu/src/pods/states/editor_state.dart';
+import 'package:marathondujeu/src/ui/forms/draw_edit_form.dart';
 import 'package:marathondujeu/src/ui/forms/event_edit_form.dart';
 import 'package:marathondujeu/src/ui/forms/player_edit_form.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,11 @@ class EditDrawerWidget extends ConsumerWidget {
     if(state.event != null){
       return EventEditForm(
         state.event!,
+      );
+    }
+    if(state.draw != null){
+      return DrawEditForm(
+        state.draw!,
       );
     }
     return Container();

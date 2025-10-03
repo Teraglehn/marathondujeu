@@ -48,11 +48,11 @@ class _SessionPageState extends ConsumerState<SessionPage> {
           onPressed: () => GoRouter.of(context).goNamed(Routes.sessionList), 
           icon: const Icon(Icons.arrow_back)
         ),
-        title: Text(S.of(context).page_sessionList_title),
+        title: Text(S.of(context).page_session_title),
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
-        success: (player) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Joueur ${player.name} a été scanné"))),
-        useSelectedSession: true,
+        success: (player) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).message_player_scanned(player.name)))),
+        useSelectedSession: !(selectedSession.value?.isOpen() ?? false),
         forceSelectedSession: manualMode,
         child : Column(
           children: [
@@ -61,36 +61,25 @@ class _SessionPageState extends ConsumerState<SessionPage> {
               color: Theme.of(context).colorScheme.secondaryContainer,
               child: Row(children : [
                 Text(DateFormat("Hms", S.of(context).localeName).format(clock.value ?? DateTime.now())),
-                if(manualMode) ElevatedButton(onPressed: switchManualMode, child: const Text("Ajout Manuel ACTIF")),
-                if(!manualMode) ElevatedButton(onPressed: switchManualMode, child: const Text("Ajout Manuel")),
+                if(manualMode) ElevatedButton(onPressed: switchManualMode, child: Text(S.of(context).page_session_manualAddActive)),
+                if(!manualMode) ElevatedButton(onPressed: switchManualMode, child: Text(S.of(context).page_session_manualAdd)),
               ])
             ),
             Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  // Calculate the number of columns based on screen width
-                  int columns = (constraints.maxWidth / 50).floor();
-
-                  return players.when(
-                    data: (players) => GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: columns, // Number of columns
-                        crossAxisSpacing: 10,   // Space between columns
-                        mainAxisSpacing: 10,    // Space between rows
-                      ),
-                      itemCount: players.length, // Total number of items
-                      itemBuilder: (context, index) {
-                        return CircleAvatar(
-                            backgroundColor: selectedSession.value!.players.contains(players[index]) ? Colors.green : Colors.grey,
-                            child: Text(players[index].name)
-                        );
-                      },
-                    ),
-                    error: (_, e) => Center(child: Text(e.toString())),
-                    loading: () => const SizedBox.shrink() 
-                  );
-                },
-              ),
+              child: players.when(
+                data: (players) => GridView.extent(
+                  maxCrossAxisExtent: 50.0,
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
+                  children: players.map((player) => CircleAvatar(
+                        backgroundColor: selectedSession.value!.players.contains(player) ? Colors.green : Colors.grey,
+                        child: Text(player.name)
+                    )
+                  ).toList()
+                ),
+                error: (_, e) => Center(child: Text(e.toString())),
+                loading: () => const SizedBox.shrink() 
+              )
             ),
           ],
         ))

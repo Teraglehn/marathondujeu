@@ -1,38 +1,41 @@
 import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
-import 'package:marathondujeu/src/pods/players.dart';
+import 'package:marathondujeu/src/pods/draws.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
 
-class PlayerEditForm extends ConsumerStatefulWidget {
+class DrawEditForm extends ConsumerStatefulWidget {
 
-  final Player player;
+  final Draw draw;
 
   final bool allowRemove;
 
-  const PlayerEditForm(
-    this.player, 
+  const DrawEditForm(
+    this.draw, 
     {
       this.allowRemove = true,
       super.key,
     });
 
   @override
-  ConsumerState<PlayerEditForm> createState() => _AccountEditFormState();
+  ConsumerState<DrawEditForm> createState() => _DrawEditFormState();
 }
 
-class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
+class _DrawEditFormState extends ConsumerState<DrawEditForm> {
   final _formKey = GlobalKey<FormState>();
-  final _playerBonusController = TextEditingController();
+  final _minSessionNumberController = TextEditingController();
+  final _maxSessionNumberController = TextEditingController();
+  final _winnerCountController = TextEditingController();
 
   @override
   void initState(){
     super.initState();
-
-    _playerBonusController.text = widget.player.bonusSession.toString();
+    _minSessionNumberController.text = widget.draw.minSessionNumber.toString();
+    _maxSessionNumberController.text = widget.draw.maxSessionNumber.toString();
+    _winnerCountController.text = widget.draw.winnerCount.toString();
   }
 
   void save(){
@@ -40,18 +43,20 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
       return;
     }
 
-    widget.player.bonusSession = int.parse(_playerBonusController.text);
+    widget.draw.minSessionNumber = int.parse(_minSessionNumberController.text);
+    widget.draw.maxSessionNumber = int.parse(_maxSessionNumberController.text);
+    widget.draw.winnerCount = int.parse(_winnerCountController.text);
 
     _formKey.currentState!.save();
     
-    ref.read(playersProvider().notifier)
-      .save(widget.player)
+    ref.read(drawsProvider().notifier)
+      .save(widget.draw)
       .then((_) => ref.read(editorPodProvider.notifier).close());
   }
 
   void delete(){
-    ref.read(playersProvider().notifier)
-      .delete(widget.player)
+    ref.read(drawsProvider().notifier)
+      .delete(widget.draw)
       .then((_) => ref.read(editorPodProvider.notifier).close());
   }
 
@@ -69,50 +74,54 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              initialValue: widget.player.name,
+              initialValue: widget.draw.name,
               decoration: InputDecoration(
-                labelText: S.of(context).data_player_name,
+                labelText: S.of(context).data_draw_name,
                 border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return S.of(context).data_player_error_name_required;
+                  return S.of(context).data_draw_error_name_required;
                 }
                 return null;
               },
               onSaved: (value) {
-                widget.player.name = value!;
+                widget.draw.name = value!;
               },
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              readOnly: true,
-              initialValue: widget.player.qrcode,
-              decoration: InputDecoration(
-                labelText: S.of(context).data_player_qrcode,
-                border: const OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return S.of(context).data_player_error_qrCode_required;
-                }
-                return null;
-              },
-              onSaved: (value) {
-                widget.player.qrcode = value!;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: _playerBonusController,
+              controller: _minSessionNumberController,
               keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
               inputFormatters: <TextInputFormatter>[FormattersService.integer],
               decoration: InputDecoration(
-                labelText: S.of(context).data_player_bonus,
+                labelText: S.of(context).data_draw_minSessionNumber,
+                border: const OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _maxSessionNumberController,
+              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+              inputFormatters: <TextInputFormatter>[FormattersService.integer],
+              decoration: InputDecoration(
+                labelText: S.of(context).data_draw_maxSessionNumber,
+                border: const OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _winnerCountController,
+              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+              inputFormatters: <TextInputFormatter>[FormattersService.integer],
+              decoration: InputDecoration(
+                labelText: S.of(context).data_draw_winnerCount,
                 border: const OutlineInputBorder(),
               ),
             ),
@@ -140,7 +149,7 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
                 ),
                 TextButton.icon(
                   onPressed: save,
-                  label: Text(S.of(context).utils_button_save),
+                  label: Text(S.of(context).utils_button_save_and_draw),
                 ),
               ],
             ),

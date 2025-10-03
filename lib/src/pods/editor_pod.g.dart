@@ -6,7 +6,7 @@ part of 'editor_pod.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$editorPodHash() => r'ddd426e0ee36729c091644d19ba16a33751fc53f';
+String _$editorPodHash() => r'6c9ec0233b733540249f964ca665a456a8905952';
 
 /// See also [EditorPod].
 @ProviderFor(EditorPod)

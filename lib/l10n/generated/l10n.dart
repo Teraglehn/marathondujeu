@@ -121,6 +121,12 @@ abstract class S {
   /// **'Save'**
   String get utils_button_save;
 
+  /// No description provided for @utils_button_save_and_draw.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and draw'**
+  String get utils_button_save_and_draw;
+
   /// No description provided for @utils_button_saveAll.
   ///
   /// In en, this message translates to:
@@ -241,11 +247,77 @@ abstract class S {
   /// **'Bonus'**
   String get data_player_bonus;
 
+  /// No description provided for @data_player_tokens.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {Token} other {Tokens}}'**
+  String data_player_tokens(num count);
+
   /// No description provided for @data_player_error_name_required.
   ///
   /// In en, this message translates to:
   /// **'Name is required'**
   String get data_player_error_name_required;
+
+  /// No description provided for @data_player_error_qrCode_required.
+  ///
+  /// In en, this message translates to:
+  /// **'QrCode is required'**
+  String get data_player_error_qrCode_required;
+
+  /// No description provided for @data_draw_objName.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {Draw} other {Draws}}'**
+  String data_draw_objName(num count);
+
+  /// No description provided for @data_draw_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get data_draw_name;
+
+  /// No description provided for @data_draw_minSessionNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Min number of session'**
+  String get data_draw_minSessionNumber;
+
+  /// No description provided for @data_draw_maxSessionNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Max number of session'**
+  String get data_draw_maxSessionNumber;
+
+  /// No description provided for @data_draw_excludedSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Excluded sessions'**
+  String get data_draw_excludedSessions;
+
+  /// No description provided for @data_draw_requiredSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Required sessions'**
+  String get data_draw_requiredSessions;
+
+  /// No description provided for @data_draw_excludedPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Excluded players'**
+  String get data_draw_excludedPlayers;
+
+  /// No description provided for @data_draw_winnerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of winners to draw'**
+  String get data_draw_winnerCount;
+
+  /// No description provided for @data_draw_error_name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get data_draw_error_name_required;
 
   /// No description provided for @data_event_objName.
   ///
@@ -313,6 +385,12 @@ abstract class S {
   /// **'Session interval is required'**
   String get data_event_error_session_interval_minute_required;
 
+  /// No description provided for @data_session_objName.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {Session} other {Sessions}}'**
+  String data_session_objName(num count);
+
   /// No description provided for @page_playerList_title.
   ///
   /// In en, this message translates to:
@@ -324,6 +402,24 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Players'**
   String get page_playerList_menuItem;
+
+  /// No description provided for @page_playerList_playerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Players count'**
+  String get page_playerList_playerCount;
+
+  /// No description provided for @page_playerList_generateMissingPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate missing players'**
+  String get page_playerList_generateMissingPlayers;
+
+  /// No description provided for @page_playerList_deletePlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete players'**
+  String get page_playerList_deletePlayers;
 
   /// No description provided for @page_sessionList_title.
   ///
@@ -337,6 +433,36 @@ abstract class S {
   /// **'Sessions'**
   String get page_sessionList_menuItem;
 
+  /// No description provided for @page_sessionList_generateSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate sessions'**
+  String get page_sessionList_generateSessions;
+
+  /// No description provided for @page_sessionList_deleteSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete sessions'**
+  String get page_sessionList_deleteSessions;
+
+  /// No description provided for @page_session_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Session'**
+  String get page_session_title;
+
+  /// No description provided for @page_session_manualAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual mode'**
+  String get page_session_manualAdd;
+
+  /// No description provided for @page_session_manualAddActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual mode - active'**
+  String get page_session_manualAddActive;
+
   /// No description provided for @page_eventList_title.
   ///
   /// In en, this message translates to:
@@ -349,6 +475,12 @@ abstract class S {
   /// **'Events'**
   String get page_eventList_menuItem;
 
+  /// No description provided for @page_eventList_generateSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate sessions'**
+  String get page_eventList_generateSessions;
+
   /// No description provided for @page_cardGenerator_title.
   ///
   /// In en, this message translates to:
@@ -360,6 +492,18 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Card Generator'**
   String get page_cardGenerator_menuItem;
+
+  /// No description provided for @page_drawList_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Draws'**
+  String get page_drawList_title;
+
+  /// No description provided for @page_drawList_menuItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Draws'**
+  String get page_drawList_menuItem;
 
   /// No description provided for @widget_eventSelector_selectTitle.
   ///
@@ -408,6 +552,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Deleted successfully'**
   String get delete_successful;
+
+  /// No description provided for @message_player_scanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {pnumber} has been scanned'**
+  String message_player_scanned(Object pnumber);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

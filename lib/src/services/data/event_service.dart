@@ -31,8 +31,12 @@ class EventService {
     return await _eventRepository.searchStream(searchCriteria, offset: offset, limit: limit);
   }
 
-  Future<void> save(Event event) async {
+  Future<void> save(Event event, {bool generateSessions = false}) async {
     await _eventRepository.save(event);
+    if(generateSessions){
+      await destroySessions(event);
+      await this.generateSessions(event);
+    }
   }
 
   Future<void> delete(Event event) async {
@@ -53,17 +57,14 @@ class EventService {
     await _sessionRepository.saveAll(sessions);
   }
 
-  Future<void> destroySession(Event event) async {
+  Future<void> destroySessions(Event event) async {
     await event.sessions.load();
     await _sessionRepository.deleteAll(event.sessions.map((e)=> e.id).toSet());
   }
   
   
-  Future<void> addPlayerToOpenedSession(Event event, String qrCode, {void Function(Player)? success}) async {
+  Future<void> addPlayerToOpenedSession(Event event, Player player, {void Function(Player)? success}) async {
     final sessions = await _sessionRepository.getOpenned(event.id, DateTime.now());
-    final player = await _playerRepository.getByQRCode(event.id, qrCode);
-
-    if(player == null) return;
 
     if(sessions.isEmpty) return;
 
@@ -77,11 +78,7 @@ class EventService {
   }
 
 
-  Future<void> forceAddPlayerToSession(Event event, Session session, String qrCode, {void Function(Player)? success}) async {
-    final player = await _playerRepository.getByQRCode(event.id, qrCode);
-
-    if(player == null) return;
-
+  Future<void> forceAddPlayerToSession(Event event, Session session, Player player, {void Function(Player)? success}) async {
     if(session.players.contains(player)) return;
 
     session.forceAddPlayer(player);
@@ -90,18 +87,26 @@ class EventService {
   }
 
   void scanPlayerToSession(Event event, String qrCode, {Session? session, bool force = false, void Function(Player)? success}) async {
-    qrCode = qrCode.split("").map((e) => e.trim()).join("");
-    if(qrCode.isEmpty) return;
+    final player = await getPlayerByQrCode(event, qrCode);
+    if(player == null) return;
+    
     if(session != null){
       if(force){
-        await forceAddPlayerToSession(event, session, qrCode, success: success);
+        await forceAddPlayerToSession(event, session, player, success: success);
       }
     } else {
-      await addPlayerToOpenedSession(event, qrCode, success: success);
+      await addPlayerToOpenedSession(event, player, success: success);
     }
   }
 
-  Future<void> generatePlayers(Event event, int playerCount) async {
+  Future<Player?> getPlayerByQrCode(Event event, String qrCode) async {
+    qrCode = qrCode.split("").map((e) => e.trim()).join("");
+    if(qrCode.isEmpty) return null;
+
+    return await _playerRepository.getByQRCode(event.id, qrCode);
+  }
+ 
+  Future<void> generateMissingPlayers(Event event, int playerCount) async {
     await event.players.load();
     List<Player> players = event.players.toList();
 

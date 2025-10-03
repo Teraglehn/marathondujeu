@@ -29,6 +29,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
   final _formKey = GlobalKey<FormState>();
   final _sessionTimeMinuteController = TextEditingController();
   final _sessionIntervalMinuteController = TextEditingController();
+  bool generateSessions = false;
 
   @override
   void initState(){
@@ -37,7 +38,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
     _sessionIntervalMinuteController.text = widget.event.sessionIntervalMinutes.toString();
   }
 
-  void save(){
+  void save() {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -48,7 +49,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
     _formKey.currentState!.save();
     
     ref.read(eventsProvider().notifier)
-      .save(widget.event)
+      .save(widget.event, generateSessions: generateSessions)
       .then((_) => ref.read(editorPodProvider.notifier).close());
   }
 
@@ -153,6 +154,18 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
                   return S.of(context).data_event_error_session_interval_minute_required;
                 }
                 return null;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CheckboxListTile(
+              title: Text(S.of(context).page_eventList_generateSessions),
+              value: generateSessions,
+              onChanged:(bool? value) {
+                setState(() {
+                  generateSessions = !generateSessions;
+                });
               },
             ),
           ),

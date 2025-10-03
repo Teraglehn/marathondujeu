@@ -1,7 +1,5 @@
 import 'dart:math';
-import 'dart:ui' as ui;
 import 'dart:typed_data';
-import 'package:flutter/painting.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';

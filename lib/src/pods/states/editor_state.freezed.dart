@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$EditorState {
   Player? get player => throw _privateConstructorUsedError;
   Event? get event => throw _privateConstructorUsedError;
+  Draw? get draw => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $EditorStateCopyWith<EditorState> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $EditorStateCopyWith<$Res> {
           EditorState value, $Res Function(EditorState) then) =
       _$EditorStateCopyWithImpl<$Res, EditorState>;
   @useResult
-  $Res call({Player? player, Event? event});
+  $Res call({Player? player, Event? event, Draw? draw});
 }
 
 /// @nodoc
@@ -48,6 +49,7 @@ class _$EditorStateCopyWithImpl<$Res, $Val extends EditorState>
   $Res call({
     Object? player = freezed,
     Object? event = freezed,
+    Object? draw = freezed,
   }) {
     return _then(_value.copyWith(
       player: freezed == player
@@ -58,6 +60,10 @@ class _$EditorStateCopyWithImpl<$Res, $Val extends EditorState>
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
               as Event?,
+      draw: freezed == draw
+          ? _value.draw
+          : draw // ignore: cast_nullable_to_non_nullable
+              as Draw?,
     ) as $Val);
   }
 }
@@ -70,7 +76,7 @@ abstract class _$$EditorStateImplCopyWith<$Res>
       __$$EditorStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Player? player, Event? event});
+  $Res call({Player? player, Event? event, Draw? draw});
 }
 
 /// @nodoc
@@ -86,6 +92,7 @@ class __$$EditorStateImplCopyWithImpl<$Res>
   $Res call({
     Object? player = freezed,
     Object? event = freezed,
+    Object? draw = freezed,
   }) {
     return _then(_$EditorStateImpl(
       player: freezed == player
@@ -96,6 +103,10 @@ class __$$EditorStateImplCopyWithImpl<$Res>
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
               as Event?,
+      draw: freezed == draw
+          ? _value.draw
+          : draw // ignore: cast_nullable_to_non_nullable
+              as Draw?,
     ));
   }
 }
@@ -103,16 +114,18 @@ class __$$EditorStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$EditorStateImpl extends _EditorState {
-  const _$EditorStateImpl({this.player, this.event}) : super._();
+  const _$EditorStateImpl({this.player, this.event, this.draw}) : super._();
 
   @override
   final Player? player;
   @override
   final Event? event;
+  @override
+  final Draw? draw;
 
   @override
   String toString() {
-    return 'EditorState(player: $player, event: $event)';
+    return 'EditorState(player: $player, event: $event, draw: $draw)';
   }
 
   @override
@@ -121,11 +134,12 @@ class _$EditorStateImpl extends _EditorState {
         (other.runtimeType == runtimeType &&
             other is _$EditorStateImpl &&
             (identical(other.player, player) || other.player == player) &&
-            (identical(other.event, event) || other.event == event));
+            (identical(other.event, event) || other.event == event) &&
+            (identical(other.draw, draw) || other.draw == draw));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, player, event);
+  int get hashCode => Object.hash(runtimeType, player, event, draw);
 
   @JsonKey(ignore: true)
   @override
@@ -135,14 +149,18 @@ class _$EditorStateImpl extends _EditorState {
 }
 
 abstract class _EditorState extends EditorState {
-  const factory _EditorState({final Player? player, final Event? event}) =
-      _$EditorStateImpl;
+  const factory _EditorState(
+      {final Player? player,
+      final Event? event,
+      final Draw? draw}) = _$EditorStateImpl;
   const _EditorState._() : super._();
 
   @override
   Player? get player;
   @override
   Event? get event;
+  @override
+  Draw? get draw;
   @override
   @JsonKey(ignore: true)
   _$$EditorStateImplCopyWith<_$EditorStateImpl> get copyWith =>

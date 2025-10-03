@@ -16,18 +16,26 @@ class PlayerSessionScanner extends ConsumerWidget {
   final bool useSelectedSession;
 
   final PlayerCallback? success;
+  final PlayerCallback? onScanned;
 
   const PlayerSessionScanner({
     super.key, 
     required this.child,
-    required this.forceSelectedSession,
+    this.forceSelectedSession = false,
     this.useSelectedSession = false,
+    this.onScanned,
     this.success,
   });
 
-  void scanPlayer(EventService service, Event? event, Session? session, String qrCode){
+  void scanPlayer(EventService service, Event? event, Session? session, String qrCode) async {
     if(event == null) return;
-    service.scanPlayerToSession(event, qrCode, session: useSelectedSession ? session : null, force: forceSelectedSession, success: success);
+    if(onScanned == null){
+      service.scanPlayerToSession(event, qrCode, session: useSelectedSession ? session : null, force: forceSelectedSession, success: success);
+    } else {
+      final player = await service.getPlayerByQrCode(event, qrCode);
+      if(player == null) return;
+      onScanned?.call(player);
+    }
   }
 
   @override

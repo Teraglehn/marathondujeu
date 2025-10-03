@@ -21,6 +21,9 @@ class SEn extends S {
   String get utils_button_save => 'Save';
 
   @override
+  String get utils_button_save_and_draw => 'Save and draw';
+
+  @override
   String get utils_button_saveAll => 'Save All';
 
   @override
@@ -93,7 +96,56 @@ class SEn extends S {
   String get data_player_bonus => 'Bonus';
 
   @override
+  String data_player_tokens(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tokens',
+      one: 'Token',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get data_player_error_name_required => 'Name is required';
+
+  @override
+  String get data_player_error_qrCode_required => 'QrCode is required';
+
+  @override
+  String data_draw_objName(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Draws',
+      one: 'Draw',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get data_draw_name => 'Name';
+
+  @override
+  String get data_draw_minSessionNumber => 'Min number of session';
+
+  @override
+  String get data_draw_maxSessionNumber => 'Max number of session';
+
+  @override
+  String get data_draw_excludedSessions => 'Excluded sessions';
+
+  @override
+  String get data_draw_requiredSessions => 'Required sessions';
+
+  @override
+  String get data_draw_excludedPlayers => 'Excluded players';
+
+  @override
+  String get data_draw_winnerCount => 'Number of winners to draw';
+
+  @override
+  String get data_draw_error_name_required => 'Name is required';
 
   @override
   String data_event_objName(num count) {
@@ -140,10 +192,31 @@ class SEn extends S {
       'Session interval is required';
 
   @override
+  String data_session_objName(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sessions',
+      one: 'Session',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get page_playerList_title => 'Players';
 
   @override
   String get page_playerList_menuItem => 'Players';
+
+  @override
+  String get page_playerList_playerCount => 'Players count';
+
+  @override
+  String get page_playerList_generateMissingPlayers =>
+      'Generate missing players';
+
+  @override
+  String get page_playerList_deletePlayers => 'Delete players';
 
   @override
   String get page_sessionList_title => 'Sessions';
@@ -152,16 +225,40 @@ class SEn extends S {
   String get page_sessionList_menuItem => 'Sessions';
 
   @override
+  String get page_sessionList_generateSessions => 'Generate sessions';
+
+  @override
+  String get page_sessionList_deleteSessions => 'Delete sessions';
+
+  @override
+  String get page_session_title => 'Session';
+
+  @override
+  String get page_session_manualAdd => 'Manual mode';
+
+  @override
+  String get page_session_manualAddActive => 'Manual mode - active';
+
+  @override
   String get page_eventList_title => 'Events';
 
   @override
   String get page_eventList_menuItem => 'Events';
 
   @override
+  String get page_eventList_generateSessions => 'Generate sessions';
+
+  @override
   String get page_cardGenerator_title => 'Card Generator';
 
   @override
   String get page_cardGenerator_menuItem => 'Card Generator';
+
+  @override
+  String get page_drawList_title => 'Draws';
+
+  @override
+  String get page_drawList_menuItem => 'Draws';
 
   @override
   String get widget_eventSelector_selectTitle => 'Select event';
@@ -186,4 +283,9 @@ class SEn extends S {
 
   @override
   String get delete_successful => 'Deleted successfully';
+
+  @override
+  String message_player_scanned(Object pnumber) {
+    return 'Player $pnumber has been scanned';
+  }
 }

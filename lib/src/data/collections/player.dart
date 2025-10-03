@@ -24,6 +24,10 @@ class Player {
       ..qrcode = '';
   }
 
+  int getSessionNumber(){
+    return sessions.toSet().length;
+  }
+
   @ignore
   @override
   int get hashCode => id;
@@ -41,7 +45,7 @@ class Player {
   bool get exist => id != Isar.autoIncrement;
 
 
-  int getTokenNumber(){
+  int getTokenCount(){
     return sessions.toSet().length + bonusSession;
   }
 }

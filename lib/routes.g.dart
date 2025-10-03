@@ -24,6 +24,11 @@ RouteBase get $topShellRoute => ShellRouteData.$route(
           factory: $PlayerListRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: '/draws',
+          name: 'drawList',
+          factory: $DrawListRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: '/sessions',
           name: 'sessionList',
           factory: $SessionListRouteExtension._fromState,
@@ -67,6 +72,23 @@ extension $PlayerListRouteExtension on PlayerListRoute {
 
   String get location => GoRouteData.$location(
         '/players',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $DrawListRouteExtension on DrawListRoute {
+  static DrawListRoute _fromState(GoRouterState state) => DrawListRoute();
+
+  String get location => GoRouteData.$location(
+        '/draws',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -26,6 +26,16 @@ const DrawSchema = CollectionSchema(
       id: 1,
       name: r'minSessionNumber',
       type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 2,
+      name: r'name',
+      type: IsarType.string,
+    ),
+    r'winnerCount': PropertySchema(
+      id: 3,
+      name: r'winnerCount',
+      type: IsarType.long,
     )
   },
   estimateSize: _drawEstimateSize,
@@ -53,11 +63,12 @@ const DrawSchema = CollectionSchema(
       target: r'Player',
       single: false,
     ),
-    r'winner': LinkSchema(
-      id: 7578068224489532217,
-      name: r'winner',
-      target: r'Player',
-      single: true,
+    r'winners': LinkSchema(
+      id: 8685496200736424818,
+      name: r'winners',
+      target: r'DrawWinner',
+      single: false,
+      linkName: r'draw',
     ),
     r'event': LinkSchema(
       id: 1869897891888667584,
@@ -79,6 +90,7 @@ int _drawEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.name.length * 3;
   return bytesCount;
 }
 
@@ -90,6 +102,8 @@ void _drawSerialize(
 ) {
   writer.writeLong(offsets[0], object.maxSessionNumber);
   writer.writeLong(offsets[1], object.minSessionNumber);
+  writer.writeString(offsets[2], object.name);
+  writer.writeLong(offsets[3], object.winnerCount);
 }
 
 Draw _drawDeserialize(
@@ -102,6 +116,8 @@ Draw _drawDeserialize(
   object.id = id;
   object.maxSessionNumber = reader.readLong(offsets[0]);
   object.minSessionNumber = reader.readLong(offsets[1]);
+  object.name = reader.readString(offsets[2]);
+  object.winnerCount = reader.readLong(offsets[3]);
   return object;
 }
 
@@ -115,6 +131,10 @@ P _drawDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
+      return (reader.readLong(offset)) as P;
+    case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -130,7 +150,7 @@ List<IsarLinkBase<dynamic>> _drawGetLinks(Draw object) {
     object.excludedSessions,
     object.requiredSessions,
     object.excludedPlayers,
-    object.winner,
+    object.winners,
     object.event
   ];
 }
@@ -143,7 +163,7 @@ void _drawAttach(IsarCollection<dynamic> col, Id id, Draw object) {
       .attach(col, col.isar.collection<Session>(), r'requiredSessions', id);
   object.excludedPlayers
       .attach(col, col.isar.collection<Player>(), r'excludedPlayers', id);
-  object.winner.attach(col, col.isar.collection<Player>(), r'winner', id);
+  object.winners.attach(col, col.isar.collection<DrawWinner>(), r'winners', id);
   object.event.attach(col, col.isar.collection<Event>(), r'event', id);
 }
 
@@ -380,6 +400,187 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'name',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'name',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'name',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'name',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnerCountEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'winnerCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnerCountGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'winnerCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnerCountLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'winnerCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnerCountBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'winnerCount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension DrawQueryObject on QueryBuilder<Draw, Draw, QFilterCondition> {}
@@ -561,16 +762,59 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Draw, Draw, QAfterFilterCondition> winner(
-      FilterQuery<Player> q) {
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winners(
+      FilterQuery<DrawWinner> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'winner');
+      return query.link(q, r'winners');
     });
   }
 
-  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnerIsNull() {
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersLengthEqualTo(
+      int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'winner', 0, true, 0, true);
+      return query.linkLength(r'winners', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'winners', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'winners', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'winners', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'winners', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'winners', lower, includeLower, upper, includeUpper);
     });
   }
 
@@ -611,6 +855,30 @@ extension DrawQuerySortBy on QueryBuilder<Draw, Draw, QSortBy> {
       return query.addSortBy(r'minSessionNumber', Sort.desc);
     });
   }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> sortByName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> sortByNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> sortByWinnerCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'winnerCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> sortByWinnerCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'winnerCount', Sort.desc);
+    });
+  }
 }
 
 extension DrawQuerySortThenBy on QueryBuilder<Draw, Draw, QSortThenBy> {
@@ -649,6 +917,30 @@ extension DrawQuerySortThenBy on QueryBuilder<Draw, Draw, QSortThenBy> {
       return query.addSortBy(r'minSessionNumber', Sort.desc);
     });
   }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> thenByName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> thenByNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> thenByWinnerCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'winnerCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> thenByWinnerCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'winnerCount', Sort.desc);
+    });
+  }
 }
 
 extension DrawQueryWhereDistinct on QueryBuilder<Draw, Draw, QDistinct> {
@@ -661,6 +953,19 @@ extension DrawQueryWhereDistinct on QueryBuilder<Draw, Draw, QDistinct> {
   QueryBuilder<Draw, Draw, QDistinct> distinctByMinSessionNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'minSessionNumber');
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QDistinct> distinctByName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QDistinct> distinctByWinnerCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'winnerCount');
     });
   }
 }
@@ -681,6 +986,18 @@ extension DrawQueryProperty on QueryBuilder<Draw, Draw, QQueryProperty> {
   QueryBuilder<Draw, int, QQueryOperations> minSessionNumberProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'minSessionNumber');
+    });
+  }
+
+  QueryBuilder<Draw, String, QQueryOperations> nameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Draw, int, QQueryOperations> winnerCountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'winnerCount');
     });
   }
 }
