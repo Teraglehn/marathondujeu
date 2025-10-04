@@ -313,6 +313,12 @@ abstract class S {
   /// **'Number of winners to draw'**
   String get data_draw_winnerCount;
 
+  /// No description provided for @data_draw_playerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {Player} other {Players}} selected for drawing lots'**
+  String data_draw_playerCount(num count);
+
   /// No description provided for @data_draw_error_name_required.
   ///
   /// In en, this message translates to:
@@ -478,7 +484,7 @@ abstract class S {
   /// No description provided for @page_eventList_generateSessions.
   ///
   /// In en, this message translates to:
-  /// **'Generate sessions'**
+  /// **'Generate sessions (deletes existing sessions)'**
   String get page_eventList_generateSessions;
 
   /// No description provided for @page_cardGenerator_title.
@@ -504,6 +510,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Draws'**
   String get page_drawList_menuItem;
+
+  /// No description provided for @widget_eventSelectedGuard_pleaseSelectEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select an Event'**
+  String get widget_eventSelectedGuard_pleaseSelectEvent;
 
   /// No description provided for @widget_eventSelector_selectTitle.
   ///

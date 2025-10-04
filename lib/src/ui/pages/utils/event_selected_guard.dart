@@ -1,3 +1,4 @@
+import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,8 +17,8 @@ class EventSelectedGuard extends ConsumerWidget {
     final selectedEvent = ref.watch(selectedEventProvider);
 
     if(selectedEvent.value == null){
-      return const Center(
-        child: Text("Please select a event"),
+      return Center(
+        child: Text(S.of(context).widget_eventSelectedGuard_pleaseSelectEvent),
       );
     }
 

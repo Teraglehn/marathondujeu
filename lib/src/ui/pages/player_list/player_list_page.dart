@@ -91,7 +91,7 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                   ),
                 ),
                 ElevatedButton(onPressed: () => eventService.generateMissingPlayers(selectedEvent, int.parse(_playerCountController.text)), child: Text(S.of(context).page_playerList_generateMissingPlayers)),
-                ElevatedButton(onPressed: () => eventService.destroyPlayers(selectedEvent), child: Text(S.of(context).page_playerList_deletePlayers))
+                //ElevatedButton(onPressed: () => eventService.destroyPlayers(selectedEvent), child: Text(S.of(context).page_playerList_deletePlayers))
               ])
             ),
             Expanded(
@@ -128,7 +128,7 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                             child: Text(player.bonusSession.toString(), style: Theme.of(context).textTheme.bodySmall)
                           ),
                           title: Text(S.of(context).data_player_bonus, style: Theme.of(context).textTheme.bodySmall),
-                          trailing: IconButton(onPressed: () => plusOneBonus(player), icon: Icon(Icons.plus_one)),
+                          //trailing: IconButton(onPressed: () => plusOneBonus(player), icon: Icon(Icons.plus_one)),
                           dense: true
                         ),
                         ListTile(

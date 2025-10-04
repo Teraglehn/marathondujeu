@@ -21,7 +21,7 @@ class SFr extends S {
   String get utils_button_save => 'Enregistrer';
 
   @override
-  String get utils_button_save_and_draw => 'Save and draw';
+  String get utils_button_save_and_draw => 'Sauvegarder et Tirer au sort';
 
   @override
   String get utils_button_saveAll => 'Tout enregistrer';
@@ -100,8 +100,8 @@ class SFr extends S {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Tokens',
-      one: 'Token',
+      other: 'Jetons',
+      one: 'Jeton',
     );
     return '$_temp0';
   }
@@ -110,42 +110,53 @@ class SFr extends S {
   String get data_player_error_name_required => 'Le nom est requis';
 
   @override
-  String get data_player_error_qrCode_required => 'QrCode is required';
+  String get data_player_error_qrCode_required => 'QRCode est requis';
 
   @override
   String data_draw_objName(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Draws',
-      one: 'Draw',
+      other: 'Tirages',
+      one: 'Tirage',
     );
     return '$_temp0';
   }
 
   @override
-  String get data_draw_name => 'Name';
+  String get data_draw_name => 'Nom';
 
   @override
-  String get data_draw_minSessionNumber => 'Min number of session';
+  String get data_draw_minSessionNumber => 'Nombre mini de session';
 
   @override
-  String get data_draw_maxSessionNumber => 'Max number of session';
+  String get data_draw_maxSessionNumber => 'Nombre maxi de sessions';
 
   @override
-  String get data_draw_excludedSessions => 'Excluded sessions';
+  String get data_draw_excludedSessions => 'Session exclue';
 
   @override
-  String get data_draw_requiredSessions => 'Required sessions';
+  String get data_draw_requiredSessions => 'Session requises';
 
   @override
-  String get data_draw_excludedPlayers => 'Excluded players';
+  String get data_draw_excludedPlayers => 'Joueur exclus';
 
   @override
-  String get data_draw_winnerCount => 'Number of winners to draw';
+  String get data_draw_winnerCount => 'Nombre de gagnant à tirer au sort';
 
   @override
-  String get data_draw_error_name_required => 'Name is required';
+  String data_draw_playerCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Joueurs',
+      one: 'Joueur',
+    );
+    return '$_temp0 selectionnés pour le tirage';
+  }
+
+  @override
+  String get data_draw_error_name_required => 'Nom est requis';
 
   @override
   String data_event_objName(num count) {
@@ -208,14 +219,14 @@ class SFr extends S {
   String get page_playerList_menuItem => 'Joueurs';
 
   @override
-  String get page_playerList_playerCount => 'Players count';
+  String get page_playerList_playerCount => 'Nombre de joueurs';
 
   @override
   String get page_playerList_generateMissingPlayers =>
-      'Generate missing players';
+      'Générer les joueurs manquants';
 
   @override
-  String get page_playerList_deletePlayers => 'Delete players';
+  String get page_playerList_deletePlayers => 'Supprimer les joueurs';
 
   @override
   String get page_sessionList_title => 'Sessions';
@@ -224,19 +235,19 @@ class SFr extends S {
   String get page_sessionList_menuItem => 'Sessions';
 
   @override
-  String get page_sessionList_generateSessions => 'Generate sessions';
+  String get page_sessionList_generateSessions => 'Générer les sessions';
 
   @override
-  String get page_sessionList_deleteSessions => 'Delete sessions';
+  String get page_sessionList_deleteSessions => 'Supprimer les sessions';
 
   @override
   String get page_session_title => 'Session';
 
   @override
-  String get page_session_manualAdd => 'Manual mode';
+  String get page_session_manualAdd => 'Mode manuel';
 
   @override
-  String get page_session_manualAddActive => 'Manual mode - active';
+  String get page_session_manualAddActive => 'Mode manuel - actif';
 
   @override
   String get page_eventList_title => 'Evénements';
@@ -245,7 +256,8 @@ class SFr extends S {
   String get page_eventList_menuItem => 'Evénements';
 
   @override
-  String get page_eventList_generateSessions => 'Generate sessions';
+  String get page_eventList_generateSessions =>
+      'Générer les sessions (supprime les sessions existantes)';
 
   @override
   String get page_cardGenerator_title => 'Générateur de Carte';
@@ -254,10 +266,14 @@ class SFr extends S {
   String get page_cardGenerator_menuItem => 'Générateur de Carte';
 
   @override
-  String get page_drawList_title => 'Draws';
+  String get page_drawList_title => 'Tirages';
 
   @override
-  String get page_drawList_menuItem => 'Draws';
+  String get page_drawList_menuItem => 'Tirages';
+
+  @override
+  String get widget_eventSelectedGuard_pleaseSelectEvent =>
+      'Veuillez selectionner un évènement';
 
   @override
   String get widget_eventSelector_selectTitle => 'Sélectionner un évènement';
@@ -285,6 +301,6 @@ class SFr extends S {
 
   @override
   String message_player_scanned(Object pnumber) {
-    return 'Player $pnumber has been scanned';
+    return 'Joueur $pnumber a été scanné';
   }
 }

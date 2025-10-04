@@ -145,6 +145,17 @@ class SEn extends S {
   String get data_draw_winnerCount => 'Number of winners to draw';
 
   @override
+  String data_draw_playerCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Players',
+      one: 'Player',
+    );
+    return '$_temp0 selected for drawing lots';
+  }
+
+  @override
   String get data_draw_error_name_required => 'Name is required';
 
   @override
@@ -246,7 +257,8 @@ class SEn extends S {
   String get page_eventList_menuItem => 'Events';
 
   @override
-  String get page_eventList_generateSessions => 'Generate sessions';
+  String get page_eventList_generateSessions =>
+      'Generate sessions (deletes existing sessions)';
 
   @override
   String get page_cardGenerator_title => 'Card Generator';
@@ -259,6 +271,10 @@ class SEn extends S {
 
   @override
   String get page_drawList_menuItem => 'Draws';
+
+  @override
+  String get widget_eventSelectedGuard_pleaseSelectEvent =>
+      'Please select an Event';
 
   @override
   String get widget_eventSelector_selectTitle => 'Select event';

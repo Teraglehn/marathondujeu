@@ -70,6 +70,12 @@
     "data_draw_requiredSessions": "Required sessions",
     "data_draw_excludedPlayers": "Excluded players",
     "data_draw_winnerCount": "Number of winners to draw",
+    "data_draw_playerCount": "{count, plural, one {Player} other {Players}} selected for drawing lots",
+    "@data_draw_playerCount": {
+        "placeholders": {
+            "count": {}
+        }
+    },
 
     "data_draw_error_name_required": "Name is required",
 
@@ -118,13 +124,16 @@
 
     "page_eventList_title": "Events",
     "page_eventList_menuItem": "Events",
-    "page_eventList_generateSessions": "Generate sessions",
+    "page_eventList_generateSessions": "Generate sessions (deletes existing sessions)",
 
     "page_cardGenerator_title": "Card Generator",
     "page_cardGenerator_menuItem": "Card Generator",
 
     "page_drawList_title": "Draws",
     "page_drawList_menuItem": "Draws",
+
+
+    "widget_eventSelectedGuard_pleaseSelectEvent" : "Please select an Event",
 
     
     "widget_eventSelector_selectTitle": "Select event",

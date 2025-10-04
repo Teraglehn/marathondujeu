@@ -7,7 +7,7 @@ part 'draw.g.dart';
 class Draw {
   Id id = Isar.autoIncrement;
   late String name;
-  int minSessionNumber = 0;
+  int minSessionNumber = 1;
   int maxSessionNumber = 0;
   int winnerCount = 1;
   

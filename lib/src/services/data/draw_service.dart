@@ -56,26 +56,36 @@ class DrawService {
       nextDraw.excludedPlayers.addAll(previousDraw.winners.where((e)=>e.winner.value != null).map((e)=> e.winner.value!));
     }
   }
+  
+  
+  Set<Player> _getPlayerList(Event event, int minSessionNumber, int maxSessionNumber, Set<Player> excludedPlayers, Set<Session> excludedSessions, Set<Session> requiredSessions) {
+    Set<Player> players = event.players.toSet();
+
+    if(minSessionNumber > 0){
+      players.removeWhere((p) => p.getSessionNumber() < minSessionNumber);
+    }
+
+    if(maxSessionNumber > 0){
+      players.removeWhere((p) => p.getSessionNumber() > maxSessionNumber);
+    }
+
+    if(excludedPlayers.isNotEmpty) players.removeAll(excludedPlayers);
+    if(excludedSessions.isNotEmpty) players.removeWhere((p) => p.sessions.intersection(excludedSessions).isNotEmpty);
+    if(requiredSessions.isNotEmpty) players.removeWhere((p) => p.sessions.intersection(requiredSessions).length < requiredSessions.length);
+
+    return players;
+  }
+
+  Future<int> getPlayerCount(Event event, int minSessionNumber, int maxSessionNumber, Set<Player> excludedPlayers, Set<Session> excludedSessions, Set<Session> requiredSessions) async {
+    return _getPlayerList(event, minSessionNumber, maxSessionNumber, excludedPlayers, excludedSessions, requiredSessions).length;
+  }
 
   Future<Set<Player>> getPlayerList(Draw draw) async {
     await draw.event.load();
     final event = draw.event.value!;
     await event.players.load();
-    Set<Player> players = event.players.toSet();
-
-    if(draw.minSessionNumber > 0){
-      players.removeWhere((p) => p.getSessionNumber() < draw.minSessionNumber);
-    }
-
-    if(draw.maxSessionNumber > 0){
-      players.removeWhere((p) => p.getSessionNumber() > draw.maxSessionNumber);
-    }
-
-    players.removeAll(draw.excludedPlayers);
-    players.removeWhere((p) => p.sessions.intersection(draw.excludedSessions).isNotEmpty);
-    players.removeWhere((p) => p.sessions.intersection(draw.requiredSessions).length < draw.requiredSessions.length);
-
-    return players;
+    
+    return _getPlayerList(event, draw.minSessionNumber, draw.maxSessionNumber, draw.excludedPlayers, draw.excludedSessions, draw.requiredSessions);
   }
 
   Future<void> calculateDraw(Draw draw) async {

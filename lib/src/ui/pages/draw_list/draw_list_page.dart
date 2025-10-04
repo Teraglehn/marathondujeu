@@ -33,6 +33,11 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
     });
   }
 
+  void deleteDraw(Draw draw) {
+    ref.read(drawsProvider().notifier)
+      .delete(draw);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +81,40 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                 ),
                 itemBuilder: (context, index) {
                   Draw draw = data.elementAt(index);
-                  return ListTile(
-                    leading: CircleAvatar(
-                      child: Text(draw.id.toString())
-                    ),
-                    title: Text(draw.name),
-                    subtitle: Text(draw.winners.map((w) => "N°${w.position} : ${S.of(context).data_player_objName(1)} ${w.winner.value!.qrcode}").join(" / ")),
-                    onTap: () => editor.editDraw(draw),
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                          child: Text((index+1).toString())
+                        ),
+                        title: Text(draw.name),
+                        subtitle: Row(children: 
+                          draw.winners.map((w) => Card(
+                            clipBehavior: Clip.hardEdge,
+                            elevation: 8,
+                            child: InkWell(
+                              onTap: () => editor.editPlayer(w.winner.value!),
+                              child: Padding(
+                                padding: const EdgeInsetsGeometry.all(8),
+                                child: Row(children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    child: Text("N°${w.position.toString()}"),
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor: Theme.of(context).colorScheme.primary,
+                                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                    child: Text(w.winner.value!.qrcode)
+                                  )
+                                ])
+                              ),
+                            )
+                          )).toList()
+                        ),
+                        trailing: IconButton(onPressed: () => deleteDraw(draw), icon: Icon(Icons.delete), color: Theme.of(context).colorScheme.error),
+                      ),
+                      
+                    ],
                   );
                 },
               ), 

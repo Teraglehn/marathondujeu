@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
+import 'package:marathondujeu/services_injector.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/draws.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
@@ -29,6 +30,7 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
   final _minSessionNumberController = TextEditingController();
   final _maxSessionNumberController = TextEditingController();
   final _winnerCountController = TextEditingController();
+  int playerCount = 0;
 
   @override
   void initState(){
@@ -38,14 +40,23 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
     _winnerCountController.text = widget.draw.winnerCount.toString();
   }
 
+  void updatePlayerCount(){
+
+    ref.watch(drawServiceProvider)
+      .getPlayerCount(widget.draw.event.value!, int.tryParse(_minSessionNumberController.text) ?? 0, int.tryParse(_maxSessionNumberController.text) ?? 0, widget.draw.excludedPlayers, widget.draw.excludedSessions, widget.draw.requiredSessions)
+      .then((pcount) => setState(() {
+        playerCount = pcount;
+      }));
+  }
+
   void save(){
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    widget.draw.minSessionNumber = int.parse(_minSessionNumberController.text);
-    widget.draw.maxSessionNumber = int.parse(_maxSessionNumberController.text);
-    widget.draw.winnerCount = int.parse(_winnerCountController.text);
+    widget.draw.minSessionNumber = int.tryParse(_minSessionNumberController.text) ?? 0;
+    widget.draw.maxSessionNumber = int.tryParse(_maxSessionNumberController.text) ?? 0;
+    widget.draw.winnerCount = int.tryParse(_winnerCountController.text) ?? 1;
 
     _formKey.currentState!.save();
     
@@ -66,6 +77,8 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
 
   @override
   Widget build(BuildContext context) {
+    updatePlayerCount();
+
     return Form(
       key: _formKey,
       child: Column(
@@ -100,6 +113,7 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
                 labelText: S.of(context).data_draw_minSessionNumber,
                 border: const OutlineInputBorder(),
               ),
+              onChanged: (_) => updatePlayerCount(),
             ),
           ),
           Padding(
@@ -112,6 +126,7 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
                 labelText: S.of(context).data_draw_maxSessionNumber,
                 border: const OutlineInputBorder(),
               ),
+              onChanged: (_) => updatePlayerCount(),
             ),
           ),
           Padding(
@@ -124,6 +139,15 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
                 labelText: S.of(context).data_draw_winnerCount,
                 border: const OutlineInputBorder(),
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+              leading: CircleAvatar(
+                child: Text(playerCount.toString())
+              ),
+              title: Text(S.of(context).data_draw_playerCount(playerCount)),
             ),
           ),
           Padding(
