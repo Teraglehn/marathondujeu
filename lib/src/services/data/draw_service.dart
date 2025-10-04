@@ -58,8 +58,9 @@ class DrawService {
   }
   
   
-  Set<Player> _getPlayerList(Event event, int minSessionNumber, int maxSessionNumber, Set<Player> excludedPlayers, Set<Session> excludedSessions, Set<Session> requiredSessions) {
+  Set<Player> _getPlayerList(Event event, int minSessionNumber, int maxSessionNumber, Set<Player> excludedPlayers, Set<Player> requiredPlayers, Set<Session> excludedSessions, Set<Session> requiredSessions) {
     Set<Player> players = event.players.toSet();
+    if(requiredPlayers.isNotEmpty) players = requiredPlayers;
 
     if(minSessionNumber > 0){
       players.removeWhere((p) => p.getSessionNumber() < minSessionNumber);
@@ -76,8 +77,8 @@ class DrawService {
     return players;
   }
 
-  Future<int> getPlayerCount(Event event, int minSessionNumber, int maxSessionNumber, Set<Player> excludedPlayers, Set<Session> excludedSessions, Set<Session> requiredSessions) async {
-    return _getPlayerList(event, minSessionNumber, maxSessionNumber, excludedPlayers, excludedSessions, requiredSessions).length;
+  Future<int> getPlayerCount(Event event, int minSessionNumber, int maxSessionNumber, Set<Player> excludedPlayers, Set<Player> requiredPlayers, Set<Session> excludedSessions, Set<Session> requiredSessions) async {
+    return _getPlayerList(event, minSessionNumber, maxSessionNumber, excludedPlayers, requiredPlayers, excludedSessions, requiredSessions).length;
   }
 
   Future<Set<Player>> getPlayerList(Draw draw) async {
@@ -85,7 +86,7 @@ class DrawService {
     final event = draw.event.value!;
     await event.players.load();
     
-    return _getPlayerList(event, draw.minSessionNumber, draw.maxSessionNumber, draw.excludedPlayers, draw.excludedSessions, draw.requiredSessions);
+    return _getPlayerList(event, draw.minSessionNumber, draw.maxSessionNumber, draw.excludedPlayers, draw.requiredPlayers, draw.excludedSessions, draw.requiredSessions);
   }
 
   Future<void> calculateDraw(Draw draw) async {

@@ -159,6 +159,9 @@ class SFr extends S {
   String get data_draw_excludedPlayers => 'Joueur exclus';
 
   @override
+  String get data_draw_requiredPlayers => 'Joueurs requis';
+
+  @override
   String get data_draw_winnerCount => 'Nombre de gagnant à tirer au sort';
 
   @override
@@ -303,6 +306,9 @@ class SFr extends S {
 
   @override
   String get widget_eventSelector_selectTitle => 'Sélectionner un évènement';
+
+  @override
+  String get widget_playerGroupSelector_selectTitle => 'Sélectionner un groupe';
 
   @override
   String get widget_colorSelector_selectTitle => 'Sélectionner une couleur';

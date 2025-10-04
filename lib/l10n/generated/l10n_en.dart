@@ -159,6 +159,9 @@ class SEn extends S {
   String get data_draw_excludedPlayers => 'Excluded players';
 
   @override
+  String get data_draw_requiredPlayers => 'Required players';
+
+  @override
   String get data_draw_winnerCount => 'Number of winners to draw';
 
   @override
@@ -304,6 +307,9 @@ class SEn extends S {
 
   @override
   String get widget_eventSelector_selectTitle => 'Select event';
+
+  @override
+  String get widget_playerGroupSelector_selectTitle => 'Select player group';
 
   @override
   String get widget_colorSelector_selectTitle => 'Select Color';

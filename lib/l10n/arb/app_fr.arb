@@ -47,6 +47,7 @@
     "data_draw_excludedSessions": "Session exclue",
     "data_draw_requiredSessions": "Session requises",
     "data_draw_excludedPlayers": "Joueur exclus",
+    "data_draw_requiredPlayers": "Joueurs requis",
     "data_draw_winnerCount": "Nombre de gagnant à tirer au sort",
     "data_draw_playerCount": "{count, plural, one {Joueur} other {Joueurs}} selectionnés pour le tirage",
     "@data_draw_playerCount": {
@@ -109,6 +110,9 @@
 
     
     "widget_eventSelector_selectTitle": "Sélectionner un évènement",
+
+
+    "widget_playerGroupSelector_selectTitle": "Sélectionner un groupe",
 
 
     "widget_colorSelector_selectTitle": "Sélectionner une couleur",

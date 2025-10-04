@@ -325,6 +325,12 @@ abstract class S {
   /// **'Excluded players'**
   String get data_draw_excludedPlayers;
 
+  /// No description provided for @data_draw_requiredPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Required players'**
+  String get data_draw_requiredPlayers;
+
   /// No description provided for @data_draw_winnerCount.
   ///
   /// In en, this message translates to:
@@ -558,6 +564,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Select event'**
   String get widget_eventSelector_selectTitle;
+
+  /// No description provided for @widget_playerGroupSelector_selectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select player group'**
+  String get widget_playerGroupSelector_selectTitle;
 
   /// No description provided for @widget_colorSelector_selectTitle.
   ///

@@ -3,39 +3,41 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SearchSelector<OBJ> extends ConsumerStatefulWidget {
+class MultiSearchSelector<OBJ> extends ConsumerStatefulWidget {
 
   final String? label;
   final TextStyle? labelStyle;
-  final Function(OBJ?)? onChanged;
-  final Function(OBJ?)? onSaved;
+  final Function(Set<OBJ>)? onChanged;
+  final Function(Set<OBJ>?)? onSaved;
   final bool enabled;
   final bool allowRemove;
-  final OBJ? initialValue;
+  final Set<OBJ>? initialValue;
   final String? restorationId;
   final AutovalidateMode? autovalidateMode;
-  final String? Function(OBJ?)? validator;
+  final String? Function(Set<OBJ>?)? validator;
 
   final Widget Function(
     WidgetRef ref, 
     BuildContext context, 
-    FormFieldState<OBJ> state, 
+    FormFieldState<Set<OBJ>> state, 
     OBJ value, 
-    void Function(OBJ? value) changeValue
+    void Function(Set<OBJ> value) changeValue, 
+    void Function(OBJ value) switchValue
   ) suggestionBuilder;
 
   final Widget Function(
     BuildContext context, 
-    FormFieldState<OBJ> state, 
-    OBJ? value, 
-    void Function(OBJ? value) changeValue
+    FormFieldState<Set<OBJ>> state, 
+    Set<OBJ> value, 
+    void Function(Set<OBJ> value) changeValue, 
+    void Function(OBJ value) switchValue
   ) itemBuilder;
 
   final FutureOr<Iterable<OBJ>> Function(WidgetRef ref, String keyword) getSuggestions;
 
-  final Widget Function(BuildContext, SearchController) Function(FormFieldState<OBJ> state, OBJ? value, Function(SearchController) toggleSearch)? anchorBuilder;
+  final Widget Function(BuildContext, SearchController) Function(FormFieldState<Set<OBJ>> state, Set<OBJ>? value, Function(SearchController) toggleSearch)? anchorBuilder;
 
-  const SearchSelector({
+  const MultiSearchSelector({
     required this.getSuggestions,
     required this.itemBuilder,
     required this.suggestionBuilder,
@@ -54,10 +56,10 @@ class SearchSelector<OBJ> extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<SearchSelector<OBJ>> createState() => _SearchSelectorState<OBJ>();
+  ConsumerState<MultiSearchSelector<OBJ>> createState() => _MultiSearchSelectorState<OBJ>();
 }
 
-class _SearchSelectorState<OBJ> extends ConsumerState<SearchSelector<OBJ>> {
+class _MultiSearchSelectorState<OBJ> extends ConsumerState<MultiSearchSelector<OBJ>> {
   late final SearchController _controller;
 
   @override
@@ -72,17 +74,33 @@ class _SearchSelectorState<OBJ> extends ConsumerState<SearchSelector<OBJ>> {
     //_controller.dispose(); //TODO find a solution to fast close
   }
 
-  void Function(OBJ?) getChangeValue(SearchController controller, FormFieldState<OBJ> state) {
-    return (OBJ? value) {
+  void Function(Set<OBJ>) getChangeValue(SearchController controller, FormFieldState<Set<OBJ>> state) {
+    return (Set<OBJ> value) {
       widget.onChanged?.call(value);
       state.didChange(value);
       if(controller.isOpen) controller.closeView("");
     };
   }
 
+  void Function(OBJ) getSwitchValue(SearchController controller, FormFieldState<Set<OBJ>> state) {
+    return (OBJ value) {
+      Set<OBJ> set = state.value ?? {};
+      if(set.contains(value)) {
+        set.remove(value);
+      } else {
+        set.add(value);
+      }
+      widget.onChanged?.call(set);
+      state.didChange(set);
+      final query = controller.text;
+      controller.text = "$query ";
+      controller.text = query;
+    };
+  }
+
   void toggleSearch(SearchController controller) => controller.isOpen ? controller.closeView("") : controller.openView();
 
-  Widget Function(BuildContext, SearchController) getAnchorBuilder(FormFieldState<OBJ> state){
+  Widget Function(BuildContext, SearchController) getAnchorBuilder(FormFieldState<Set<OBJ>> state){
     if(widget.anchorBuilder != null){
       return widget.anchorBuilder!.call(state, state.value, toggleSearch);
     }
@@ -97,24 +115,24 @@ class _SearchSelectorState<OBJ> extends ConsumerState<SearchSelector<OBJ>> {
             errorText: state.hasError ? state.errorText : null,
             suffixIcon: widget.allowRemove && state.value!= null ? IconButton(
               icon: const Icon(Icons.close),
-              onPressed: !widget.enabled ? null : () => getChangeValue(controller, state)(null),
+              onPressed: !widget.enabled ? null : () => getChangeValue(controller, state)({}),
             ) : null,
           ),
-          child: widget.itemBuilder(context, state, state.value, getChangeValue(controller, state))
+          child: widget.itemBuilder(context, state, state.value ?? {}, getChangeValue(controller, state), getSwitchValue(controller, state))
         ),
       );
    }
 
-  FutureOr<Iterable<Widget>> Function(BuildContext, SearchController) getSuggestionBuilder(FormFieldState<OBJ> state) {
+  FutureOr<Iterable<Widget>> Function(BuildContext, SearchController) getSuggestionBuilder(FormFieldState<Set<OBJ>> state) {
     return (context, controller) async {
       return (await widget.getSuggestions(ref, controller.text))
-        .map((item) => widget.suggestionBuilder(ref, context, state, item, getChangeValue(controller, state)));
+        .map((item) => widget.suggestionBuilder(ref, context, state, item, getChangeValue(controller, state), getSwitchValue(controller, state)));
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    return FormField<OBJ>(
+    return FormField<Set<OBJ>>(
       validator: widget.validator,
       onSaved: widget.onSaved,
       initialValue: widget.initialValue,

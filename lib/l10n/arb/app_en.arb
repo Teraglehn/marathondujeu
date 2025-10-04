@@ -80,6 +80,7 @@
     "data_draw_excludedSessions": "Excluded sessions",
     "data_draw_requiredSessions": "Required sessions",
     "data_draw_excludedPlayers": "Excluded players",
+    "data_draw_requiredPlayers": "Required players",
     "data_draw_winnerCount": "Number of winners to draw",
     "data_draw_playerCount": "{count, plural, one {Player} other {Players}} selected for drawing lots",
     "@data_draw_playerCount": {
@@ -153,6 +154,9 @@
 
     
     "widget_eventSelector_selectTitle": "Select event",
+
+
+    "widget_playerGroupSelector_selectTitle": "Select player group",
 
 
     "widget_colorSelector_selectTitle": "Select Color",

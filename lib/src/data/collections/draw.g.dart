@@ -63,6 +63,12 @@ const DrawSchema = CollectionSchema(
       target: r'Player',
       single: false,
     ),
+    r'requiredPlayers': LinkSchema(
+      id: -7639118240605369881,
+      name: r'requiredPlayers',
+      target: r'Player',
+      single: false,
+    ),
     r'winners': LinkSchema(
       id: 8685496200736424818,
       name: r'winners',
@@ -150,6 +156,7 @@ List<IsarLinkBase<dynamic>> _drawGetLinks(Draw object) {
     object.excludedSessions,
     object.requiredSessions,
     object.excludedPlayers,
+    object.requiredPlayers,
     object.winners,
     object.event
   ];
@@ -163,6 +170,8 @@ void _drawAttach(IsarCollection<dynamic> col, Id id, Draw object) {
       .attach(col, col.isar.collection<Session>(), r'requiredSessions', id);
   object.excludedPlayers
       .attach(col, col.isar.collection<Player>(), r'excludedPlayers', id);
+  object.requiredPlayers
+      .attach(col, col.isar.collection<Player>(), r'requiredPlayers', id);
   object.winners.attach(col, col.isar.collection<DrawWinner>(), r'winners', id);
   object.event.attach(col, col.isar.collection<Event>(), r'event', id);
 }
@@ -759,6 +768,64 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
           r'excludedPlayers', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredPlayers(
+      FilterQuery<Player> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'requiredPlayers');
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredPlayersLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredPlayers', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredPlayersIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredPlayers', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredPlayersIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredPlayers', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredPlayersLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredPlayers', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition>
+      requiredPlayersLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'requiredPlayers', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredPlayersLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'requiredPlayers', lower, includeLower, upper, includeUpper);
     });
   }
 

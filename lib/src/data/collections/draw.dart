@@ -15,6 +15,7 @@ class Draw {
   final requiredSessions = IsarLinks<Session>();
 
   final excludedPlayers = IsarLinks<Player>();
+  final requiredPlayers = IsarLinks<Player>();
 
   @Backlink(to: "draw")
   final winners = IsarLinks<DrawWinner>();

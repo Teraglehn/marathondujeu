@@ -7,6 +7,8 @@ import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
+import 'package:marathondujeu/src/ui/widgets/fields/player_group_selector.dart';
+import 'package:marathondujeu/src/ui/widgets/fields/session_multi_selector.dart';
 
 class DrawEditForm extends ConsumerStatefulWidget {
 
@@ -30,6 +32,12 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
   final _minSessionNumberController = TextEditingController();
   final _maxSessionNumberController = TextEditingController();
   final _winnerCountController = TextEditingController();
+  final Set<Player> excludedPlayer = {};
+  Set<PlayerGroup> excludedPlayerGroup = {};
+  final Set<Player> requiredPlayer = {};
+  Set<PlayerGroup> requiredPlayerGroup = {};
+  final Set<Session> requiredSessions = {};
+  final Set<Session> excludedSessions = {};
   int playerCount = 0;
 
   @override
@@ -41,9 +49,13 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
   }
 
   void updatePlayerCount(){
+    excludedPlayer.clear();
+    excludedPlayer.addAll(excludedPlayerGroup.fold<Set<Player>>({}, (ep, pg) => ep..addAll(pg.players)));
+    requiredPlayer.clear();
+    requiredPlayer.addAll(requiredPlayerGroup.fold<Set<Player>>({}, (ep, pg) => ep..addAll(pg.players)));
 
     ref.watch(drawServiceProvider)
-      .getPlayerCount(widget.draw.event.value!, int.tryParse(_minSessionNumberController.text) ?? 0, int.tryParse(_maxSessionNumberController.text) ?? 0, widget.draw.excludedPlayers, widget.draw.excludedSessions, widget.draw.requiredSessions)
+      .getPlayerCount(widget.draw.event.value!, int.tryParse(_minSessionNumberController.text) ?? 0, int.tryParse(_maxSessionNumberController.text) ?? 0, excludedPlayer, requiredPlayer, excludedSessions, requiredSessions)
       .then((pcount) => setState(() {
         playerCount = pcount;
       }));
@@ -54,9 +66,18 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
       return;
     }
 
+    widget.draw.excludedPlayers.clear();
+    widget.draw.requiredPlayers.clear();
+    widget.draw.excludedSessions.clear();
+    widget.draw.requiredSessions.clear();
+
     widget.draw.minSessionNumber = int.tryParse(_minSessionNumberController.text) ?? 0;
     widget.draw.maxSessionNumber = int.tryParse(_maxSessionNumberController.text) ?? 0;
     widget.draw.winnerCount = int.tryParse(_winnerCountController.text) ?? 1;
+    widget.draw.excludedPlayers.addAll(excludedPlayerGroup.fold<Set<Player>>({}, (ep, pg) => ep..addAll(pg.players)));
+    widget.draw.requiredPlayers.addAll(requiredPlayerGroup.fold<Set<Player>>({}, (ep, pg) => ep..addAll(pg.players)));
+    widget.draw.excludedSessions.addAll(excludedSessions);
+    widget.draw.requiredSessions.addAll(requiredSessions);
 
     _formKey.currentState!.save();
     
@@ -140,6 +161,49 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
                 border: const OutlineInputBorder(),
               ),
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PlayerGroupSelector(
+              label: S.of(context).data_draw_excludedPlayers,
+              event: widget.draw.event.value!,
+              onChanged: (pg) {
+                excludedPlayerGroup = pg;
+              },
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PlayerGroupSelector(
+              label: S.of(context).data_draw_requiredPlayers,
+              event: widget.draw.event.value!,
+              onChanged: (pg) {
+                requiredPlayerGroup = pg;
+              },
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SessionMultiSelector(
+              label: S.of(context).data_draw_excludedSessions,
+              event: widget.draw.event.value!,
+              onChanged: (sessions) {
+                excludedSessions.clear();
+                excludedSessions.addAll(sessions);
+              },
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SessionMultiSelector(
+              initialValue: {widget.draw.event.value!.sessions.last},
+              label: S.of(context).data_draw_requiredSessions,
+              event: widget.draw.event.value!,
+              onChanged: (sessions) {
+                requiredSessions.clear();
+                requiredSessions.addAll(sessions);
+              },
+            )
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
