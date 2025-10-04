@@ -9,5 +9,6 @@ class MainState with _$MainState{
   const factory MainState({
     int? selectedEventId,
     int? selectedSessionId,
+    int? selectedPlayerGroupId,
 }) = _MainState;
 }

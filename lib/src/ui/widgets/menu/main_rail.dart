@@ -14,7 +14,8 @@ class MainRail extends StatelessWidget {
   
   static final List<RouteItem> routes = [
     RouteItem((context) => S.of(context).page_eventList_menuItem, Routes.eventList, Icons.newspaper),
-    RouteItem((context) => S.of(context).page_playerList_menuItem, Routes.playerList, Icons.group),
+    RouteItem((context) => S.of(context).page_playerList_menuItem, Routes.playerList, Icons.person),
+    RouteItem((context) => S.of(context).page_playerGroupsList_menuItem, Routes.playerGroupList, Icons.group),
     RouteItem((context) => S.of(context).page_sessionList_menuItem, Routes.sessionList, Icons.punch_clock),
     RouteItem((context) => S.of(context).page_drawList_menuItem, Routes.drawList, Icons.how_to_vote),
     RouteItem((context) => S.of(context).page_cardGenerator_menuItem, Routes.cardGenerator, Icons.qr_code),

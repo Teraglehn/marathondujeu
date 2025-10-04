@@ -13,6 +13,8 @@ class Routes {
   static const cardGenerator = 'cardGenerator';
   static const sessionList = 'sessionList';
   static const session = 'session';
+  static const playerGroupList = 'playerGroupList';
+  static const playerGroup = 'playerGroup';
   static const drawList = 'drawList';
 }
 
@@ -23,6 +25,8 @@ class Routes {
     TypedGoRoute<DrawListRoute>(path: '/draws', name: Routes.drawList),
     TypedGoRoute<SessionListRoute>(path: '/sessions', name: Routes.sessionList),
     TypedGoRoute<SessionRoute>(path: '/session', name: Routes.session),
+    TypedGoRoute<PlayerGroupListRoute>(path: '/playerGroups', name: Routes.playerGroupList),
+    TypedGoRoute<PlayerGroupRoute>(path: '/playerGroup', name: Routes.playerGroup),
     TypedGoRoute<CardGeneratorRoute>(path: '/cardGenerator', name: Routes.cardGenerator),
   ]
 )
@@ -81,6 +85,22 @@ class SessionRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SessionPage();
+  }
+}
+
+@immutable
+class PlayerGroupListRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const PlayerGroupListPage();
+  }
+}
+
+@immutable
+class PlayerGroupRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const PlayerGroupPage();
   }
 }
 

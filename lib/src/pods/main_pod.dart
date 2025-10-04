@@ -17,4 +17,8 @@ class MainPod extends _$MainPod {
   void setSessionId(int? sessionId) {
     state = state.copyWith(selectedSessionId: sessionId);
   }
+
+  void setPlayerGroupId(int? playerGroupId) {
+    state = state.copyWith(selectedPlayerGroupId: playerGroupId);
+  }
 }

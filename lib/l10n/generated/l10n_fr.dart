@@ -113,6 +113,23 @@ class SFr extends S {
   String get data_player_error_qrCode_required => 'QRCode est requis';
 
   @override
+  String data_playerGroup_objName(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Groupes',
+      one: 'Groupe',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get data_playerGroup_name => 'Nom';
+
+  @override
+  String get data_playerGroup_error_name_required => 'Nom is required';
+
+  @override
   String data_draw_objName(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -227,6 +244,15 @@ class SFr extends S {
 
   @override
   String get page_playerList_deletePlayers => 'Supprimer les joueurs';
+
+  @override
+  String get page_playerGroupsList_title => 'Groupes';
+
+  @override
+  String get page_playerGroupsList_menuItem => 'Groupes';
+
+  @override
+  String get page_playerGroup_title => 'Groupe';
 
   @override
   String get page_sessionList_title => 'Sessions';

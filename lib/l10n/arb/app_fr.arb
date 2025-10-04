@@ -34,6 +34,12 @@
     "data_player_error_name_required": "Le nom est requis",
     "data_player_error_qrCode_required": "QRCode est requis",
 
+    
+    "data_playerGroup_objName": "{count, plural, one {Groupe} other {Groupes}}",
+    "data_playerGroup_name": "Nom",
+
+    "data_playerGroup_error_name_required": "Nom is required",
+
     "data_draw_objName": "{count, plural, one {Tirage} other {Tirages}}",
     "data_draw_name": "Nom",
     "data_draw_minSessionNumber": "Nombre mini de session",
@@ -73,6 +79,11 @@
     "page_playerList_playerCount": "Nombre de joueurs",
     "page_playerList_generateMissingPlayers": "Générer les joueurs manquants",
     "page_playerList_deletePlayers": "Supprimer les joueurs",
+
+    "page_playerGroupsList_title": "Groupes",
+    "page_playerGroupsList_menuItem": "Groupes",
+
+    "page_playerGroup_title": "Groupe",
 
     "page_sessionList_title": "Sessions",
     "page_sessionList_menuItem": "Sessions",

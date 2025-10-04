@@ -68,6 +68,7 @@ class _SessionPageState extends ConsumerState<SessionPage> {
             Expanded(
               child: players.when(
                 data: (players) => GridView.extent(
+                  padding: const EdgeInsets.all(8),
                   maxCrossAxisExtent: 50.0,
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,

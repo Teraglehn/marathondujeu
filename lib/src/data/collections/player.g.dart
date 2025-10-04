@@ -52,6 +52,13 @@ const PlayerSchema = CollectionSchema(
       target: r'Session',
       single: false,
       linkName: r'players',
+    ),
+    r'groups': LinkSchema(
+      id: -1260100478370990037,
+      name: r'groups',
+      target: r'PlayerGroup',
+      single: false,
+      linkName: r'players',
     )
   },
   embeddedSchemas: {},
@@ -120,13 +127,14 @@ Id _playerGetId(Player object) {
 }
 
 List<IsarLinkBase<dynamic>> _playerGetLinks(Player object) {
-  return [object.event, object.sessions];
+  return [object.event, object.sessions, object.groups];
 }
 
 void _playerAttach(IsarCollection<dynamic> col, Id id, Player object) {
   object.id = id;
   object.event.attach(col, col.isar.collection<Event>(), r'event', id);
   object.sessions.attach(col, col.isar.collection<Session>(), r'sessions', id);
+  object.groups.attach(col, col.isar.collection<PlayerGroup>(), r'groups', id);
 }
 
 extension PlayerQueryWhereSort on QueryBuilder<Player, Player, QWhere> {
@@ -639,6 +647,62 @@ extension PlayerQueryLinks on QueryBuilder<Player, Player, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
           r'sessions', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> groups(
+      FilterQuery<PlayerGroup> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'groups');
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> groupsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'groups', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> groupsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'groups', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> groupsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'groups', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> groupsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'groups', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> groupsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'groups', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> groupsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'groups', lower, includeLower, upper, includeUpper);
     });
   }
 }

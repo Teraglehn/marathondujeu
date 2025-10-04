@@ -15,12 +15,14 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<Scaffol
 @Riverpod(keepAlive: true) IsarClient _isarClient(Ref ref) => IsarClient(isWeb: kIsWeb, isTesting: kDebugMode);
 
 @riverpod PlayerRepository _playerRepository(Ref ref) => PlayerRepository(ref.watch(_isarClientProvider));
+@riverpod PlayerGroupRepository _playerGroupRepository(Ref ref) => PlayerGroupRepository(ref.watch(_isarClientProvider));
 @riverpod SessionRepository _sessionRepository(Ref ref) => SessionRepository(ref.watch(_isarClientProvider));
 @riverpod EventRepository _eventRepository(Ref ref) => EventRepository(ref.watch(_isarClientProvider));
 @riverpod DrawRepository _drawRepository(Ref ref) => DrawRepository(ref.watch(_isarClientProvider));
 @riverpod DrawWinnerRepository _drawWinnerRepository(Ref ref) => DrawWinnerRepository(ref.watch(_isarClientProvider));
 
 @riverpod PlayerService playerService(Ref ref) => PlayerService(ref.watch(_playerRepositoryProvider));
+@riverpod PlayerGroupService playerGroupService(Ref ref) => PlayerGroupService(ref.watch(_playerGroupRepositoryProvider));
 @riverpod SessionService sessionService(Ref ref) => SessionService(ref.watch(_sessionRepositoryProvider));
 @riverpod DrawService drawService(Ref ref) => DrawService(ref.watch(_drawRepositoryProvider), ref.watch(_drawWinnerRepositoryProvider));
 @riverpod EventService eventService(Ref ref) => EventService(ref.watch(_sessionRepositoryProvider), ref.watch(_eventRepositoryProvider), ref.watch(_playerRepositoryProvider));

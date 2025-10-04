@@ -5,6 +5,7 @@ import 'package:marathondujeu/src/ui/forms/event_edit_form.dart';
 import 'package:marathondujeu/src/ui/forms/player_edit_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:marathondujeu/src/ui/forms/player_group_edit_form.dart';
 
 class EditDrawerWidget extends ConsumerWidget {
 
@@ -32,6 +33,11 @@ class EditDrawerWidget extends ConsumerWidget {
       return DrawEditForm(
         allowRemove: false,
         state.draw!,
+      );
+    }
+    if(state.playerGroup != null){
+      return PlayerGroupEditForm(
+        state.playerGroup!,
       );
     }
     return Container();

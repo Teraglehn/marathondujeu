@@ -113,6 +113,23 @@ class SEn extends S {
   String get data_player_error_qrCode_required => 'QrCode is required';
 
   @override
+  String data_playerGroup_objName(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Groups',
+      one: 'Group',
+    );
+    return 'Player $_temp0';
+  }
+
+  @override
+  String get data_playerGroup_name => 'Name';
+
+  @override
+  String get data_playerGroup_error_name_required => 'Name is required';
+
+  @override
   String data_draw_objName(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -228,6 +245,15 @@ class SEn extends S {
 
   @override
   String get page_playerList_deletePlayers => 'Delete players';
+
+  @override
+  String get page_playerGroupsList_title => 'Player Groups';
+
+  @override
+  String get page_playerGroupsList_menuItem => 'Player Groups';
+
+  @override
+  String get page_playerGroup_title => 'Player Group';
 
   @override
   String get page_sessionList_title => 'Sessions';

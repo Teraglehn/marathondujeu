@@ -57,6 +57,17 @@
     "data_player_error_qrCode_required": "QrCode is required",
 
     
+    "data_playerGroup_objName": "Player {count, plural, one {Group} other {Groups}}",
+    "@data_playerGroup_objName": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "data_playerGroup_name": "Name",
+
+    "data_playerGroup_error_name_required": "Name is required",
+
+    
     "data_draw_objName": "{count, plural, one {Draw} other {Draws}}",
     "@data_draw_objName": {
         "placeholders": {
@@ -112,6 +123,11 @@
     "page_playerList_playerCount": "Players count",
     "page_playerList_generateMissingPlayers": "Generate missing players",
     "page_playerList_deletePlayers": "Delete players",
+
+    "page_playerGroupsList_title": "Player Groups",
+    "page_playerGroupsList_menuItem": "Player Groups",
+
+    "page_playerGroup_title": "Player Group",
 
     "page_sessionList_title": "Sessions",
     "page_sessionList_menuItem": "Sessions",

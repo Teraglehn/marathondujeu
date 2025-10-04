@@ -23,6 +23,17 @@ class EditorPod extends _$EditorPod {
     state = EditorState(event: event);
   }
 
+  void editPlayerGroup(PlayerGroup playerGroup) {
+    state = EditorState(playerGroup: playerGroup);
+  }
+
+  void newPlayerGroup(Event event) {
+    final playerGroup = PlayerGroup.empty();
+    playerGroup.event.value = event;
+
+    state = EditorState(playerGroup: playerGroup);
+  }
+
   void editDraw(Draw draw) {
     state = EditorState(draw: draw);
   }

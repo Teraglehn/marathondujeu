@@ -36,6 +36,24 @@ final _playerRepositoryProvider =
 );
 
 typedef _PlayerRepositoryRef = AutoDisposeProviderRef<PlayerRepository>;
+String _$playerGroupRepositoryHash() =>
+    r'408104429558fb4433337bf6a19742319f0bda4a';
+
+/// See also [_playerGroupRepository].
+@ProviderFor(_playerGroupRepository)
+final _playerGroupRepositoryProvider =
+    AutoDisposeProvider<PlayerGroupRepository>.internal(
+  _playerGroupRepository,
+  name: r'_playerGroupRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$playerGroupRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _PlayerGroupRepositoryRef
+    = AutoDisposeProviderRef<PlayerGroupRepository>;
 String _$sessionRepositoryHash() => r'257d94309d832412cda86b81fc9d1ddaefbba6d2';
 
 /// See also [_sessionRepository].
@@ -114,6 +132,23 @@ final playerServiceProvider = AutoDisposeProvider<PlayerService>.internal(
 );
 
 typedef PlayerServiceRef = AutoDisposeProviderRef<PlayerService>;
+String _$playerGroupServiceHash() =>
+    r'93f90bbbbb84fe681f32189f18b935198e555c3f';
+
+/// See also [playerGroupService].
+@ProviderFor(playerGroupService)
+final playerGroupServiceProvider =
+    AutoDisposeProvider<PlayerGroupService>.internal(
+  playerGroupService,
+  name: r'playerGroupServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$playerGroupServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef PlayerGroupServiceRef = AutoDisposeProviderRef<PlayerGroupService>;
 String _$sessionServiceHash() => r'183900c8d401bc89891ad78fc622ab2a5666f085';
 
 /// See also [sessionService].

@@ -16,6 +16,9 @@ class Player {
   @Backlink(to: 'players')
   final sessions = IsarLinks<Session>();
 
+  @Backlink(to: 'players')
+  final groups = IsarLinks<PlayerGroup>();
+
   Player();
 
   factory Player.empty() {

@@ -265,6 +265,24 @@ abstract class S {
   /// **'QrCode is required'**
   String get data_player_error_qrCode_required;
 
+  /// No description provided for @data_playerGroup_objName.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {count, plural, one {Group} other {Groups}}'**
+  String data_playerGroup_objName(num count);
+
+  /// No description provided for @data_playerGroup_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get data_playerGroup_name;
+
+  /// No description provided for @data_playerGroup_error_name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get data_playerGroup_error_name_required;
+
   /// No description provided for @data_draw_objName.
   ///
   /// In en, this message translates to:
@@ -426,6 +444,24 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Delete players'**
   String get page_playerList_deletePlayers;
+
+  /// No description provided for @page_playerGroupsList_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Player Groups'**
+  String get page_playerGroupsList_title;
+
+  /// No description provided for @page_playerGroupsList_menuItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Player Groups'**
+  String get page_playerGroupsList_menuItem;
+
+  /// No description provided for @page_playerGroup_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Player Group'**
+  String get page_playerGroup_title;
 
   /// No description provided for @page_sessionList_title.
   ///

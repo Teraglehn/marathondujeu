@@ -11,7 +11,8 @@ class EditorState with _$EditorState{
     Player? player,
     Event? event,
     Draw? draw,
+    PlayerGroup? playerGroup,
 }) = _EditorState;
 
-  bool get isEditing => player != null || event != null || draw != null;
+  bool get isEditing => player != null || event != null || draw != null || playerGroup != null;
 }
