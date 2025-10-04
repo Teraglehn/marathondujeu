@@ -18,16 +18,19 @@ class EditDrawerWidget extends ConsumerWidget {
   Widget getEditForm(EditorState state, void Function() close){
     if(state.player != null){
       return PlayerEditForm(
+        allowRemove: false,
         state.player!,
       );
     }
     if(state.event != null){
       return EventEditForm(
+        allowRemove: false,
         state.event!,
       );
     }
     if(state.draw != null){
       return DrawEditForm(
+        allowRemove: false,
         state.draw!,
       );
     }
