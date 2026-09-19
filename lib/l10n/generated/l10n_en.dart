@@ -357,7 +357,67 @@ class SEn extends S {
   String get page_session_manualAdd => 'Manual badging';
 
   @override
-  String get page_session_manualAddActive => 'Manual badging - active';
+  String page_session_header(Object end, Object number, Object start) {
+    return 'Session $number — $start to $end';
+  }
+
+  @override
+  String get page_session_state_open => 'Open';
+
+  @override
+  String get page_session_state_past => 'Past';
+
+  @override
+  String page_session_zone_present(Object count) {
+    return 'Present ($count)';
+  }
+
+  @override
+  String page_session_zone_absent(Object count) {
+    return 'Absent ($count)';
+  }
+
+  @override
+  String get page_session_removeMode => 'Removal mode';
+
+  @override
+  String get page_session_remove => 'Remove';
+
+  @override
+  String get page_session_number => 'Number';
+
+  @override
+  String page_session_number_unknown(Object number) {
+    return 'Unknown number $number';
+  }
+
+  @override
+  String get page_session_help_absent =>
+      'Absent: badged another session, not this one. Players who have not badged any session yet are not shown.';
+
+  @override
+  String get page_session_help_removeMode =>
+      'Removal mode: each present player gets a Remove button, which takes them off the session right away.';
+
+  @override
+  String get page_sessionList_legend_open => 'Open: badging is possible now';
+
+  @override
+  String get page_sessionList_legend_past => 'Past';
+
+  @override
+  String get page_sessionList_legend_upcoming => 'Upcoming';
+
+  @override
+  String page_sessionList_present(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'present',
+      one: 'present',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get form_player_bonus_help =>

@@ -356,7 +356,68 @@ class SFr extends S {
   String get page_session_manualAdd => 'Badgeage manuel';
 
   @override
-  String get page_session_manualAddActive => 'Badgeage manuel - actif';
+  String page_session_header(Object end, Object number, Object start) {
+    return 'Session $number — $start à $end';
+  }
+
+  @override
+  String get page_session_state_open => 'Ouverte';
+
+  @override
+  String get page_session_state_past => 'Passée';
+
+  @override
+  String page_session_zone_present(Object count) {
+    return 'Présents ($count)';
+  }
+
+  @override
+  String page_session_zone_absent(Object count) {
+    return 'Absents ($count)';
+  }
+
+  @override
+  String get page_session_removeMode => 'Mode suppression';
+
+  @override
+  String get page_session_remove => 'Retirer';
+
+  @override
+  String get page_session_number => 'Numéro';
+
+  @override
+  String page_session_number_unknown(Object number) {
+    return 'Numéro $number inconnu';
+  }
+
+  @override
+  String get page_session_help_absent =>
+      'Absent : a badgé une autre session, pas celle-ci. Les joueurs qui n\'ont encore badgé aucune session n\'apparaissent pas.';
+
+  @override
+  String get page_session_help_removeMode =>
+      'Mode suppression : chaque joueur présent reçoit un bouton Retirer, qui l\'enlève de la session tout de suite.';
+
+  @override
+  String get page_sessionList_legend_open =>
+      'Ouverte : on peut y badger maintenant';
+
+  @override
+  String get page_sessionList_legend_past => 'Passée';
+
+  @override
+  String get page_sessionList_legend_upcoming => 'À venir';
+
+  @override
+  String page_sessionList_present(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'présents',
+      one: 'présent',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get form_player_bonus_help =>

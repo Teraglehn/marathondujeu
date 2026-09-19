@@ -53,3 +53,20 @@ de l'urne, avec un compteur de jetons ; sélecteur de sessions en grille ; noms 
 *Écarts assumés* : plus de suppression de tirage ; titres sur les quatre éditeurs latéraux ;
 actions passées par le service plutôt que par `drawsProvider()` ; pas de date pour les tirages
 d'avant (affichés « Tiré » sans date).
+
+## 2026-09-19 — L13
+
+**L13 — Affichage des sessions.** La page d'une session montre deux zones de billes, *Présents*
+puis *Absents* (a badgé une autre session), avec leur compte ; les joueurs jamais badgés
+n'apparaissent pas. Au badgeage, la bille fait un pop out dans *Absents* puis un pop in dans
+*Présents* (pop in direct au premier badgeage), détecté au rendu. En-tête : « Session n — début
+à fin — Ouverte / Passée » à gauche, horloge à droite, interrupteurs *Badgeage manuel* et *Mode
+suppression* (rouge), champ *Numéro* + *Ajouter* pour badger sans carte — *Supprimer* (rouge,
+poubelle) en mode suppression ; champ et bouton grisés hors session ouverte, badgeage manuel ou
+mode suppression ; le champ rend le focus à la douchette (Entrée, 2 s, ou code de douchette
+tapé). Mode suppression : cartes bille + *Retirer* (`RemovableBubble`, partagé avec L16),
+écrit tout de suite (`EventService.removePlayerFromSession`, testé). Liste : légende des
+couleurs, cartes plus basses, « n présents », curseur main. `docs/gestes.md` : SE-1, SE-3, SE-6
+revus, SE-8 à SE-10 ajoutés. *Écarts assumés* : Q1 (a) sans confirmation, Q2 (b) présents seuls ;
+la recherche par numéro (C5) retirée, le champ n'est pas une recherche ; pas de mention
+« Ouverte » sur la liste, la couleur suffit ; le retour de scan reste en `SnackBar` (L15).

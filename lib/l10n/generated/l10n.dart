@@ -613,11 +613,95 @@ abstract class S {
   /// **'Manual badging'**
   String get page_session_manualAdd;
 
-  /// No description provided for @page_session_manualAddActive.
+  /// No description provided for @page_session_header.
   ///
   /// In en, this message translates to:
-  /// **'Manual badging - active'**
-  String get page_session_manualAddActive;
+  /// **'Session {number} — {start} to {end}'**
+  String page_session_header(Object end, Object number, Object start);
+
+  /// No description provided for @page_session_state_open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get page_session_state_open;
+
+  /// No description provided for @page_session_state_past.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get page_session_state_past;
+
+  /// No description provided for @page_session_zone_present.
+  ///
+  /// In en, this message translates to:
+  /// **'Present ({count})'**
+  String page_session_zone_present(Object count);
+
+  /// No description provided for @page_session_zone_absent.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent ({count})'**
+  String page_session_zone_absent(Object count);
+
+  /// No description provided for @page_session_removeMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Removal mode'**
+  String get page_session_removeMode;
+
+  /// No description provided for @page_session_remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get page_session_remove;
+
+  /// No description provided for @page_session_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get page_session_number;
+
+  /// No description provided for @page_session_number_unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown number {number}'**
+  String page_session_number_unknown(Object number);
+
+  /// No description provided for @page_session_help_absent.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent: badged another session, not this one. Players who have not badged any session yet are not shown.'**
+  String get page_session_help_absent;
+
+  /// No description provided for @page_session_help_removeMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Removal mode: each present player gets a Remove button, which takes them off the session right away.'**
+  String get page_session_help_removeMode;
+
+  /// No description provided for @page_sessionList_legend_open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open: badging is possible now'**
+  String get page_sessionList_legend_open;
+
+  /// No description provided for @page_sessionList_legend_past.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get page_sessionList_legend_past;
+
+  /// No description provided for @page_sessionList_legend_upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get page_sessionList_legend_upcoming;
+
+  /// No description provided for @page_sessionList_present.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {present} other {present}}'**
+  String page_sessionList_present(num count);
 
   /// No description provided for @form_player_bonus_help.
   ///

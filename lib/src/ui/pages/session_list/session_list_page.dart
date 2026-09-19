@@ -34,6 +34,22 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
   }
 
 
+  // Un élément de légende : un carré de la couleur des cartes et son explication.
+  Widget legendItem(BuildContext context, Color color, String text) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.grey)),
+        ),
+        const SizedBox(width: 8),
+        Text(text, style: Theme.of(context).textTheme.bodyLarge),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -42,6 +58,7 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
     final clock = ref.watch(clockPodProvider);
 
     final sessions = ref.watch(sessionsProvider(eventId: selectedEvent.value?.id));
+    final now = clock.value ?? DateTime.now();
 
     return Scaffold(
       appBar: AppBar(
@@ -67,25 +84,28 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
             Container(
               padding: const EdgeInsets.all(8.0),
               color: Theme.of(context).colorScheme.secondaryContainer,
-              child: Row(children: [
-                Text(DateFormat("Hms", S.of(context).localeName).format(clock.value ?? DateTime.now())),
+              child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Text(DateFormat("Hms", S.of(context).localeName).format(now)),
               ])
             ),
             Expanded(
               child: sessions.when(
                 data: (sessions) => GridView.extent(
                   maxCrossAxisExtent: 155.0,
+                  childAspectRatio: 155 / 125,
                   mainAxisSpacing: 5,
                   crossAxisSpacing: 5,
                   children: sessions.map((session) {
+                    final open = session.isOpenAt(now);
                     return SizedBox(
                       width: 150,
                       child: Card(
                         clipBehavior: Clip.hardEdge,
-                        color: session.isOpenAt(clock.value ?? DateTime.now()) ? Theme.of(context).colorScheme.primaryContainer : session.endTime.isBefore(clock.value ?? DateTime.now()) ? Colors.grey.shade400 : null,
+                        color: open ? Theme.of(context).colorScheme.primaryContainer : session.endTime.isBefore(now) ? Colors.grey.shade400 : null,
                         elevation: 8,
                         child: InkWell(
                           onTap:() => goToSession(session),
+                          mouseCursor: SystemMouseCursors.click,
                           child: Column(children: [
                             ListTile(
                               leading: CircleAvatar(
@@ -101,7 +121,7 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
                                 radius: 12,
                                 child: Text(session.players.length.toString(), style: Theme.of(context).textTheme.bodySmall)
                               ),
-                              title: Text(S.of(context).data_player_objName(session.players.length), style: Theme.of(context).textTheme.bodySmall),
+                              title: Text(S.of(context).page_sessionList_present(session.players.length), style: Theme.of(context).textTheme.bodySmall),
                               dense: true
                             ),
                           ])
@@ -111,8 +131,22 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
                   }).toList(),
                 ),
                 error: (_, e) => Center(child: Text(e.toString())),
-                loading: () => const SizedBox.shrink() 
+                loading: () => const SizedBox.shrink()
               )
+            ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(border: Border(top: BorderSide(color: Theme.of(context).colorScheme.outlineVariant))),
+              child: Wrap(
+                spacing: 24,
+                runSpacing: 4,
+                children: [
+                  legendItem(context, Theme.of(context).colorScheme.primaryContainer, S.of(context).page_sessionList_legend_open),
+                  legendItem(context, Colors.grey.shade400, S.of(context).page_sessionList_legend_past),
+                  legendItem(context, Theme.of(context).cardColor, S.of(context).page_sessionList_legend_upcoming),
+                ],
+              ),
             ),
           ],
         )

@@ -86,6 +86,14 @@ class EventService {
     success?.call(player);
   }
 
+  /// Retire le joueur de la session, écrit tout de suite. Sans effet s'il n'y est pas.
+  Future<void> removePlayerFromSession(Session session, Player player) async {
+    if(!session.players.contains(player)) return;
+
+    session.players.remove(player);
+    await _sessionRepository.save(session);
+  }
+
   /// Badge le joueur sur les sessions [added] et le retire des sessions [removed],
   /// en une seule transaction.
   Future<void> setPlayerSessions(Player player, {required Set<int> added, required Set<int> removed}) async {

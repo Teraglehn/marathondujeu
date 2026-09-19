@@ -90,4 +90,20 @@ void main() {
       expect(await badgedSessions(), {s1.id});
     });
   });
+
+  group('removePlayerFromSession', () {
+    test('retire le joueur, persisté', () async {
+      final session = (await isar.sessions.get(s1.id))!;
+      await service().removePlayerFromSession(session, p1);
+
+      expect(await badgedSessions(), <int>{});
+    });
+
+    test('sur une session non badgée, ne touche à rien', () async {
+      final session = (await isar.sessions.get(s2.id))!;
+      await service().removePlayerFromSession(session, p1);
+
+      expect(await badgedSessions(), {s1.id});
+    });
+  });
 }
