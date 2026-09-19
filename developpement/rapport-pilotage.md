@@ -10,14 +10,14 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Rédiger le rapport de L05, L06 ou L11, sur demande — ils naissent dans `phase-2/`.
+Rédiger le rapport de L05, L06 ou L12, sur demande — ils naissent dans `phase-2/`.
 
 ## Phases
 
 **Phase 1 — remise en état du dépôt** : close le 2026-09-19, figée dans
 `developpement/livraisons/phase-1/`.
 
-**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L05, L06, L11 ; L04 et L10 livrés le
+**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L05, L06, L12 ; L04, L10 et L11 livrés le
 2026-09-19. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
 
 L09 n'est rattaché à aucune phase : son rapport naîtra dans `lots/`.
@@ -32,7 +32,7 @@ Les numéros ne sont **jamais réattribués**.
 | L05 | Génération des cartes joueur paramétrable depuis l'interface | 2 | à faire | à rédiger |
 | L06 | Tirages : copie d'un tirage, éditeur latéral revu, lecture seule des tirages passés | 2 | à faire | à rédiger |
 | L09 | Fichier de sauvegarde par événement : export automatique, import dans la liste | — | à faire | à rédiger |
-| L11 | Fiche joueur (éditeur latéral) : QR code, sessions badgées / non badgées, badgeage manuel | 2 | à faire | à rédiger |
+| L12 | Aide et tutoriels : bouton « i » en haut à droite de chaque page, explications dans les écrans | 2 | à faire | à rédiger |
 
 ### Notes pour la rédaction des rapports
 
@@ -85,17 +85,13 @@ Dans le code : `Debouncer` existe (`debouncer.service.dart`) ; les dépôts pass
 `RepositoryBase.save/delete` — point d'accroche naturel pour « toute modification » ; `Event`
 porte déjà `playerCardBackgroundImage` (`List<byte>`).
 
-**L11** — la **fiche joueur** dans l'éditeur latéral (`EditDrawerWidget` → `player_edit_form.dart`)
-(Bastien, 2026-09-19) :
-- l'**image du QR code** du joueur (celle des cartes : `PlayerCard.getQrImage`, `pretty_qr_code`) ;
-- la **liste de toutes les sessions** de l'événement, chacune **verte** si le joueur y a badgé,
-  **grisée** sinon ;
-- un **mode manuel** : une fois activé, cliquer une session badge (ou dé-badge) le joueur depuis
-  l'éditeur — la page session le fait déjà par la douchette (`Session.forceAddPlayer`).
-Aujourd'hui le formulaire n'expose que nom, QR code (texte) et bonus. À trancher : le mode
-manuel permet-il aussi de retirer un badgeage ; faut-il confirmer ; ordre et présentation des
-sessions (numéro + heure de début). `Player.sessions` est un backlink Isar (`load()` avant
-affichage) ; le badgeage s'écrit côté `Session.players`.
+**L12** — l'application est utilisée par des **personnes non techniques** : chaque écran doit
+s'expliquer (Bastien, 2026-09-19). Demandé : une **zone tutoriel par page**, ouverte par un bouton
+« i » **en haut à droite de la barre du haut**, toujours au même endroit ; et plus largement un
+travail sur les explications et l'UX. Première légende posée dans la fiche joueur (L11 :
+présent / absent / badgeage manuel). À trancher au rapport : forme de l'aide (panneau latéral,
+boîte de dialogue, page), contenu par page, et si l'aide est un texte par page ou un guide
+commun.
 
 ## Questions transversales en attente
 

@@ -1,0 +1,78 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:isar_community/isar.dart';
+import 'package:marathondujeu/src/data/data.dart';
+import 'package:marathondujeu/src/services/services.dart';
+
+import 'isar_test_support.dart';
+
+void main() {
+  late Isar isar;
+  late Event event;
+  late Session s1, s2;
+  late Player p1;
+
+  EventService service() {
+    final client = TestIsarClient(isar);
+    return EventService(SessionRepository(client), EventRepository(client), PlayerRepository(client));
+  }
+
+  Session session(int number) => Session()
+    ..number = number
+    ..startTime = DateTime(2026, 10, 3, 10 + number)
+    ..endTime = DateTime(2026, 10, 3, 10 + number, 15)
+    ..event.value = event;
+
+  setUpAll(() async {
+    isar = await openTestIsar();
+  });
+
+  tearDownAll(() => isar.close(deleteFromDisk: true));
+
+  /// Un événement, deux sessions ; p1 badge s1 seulement.
+  setUp(() async {
+    await isar.writeTxn(() => isar.clear());
+    event = Event()..name = 'Test';
+    s1 = session(1);
+    s2 = session(2);
+    p1 = Player()
+      ..name = 'p1'
+      ..qrcode = 'p1'
+      ..event.value = event;
+    await isar.writeTxn(() async {
+      await isar.events.put(event);
+      await isar.sessions.putAll([s1, s2]);
+      await isar.players.put(p1);
+      await s1.event.save();
+      await s2.event.save();
+      await p1.event.save();
+      s1.players.add(p1);
+      await s1.players.save();
+    });
+  });
+
+  Future<Set<int>> badgedSessions() async {
+    final player = await isar.players.get(p1.id);
+    await player!.sessions.load();
+    return player.sessions.map((s) => s.id).toSet();
+  }
+
+  group('setPlayerSessions', () {
+    test('ajoute et retire en une fois, persisté', () async {
+      await service().setPlayerSessions(p1, added: {s2.id}, removed: {s1.id});
+
+      expect(await badgedSessions(), {s2.id});
+    });
+
+    test('sans changement, ne touche à rien', () async {
+      await service().setPlayerSessions(p1, added: {}, removed: {});
+
+      expect(await badgedSessions(), {s1.id});
+    });
+
+    test('retirer une session non badgée est sans effet', () async {
+      await service().setPlayerSessions(p1, added: {}, removed: {s2.id});
+
+      expect(await badgedSessions(), {s1.id});
+    });
+  });
+}

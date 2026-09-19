@@ -502,14 +502,38 @@ abstract class S {
   /// No description provided for @page_session_manualAdd.
   ///
   /// In en, this message translates to:
-  /// **'Manual mode'**
+  /// **'Manual badging'**
   String get page_session_manualAdd;
 
   /// No description provided for @page_session_manualAddActive.
   ///
   /// In en, this message translates to:
-  /// **'Manual mode - active'**
+  /// **'Manual badging - active'**
   String get page_session_manualAddActive;
+
+  /// No description provided for @form_player_bonus_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Each bonus point adds one token for the draws'**
+  String get form_player_bonus_help;
+
+  /// No description provided for @form_player_legend_present.
+  ///
+  /// In en, this message translates to:
+  /// **'Present: the player badged this session'**
+  String get form_player_legend_present;
+
+  /// No description provided for @form_player_legend_absent.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent: the player did not badge this session'**
+  String get form_player_legend_absent;
+
+  /// No description provided for @form_player_legend_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual badging: click a session to mark the player present or absent, then Save'**
+  String get form_player_legend_manual;
 
   /// No description provided for @page_eventList_title.
   ///

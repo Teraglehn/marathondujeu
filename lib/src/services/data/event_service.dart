@@ -82,8 +82,27 @@ class EventService {
     if(session.players.contains(player)) return;
 
     session.forceAddPlayer(player);
-    _sessionRepository.save(session);
+    await _sessionRepository.save(session);
     success?.call(player);
+  }
+
+  /// Badge le joueur sur les sessions [added] et le retire des sessions [removed],
+  /// en une seule transaction.
+  Future<void> setPlayerSessions(Player player, {required Set<int> added, required Set<int> removed}) async {
+    final sessions = <Session>[];
+    for (final id in added) {
+      final session = await _sessionRepository.getById(id);
+      if (session == null) continue;
+      session.players.add(player);
+      sessions.add(session);
+    }
+    for (final id in removed) {
+      final session = await _sessionRepository.getById(id);
+      if (session == null) continue;
+      session.players.remove(player);
+      sessions.add(session);
+    }
+    await _sessionRepository.saveAll(sessions);
   }
 
   void scanPlayerToSession(Event event, String qrCode, {Session? session, bool force = false, void Function(Player)? success}) async {

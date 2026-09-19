@@ -103,4 +103,6 @@ après `build_runner`, ils font partie du commit.
   *(acté 2026-09-19)*.
 - Les dossiers Android / iOS / macOS / Linux / web restent dans le dépôt **volontairement**, bien
   que seule la cible Windows soit construite *(acté 2026-09-19)*.
+- **Public non technique** : les utilisateurs de l'application ne sont pas des informaticiens.
+  Chaque écran s'explique — légendes, textes d'aide, zone tutoriel par page *(acté 2026-09-19)*.
 - Ce qui sera acté ensuite s'écrira ici, daté.

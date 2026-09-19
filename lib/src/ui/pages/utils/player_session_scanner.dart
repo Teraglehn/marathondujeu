@@ -9,7 +9,10 @@ import 'package:marathondujeu/src/services/services.dart';
 
 typedef PlayerCallback = void Function(Player);
 
-class PlayerSessionScanner extends ConsumerWidget {
+/// Écoute la douchette sur la page. `BarcodeKeyboardListener` garde le premier callback reçu :
+/// on lui donne un seul callback, stable, qui lit `widget` et les pods au moment du scan.
+/// Ainsi le widget survit aux rebuilds de la page, et le défilement avec lui.
+class PlayerSessionScanner extends ConsumerStatefulWidget {
   final Widget child;
 
   final bool forceSelectedSession;
@@ -19,7 +22,7 @@ class PlayerSessionScanner extends ConsumerWidget {
   final PlayerCallback? onScanned;
 
   const PlayerSessionScanner({
-    super.key, 
+    super.key,
     required this.child,
     this.forceSelectedSession = false,
     this.useSelectedSession = false,
@@ -27,28 +30,33 @@ class PlayerSessionScanner extends ConsumerWidget {
     this.success,
   });
 
-  void scanPlayer(EventService service, Event? event, Session? session, String qrCode) async {
+  @override
+  ConsumerState<PlayerSessionScanner> createState() => _PlayerSessionScannerState();
+}
+
+class _PlayerSessionScannerState extends ConsumerState<PlayerSessionScanner> {
+
+  void scanPlayer(String qrCode) async {
+    final EventService service = ref.read(eventServiceProvider);
+    final Event? event = ref.read(selectedEventProvider).value;
+    final Session? session = ref.read(selectedSessionProvider).value;
+
     if(event == null) return;
-    if(onScanned == null){
-      service.scanPlayerToSession(event, qrCode, session: useSelectedSession ? session : null, force: forceSelectedSession, success: success);
+    if(widget.onScanned == null){
+      service.scanPlayerToSession(event, qrCode, session: widget.useSelectedSession ? session : null, force: widget.forceSelectedSession, success: widget.success);
     } else {
       final player = await service.getPlayerByQrCode(event, qrCode);
       if(player == null) return;
-      onScanned?.call(player);
+      widget.onScanned?.call(player);
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedEvent = ref.watch(selectedEventProvider);
-    final selectedSession = ref.watch(selectedSessionProvider);
-    final eventService = ref.watch(eventServiceProvider);
-
+  Widget build(BuildContext context) {
     return BarcodeKeyboardListener(
-      key: UniqueKey(),
       useKeyDownEvent: true,
-      onBarcodeScanned: (qrCode) => scanPlayer(eventService, selectedEvent.value, selectedSession.value, qrCode),
-      child: child
+      onBarcodeScanned: scanPlayer,
+      child: widget.child
     );
   }
 }

@@ -92,8 +92,12 @@
     "page_sessionList_deleteSessions": "Supprimer les sessions",
 
     "page_session_title": "Session",
-    "page_session_manualAdd": "Mode manuel",
-    "page_session_manualAddActive": "Mode manuel - actif",
+    "page_session_manualAdd": "Badgeage manuel",
+    "page_session_manualAddActive": "Badgeage manuel - actif",
+    "form_player_bonus_help": "Chaque point bonus ajoute un jeton pour les tirages au sort",
+    "form_player_legend_present": "Présent : le joueur a badgé cette session",
+    "form_player_legend_absent": "Absent : le joueur n'a pas badgé cette session",
+    "form_player_legend_manual": "Badgeage manuel : cliquer une session pour marquer le joueur présent ou absent, puis Enregistrer",
 
     "page_eventList_title": "Evénements",
     "page_eventList_menuItem": "Evénements",

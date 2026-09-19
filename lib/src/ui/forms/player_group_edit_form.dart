@@ -79,29 +79,31 @@ class _PlayerGroupEditFormState extends ConsumerState<PlayerGroupEditForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (widget.allowRemove) TextButton.icon(
+                if (widget.allowRemove) FilledButton.icon(
                   onPressed: delete,
                   icon: const Icon(Icons.delete),
                   label: Text(S.of(context).utils_button_delete),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.error,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                    foregroundColor: Theme.of(context).colorScheme.onError,
+                    minimumSize: const Size(0, 48),
                   ),
                 ),
                 const Spacer(),
-                TextButton.icon(
+                FilledButton.tonal(
                   onPressed: cancel,
-                  label: Text(S.of(context).utils_button_cancel),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.secondary,
-                  ),
+                  style: FilledButton.styleFrom(minimumSize: const Size(0, 48)),
+                  child: Text(S.of(context).utils_button_cancel),
                 ),
-                TextButton.icon(
+                const SizedBox(width: 8),
+                FilledButton(
                   onPressed: save,
-                  label: Text(S.of(context).utils_button_save),
+                  style: FilledButton.styleFrom(minimumSize: const Size(0, 48)),
+                  child: Text(S.of(context).utils_button_save),
                 ),
               ],
             ),

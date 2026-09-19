@@ -275,10 +275,26 @@ class SEn extends S {
   String get page_session_title => 'Session';
 
   @override
-  String get page_session_manualAdd => 'Manual mode';
+  String get page_session_manualAdd => 'Manual badging';
 
   @override
-  String get page_session_manualAddActive => 'Manual mode - active';
+  String get page_session_manualAddActive => 'Manual badging - active';
+
+  @override
+  String get form_player_bonus_help =>
+      'Each bonus point adds one token for the draws';
+
+  @override
+  String get form_player_legend_present =>
+      'Present: the player badged this session';
+
+  @override
+  String get form_player_legend_absent =>
+      'Absent: the player did not badge this session';
+
+  @override
+  String get form_player_legend_manual =>
+      'Manual badging: click a session to mark the player present or absent, then Save';
 
   @override
   String get page_eventList_title => 'Events';

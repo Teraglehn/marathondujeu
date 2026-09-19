@@ -274,10 +274,26 @@ class SFr extends S {
   String get page_session_title => 'Session';
 
   @override
-  String get page_session_manualAdd => 'Mode manuel';
+  String get page_session_manualAdd => 'Badgeage manuel';
 
   @override
-  String get page_session_manualAddActive => 'Mode manuel - actif';
+  String get page_session_manualAddActive => 'Badgeage manuel - actif';
+
+  @override
+  String get form_player_bonus_help =>
+      'Chaque point bonus ajoute un jeton pour les tirages au sort';
+
+  @override
+  String get form_player_legend_present =>
+      'Présent : le joueur a badgé cette session';
+
+  @override
+  String get form_player_legend_absent =>
+      'Absent : le joueur n\'a pas badgé cette session';
+
+  @override
+  String get form_player_legend_manual =>
+      'Badgeage manuel : cliquer une session pour marquer le joueur présent ou absent, puis Enregistrer';
 
   @override
   String get page_eventList_title => 'Evénements';
