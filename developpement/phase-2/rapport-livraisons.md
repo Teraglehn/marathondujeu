@@ -99,3 +99,22 @@ n'est plus le `endDrawer` du `Scaffold` (celui-ci démonte son contenu avant de 
 un `ModalBarrier` et un `Drawer` posés par `DesktopLayout` ; `requestClose` reçoit un
 `BuildContext` pour la modale ; Échap n'est capté que si le focus est dans le tiroir, et Tab
 n'y est pas piégé.
+
+## 2026-09-20 — L16
+
+**L16 — Gestion des groupes.** `PlayerGroup.kind` (*manuel* / *gagnants*, énumération Isar) ;
+les groupes d'avant le champ sont reclassés à l'ouverture de la base (ceux qu'un tirage tient
+par `winnersGroup` → gagnants). La liste des groupes ne montre que les manuels, avec une ligne
+d'aide ; sur chaque ligne, un crayon (éditeur) et une poubelle (suppression). Suppression
+confirmée, **refusée tant qu'un tirage utilise le groupe** (exclu ou requis, préparé ou
+effectué) ; un groupe de gagnants ne se supprime pas et ne se renomme pas. Page d'un groupe :
+« Membres (n) », mode suppression (billes → cartes *Retirer*, composant de L13), champ
+« Ajouter par numéro ». Sélecteur de groupes des tirages : trophée sur les groupes de gagnants.
+Service : `addPlayer` / `removePlayer`, `countUsingGroup`, migration — testés
+(`player_group_service_test.dart`). `docs/gestes.md` : GR-3, GR-5 à GR-8, GR-10, GR-11, TI-4.
+*Écarts assumés* : Q1 (b) cachés, Q2 (b) refusé ; « Ajouter par numéro » cherche dans la liste
+chargée, sans méthode de service, et dit « Numéro n inconnu » plutôt que « Carte invalide »
+(L15) ; `SelectedPlayerGroup` notifie à chaque lecture — l'égalité par identifiant faisait
+taire Riverpod et la page ne se redessinait pas (`SelectedSession` / `SelectedEvent` ont le
+même défaut latent, signalé) ; la logique « rendre la main à la douchette » est recopiée de la
+page de session, pas partagée.

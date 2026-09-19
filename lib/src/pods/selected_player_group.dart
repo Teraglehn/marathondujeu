@@ -17,8 +17,13 @@ class SelectedPlayerGroup extends _$SelectedPlayerGroup {
     if(main.selectedPlayerGroupId == null){
       yield null;
     }
-    yield* await _service.getByIdStream(main.selectedPlayerGroupId!); 
+    yield* await _service.getByIdStream(main.selectedPlayerGroupId!);
   }
+
+  // Deux lectures du même groupe sont « égales » (comparaison par identifiant) : sans ceci,
+  // Riverpod ne préviendrait pas la page quand la base change — un membre retiré resterait affiché.
+  @override
+  bool updateShouldNotify(AsyncValue<PlayerGroup?> previous, AsyncValue<PlayerGroup?> next) => true;
 
   Future<void> save(PlayerGroup item) {
     return _service.save(item);

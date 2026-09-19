@@ -85,19 +85,22 @@ session **passée / à venir**.
 
 ## Groupes
 
-Paramètres : **groupes existants** (n) · **joueurs dans le groupe** (n).
+Paramètres : **groupes existants** (n, manuels ou de gagnants) · **joueurs dans le groupe** (n) ·
+**tirages qui utilisent le groupe** (0 / n).
 
 | Geste | Variantes | Effet observable | Test |
 |---|---|---|---|
 | **GR-1** Créer un groupe (bouton « + », événement sélectionné) | — | tiroir *Créer un groupe de joueurs* : un nom | — |
 | **GR-2** Nommer, *Enregistrer* | nom vide → message requis | le groupe apparaît dans la liste, vide | — |
-| **GR-3** Ouvrir un groupe (clic sur sa ligne) | — | la page du groupe : billes des joueurs membres, avec leur numéro ; bouton retour | — |
+| **GR-3** Ouvrir un groupe (clic sur sa ligne) | — | la page du groupe : titre « Membres (n) », billes des joueurs membres, triées par numéro ; bouton retour ; crayon → l'éditeur (GR-11) | — |
 | **GR-4** Scanner une carte sur la liste des groupes | — | notification « Joueur n a été scanné » — *(sans effet sur un groupe : geste sans objet ici)* | — |
-| **GR-5** Scanner une carte sur la page d'un groupe | déjà membre / pas encore | le joueur rejoint le groupe ; déjà membre → inchangé | — |
-| **GR-6** Retirer un joueur d'un groupe | — | *(non proposé aujourd'hui)* | — |
-| **GR-7** Supprimer un groupe | — | *(non proposé : le tiroir ouvre l'éditeur sans suppression)* | — |
-| **GR-8** Les groupes « Gagnants du tirage « … » » | créés par un tirage lancé (TI-8) | apparaissent dans la liste comme les autres | service |
+| **GR-5** Scanner une carte sur la page d'un groupe | déjà membre / pas encore | le joueur rejoint le groupe ; déjà membre → inchangé | `player_group_service_test.dart` (`addPlayer`) |
+| **GR-6** Retirer un joueur d'un groupe (interrupteur *Mode suppression*, puis *Retirer* sur sa bille) | mode allumé (rouge) / éteint | allumé : chaque bille devient une carte bille + *Retirer* ; *Retirer* enlève le joueur tout de suite ; éteint : billes seules | `player_group_service_test.dart` (`removePlayer`) |
+| **GR-7** Supprimer un groupe (poubelle sur sa ligne dans la liste, ou *Supprimer* dans son éditeur ; confirmer) | manuel sans tirage / manuel utilisé par n tirages / de gagnants | manuel libre : confirmation, puis le groupe disparaît, ses joueurs restent ; utilisé par un tirage (exclu ou requis, préparé ou effectué) : liste → modale « Utilisé par n tirages », éditeur → *Supprimer* grisé avec la même raison ; de gagnants : pas de *Supprimer*, nom en lecture seule | `player_group_service_test.dart` (`countUsingGroup`) |
+| **GR-8** Les groupes « Gagnants du tirage « … » » | créés par un tirage lancé (TI-8) | **absents de la liste des groupes** (une ligne d'aide le dit) ; visibles dans leur tirage (ses gagnants) et dans le sélecteur des tirages, marqués d'un trophée (TI-4) ; les groupes d'avant la catégorie sont reclassés à l'ouverture de la base | `player_group_service_test.dart` (migration), `draw_service_test.dart` (`kind`) |
 | **GR-9** *Annuler* (ou TR-3) dans l'éditeur d'un groupe | modifié ou non — compte : le nom | rien n'est enregistré ; modifié → modale de TR-3 d'abord | `forms_dirty_test.dart` (`playerGroupFormIsDirty`) |
+| **GR-10** Ajouter un joueur par son numéro (champ *Ajouter par numéro*, Entrée ou *Ajouter*) | numéro connu / inconnu / déjà membre | connu : le joueur rejoint le groupe, le champ se vide ; inconnu : « Numéro n inconnu » en rouge ; déjà membre : « Numéro n déjà dans le groupe » ; deux secondes sans saisie rendent la main à la douchette | `player_group_service_test.dart` (`addPlayer`) |
+| **GR-11** Modifier un groupe (crayon sur sa ligne dans la liste, ou dans la barre de sa page) | manuel / de gagnants | tiroir *Modifier un groupe de joueurs* : le nom, *Enregistrer* ; de gagnants → nom en lecture seule, ligne d'aide « il porte le nom du tirage et ne se supprime pas » ; supprimer depuis la page (GR-7) ramène à la liste | — |
 
 ---
 
@@ -131,7 +134,7 @@ l'urne** (0 / n) · **groupes existants** · **gagnants** du tirage (0 / n).
 | **TI-1** Créer un tirage (bouton « + ») | — | tiroir *Créer un tirage* : nom « Tirage N°n », 1 gagnant, min 1 session, **dernière session requise** | service (`createDraw`) |
 | **TI-2** Ouvrir un tirage (clic sur sa ligne) | préparé → *Modifier un tirage* ; effectué → *Consulter un tirage*, champs grisés, sélecteurs ouvrables mais figés | les choix enregistrés sont retrouvés (groupes, sessions, min / max, gagnants) | — |
 | **TI-3** Régler nom, nombre de gagnants, min / max de sessions | valeurs non numériques refusées | les compteurs *joueurs* et *jetons* se recalculent | service (`getEligibilityFor`) |
-| **TI-4** Choisir des groupes exclus / requis | groupes résolus **au lancement**, pas à la préparation | compteurs recalculés ; requis vide = tous | service |
+| **TI-4** Choisir des groupes exclus / requis | groupes résolus **au lancement**, pas à la préparation ; les groupes de gagnants portent un trophée | compteurs recalculés ; requis vide = tous | service |
 | **TI-5** Choisir des sessions exclues / requises (grille, recherche par numéro) | — | compteurs recalculés | service |
 | **TI-6** Lire les compteurs : *n joueurs sélectionnés*, *m jetons dans l'urne* | joueur sans jeton → hors compte | jetons = somme des jetons des éligibles | service |
 | **TI-7** *Enregistrer* | neuf / préparé | le tirage est dans la liste, **préparé**, sans gagnant ; rien n'est tiré | service (`save`) |
@@ -165,6 +168,6 @@ Paramètres : **image de fond** (absente / présente) · **réglages enregistré
 
 ## Ce que ce relevé montre (2026-09-19)
 
-Gestes **sans effet ou absents** aujourd'hui, à trancher lot par lot : EV-10, GR-4, GR-6, GR-7,
-SE-7, TI-11. Aucun geste d'interface n'a de test de widget : les tests couvrent les
+Gestes **sans effet ou absents** aujourd'hui, à trancher lot par lot : EV-10, GR-4, SE-7,
+TI-11 *(GR-6 et GR-7 proposés depuis le 2026-09-20)*. Aucun geste d'interface n'a de test de widget : les tests couvrent les
 services (`test/`) ; l'appairage geste ↔ test est à construire.

@@ -17,7 +17,13 @@ const PlayerGroupSchema = CollectionSchema(
   name: r'PlayerGroup',
   id: 3800216191517184706,
   properties: {
-    r'name': PropertySchema(id: 0, name: r'name', type: IsarType.string),
+    r'kind': PropertySchema(
+      id: 0,
+      name: r'kind',
+      type: IsarType.byte,
+      enumMap: _PlayerGroupkindEnumValueMap,
+    ),
+    r'name': PropertySchema(id: 1, name: r'name', type: IsarType.string),
   },
 
   estimateSize: _playerGroupEstimateSize,
@@ -64,7 +70,8 @@ void _playerGroupSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.name);
+  writer.writeByte(offsets[0], object.kind.index);
+  writer.writeString(offsets[1], object.name);
 }
 
 PlayerGroup _playerGroupDeserialize(
@@ -75,7 +82,10 @@ PlayerGroup _playerGroupDeserialize(
 ) {
   final object = PlayerGroup();
   object.id = id;
-  object.name = reader.readString(offsets[0]);
+  object.kind =
+      _PlayerGroupkindValueEnumMap[reader.readByteOrNull(offsets[0])] ??
+      PlayerGroupKind.manual;
+  object.name = reader.readString(offsets[1]);
   return object;
 }
 
@@ -87,11 +97,21 @@ P _playerGroupDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (_PlayerGroupkindValueEnumMap[reader.readByteOrNull(offset)] ??
+              PlayerGroupKind.manual)
+          as P;
+    case 1:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _PlayerGroupkindEnumValueMap = {'manual': 0, 'winners': 1};
+const _PlayerGroupkindValueEnumMap = {
+  0: PlayerGroupKind.manual,
+  1: PlayerGroupKind.winners,
+};
 
 Id _playerGroupGetId(PlayerGroup object) {
   return object.id;
@@ -245,6 +265,65 @@ extension PlayerGroupQueryFilter
       return query.addFilterCondition(
         FilterCondition.between(
           property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> kindEqualTo(
+    PlayerGroupKind value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'kind', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> kindGreaterThan(
+    PlayerGroupKind value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'kind',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> kindLessThan(
+    PlayerGroupKind value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'kind',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> kindBetween(
+    PlayerGroupKind lower,
+    PlayerGroupKind upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'kind',
           lower: lower,
           includeLower: includeLower,
           upper: upper,
@@ -485,6 +564,18 @@ extension PlayerGroupQueryLinks
 
 extension PlayerGroupQuerySortBy
     on QueryBuilder<PlayerGroup, PlayerGroup, QSortBy> {
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterSortBy> sortByKind() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kind', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterSortBy> sortByKindDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kind', Sort.desc);
+    });
+  }
+
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -512,6 +603,18 @@ extension PlayerGroupQuerySortThenBy
     });
   }
 
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterSortBy> thenByKind() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kind', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterSortBy> thenByKindDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kind', Sort.desc);
+    });
+  }
+
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -527,6 +630,12 @@ extension PlayerGroupQuerySortThenBy
 
 extension PlayerGroupQueryWhereDistinct
     on QueryBuilder<PlayerGroup, PlayerGroup, QDistinct> {
+  QueryBuilder<PlayerGroup, PlayerGroup, QDistinct> distinctByKind() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'kind');
+    });
+  }
+
   QueryBuilder<PlayerGroup, PlayerGroup, QDistinct> distinctByName({
     bool caseSensitive = true,
   }) {
@@ -541,6 +650,12 @@ extension PlayerGroupQueryProperty
   QueryBuilder<PlayerGroup, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<PlayerGroup, PlayerGroupKind, QQueryOperations> kindProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'kind');
     });
   }
 

@@ -355,6 +355,30 @@ abstract class S {
   /// **'Name is required'**
   String get data_playerGroup_error_name_required;
 
+  /// No description provided for @data_playerGroup_kind_winners.
+  ///
+  /// In en, this message translates to:
+  /// **'Winners group'**
+  String get data_playerGroup_kind_winners;
+
+  /// No description provided for @data_playerGroup_winners_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Winners group of a draw: it is named after the draw and cannot be deleted.'**
+  String get data_playerGroup_winners_help;
+
+  /// No description provided for @data_playerGroup_usedByDraws.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {Used by one draw: it cannot be deleted.} other {Used by {count} draws: it cannot be deleted.}}'**
+  String data_playerGroup_usedByDraws(num count);
+
+  /// No description provided for @data_playerGroup_delete_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete the group \"{name}\"? Its players are not deleted.'**
+  String data_playerGroup_delete_confirm(Object name);
+
   /// No description provided for @data_draw_objName.
   ///
   /// In en, this message translates to:
@@ -595,11 +619,41 @@ abstract class S {
   /// **'Player Groups'**
   String get page_playerGroupsList_menuItem;
 
+  /// No description provided for @page_playerGroupsList_help_winners.
+  ///
+  /// In en, this message translates to:
+  /// **'Winners groups of draws are not listed here: find them in the draw that created them, and in a draw\'s choices.'**
+  String get page_playerGroupsList_help_winners;
+
   /// No description provided for @page_playerGroup_title.
   ///
   /// In en, this message translates to:
   /// **'Player Group'**
   String get page_playerGroup_title;
+
+  /// No description provided for @page_playerGroup_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Members ({count})'**
+  String page_playerGroup_members(Object count);
+
+  /// No description provided for @page_playerGroup_addByNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Add by number'**
+  String get page_playerGroup_addByNumber;
+
+  /// No description provided for @page_playerGroup_alreadyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Number {number} already in the group'**
+  String page_playerGroup_alreadyMember(Object number);
+
+  /// No description provided for @page_playerGroup_help_removeMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Removal mode: each player gets a Remove button, which takes them off the group right away.'**
+  String get page_playerGroup_help_removeMode;
 
   /// No description provided for @page_sessionList_title.
   ///

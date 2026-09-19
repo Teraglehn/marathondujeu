@@ -225,6 +225,7 @@ void main() {
       await reloaded.winnersGroup.load();
       final group = reloaded.winnersGroup.value!;
       expect(group.name, 'Gagnants du tirage « A »');
+      expect(group.kind, PlayerGroupKind.winners);
       await group.players.load();
       expect(group.players, reloaded.winners.map((w) => w.winner.value!).toSet());
       expect((await isar.playerGroups.get(group.id))!.event.value, event);

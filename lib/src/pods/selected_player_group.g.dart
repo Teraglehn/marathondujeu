@@ -34,7 +34,7 @@ final class SelectedPlayerGroupProvider
 }
 
 String _$selectedPlayerGroupHash() =>
-    r'af0774e11a10632fd410d7127c831be5ed9725b8';
+    r'02bfed1ad7c657e305e76c5426048851f9ebf382';
 
 abstract class _$SelectedPlayerGroup extends $StreamNotifier<PlayerGroup?> {
   Stream<PlayerGroup?> build();

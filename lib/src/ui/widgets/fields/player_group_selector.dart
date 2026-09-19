@@ -42,6 +42,8 @@ class PlayerGroupSelector extends MultiSearchSelector<PlayerGroup> {
           onChanged: (_) => switchValue(value)
         ),
         title: Text(value.name),
+        // Un groupe de gagnants se reconnaît au trophée : c'est lui qu'on exclut d'un tirage suivant.
+        trailing: value.isWinners ? Tooltip(message: S.of(context).data_playerGroup_kind_winners, child: const Icon(Icons.emoji_events)) : null,
         selected: state.value?.contains(value) ?? false,
         selectedColor: Theme.of(context).colorScheme.onTertiaryContainer,
         selectedTileColor: Theme.of(context).colorScheme.tertiaryContainer,

@@ -168,6 +168,29 @@ class SEn extends S {
   String get data_playerGroup_error_name_required => 'Name is required';
 
   @override
+  String get data_playerGroup_kind_winners => 'Winners group';
+
+  @override
+  String get data_playerGroup_winners_help =>
+      'Winners group of a draw: it is named after the draw and cannot be deleted.';
+
+  @override
+  String data_playerGroup_usedByDraws(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Used by $count draws: it cannot be deleted.',
+      one: 'Used by one draw: it cannot be deleted.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String data_playerGroup_delete_confirm(Object name) {
+    return 'Delete the group \"$name\"? Its players are not deleted.';
+  }
+
+  @override
   String data_draw_objName(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -349,7 +372,28 @@ class SEn extends S {
   String get page_playerGroupsList_menuItem => 'Player Groups';
 
   @override
+  String get page_playerGroupsList_help_winners =>
+      'Winners groups of draws are not listed here: find them in the draw that created them, and in a draw\'s choices.';
+
+  @override
   String get page_playerGroup_title => 'Player Group';
+
+  @override
+  String page_playerGroup_members(Object count) {
+    return 'Members ($count)';
+  }
+
+  @override
+  String get page_playerGroup_addByNumber => 'Add by number';
+
+  @override
+  String page_playerGroup_alreadyMember(Object number) {
+    return 'Number $number already in the group';
+  }
+
+  @override
+  String get page_playerGroup_help_removeMode =>
+      'Removal mode: each player gets a Remove button, which takes them off the group right away.';
 
   @override
   String get page_sessionList_title => 'Sessions';

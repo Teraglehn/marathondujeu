@@ -24,6 +24,16 @@ class DrawRepository extends RepositoryBase<Draw> {
     ]);
   }
 
+  Future<int> countUsingGroup(int groupId) async {
+    final collection = await getCollection();
+    return collection
+      .filter()
+      .excludedGroups((q) => q.idEqualTo(groupId))
+      .or()
+      .requiredGroups((q) => q.idEqualTo(groupId))
+      .count();
+  }
+
   Future<Stream<List<Draw>>> getByEventIdStream(int eventId) async{
     return makeStream((collection) => collection
       .filter()

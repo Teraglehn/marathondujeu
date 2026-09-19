@@ -33,6 +33,7 @@ class IsarClient {
         directory: isWeb ? "" : dir.path
       );
       await migratePlayerNumbers(isar);
+      await migratePlayerGroupKinds(isar);
       return isar;
     }
     return Future.value(Isar.getInstance());
@@ -47,6 +48,19 @@ class IsarClient {
       p.number = p.inferNumber();
     }
     await isar.writeTxn(() => isar.players.putAll(players));
+  }
+
+  /// Catégorise les groupes créés avant le champ `PlayerGroup.kind` (L16) : ceux qu'un tirage
+  /// tient par `winnersGroup` sont des groupes de gagnants. Sans effet une fois faits.
+  static Future<void> migratePlayerGroupKinds(Isar isar) async {
+    final draws = await isar.draws.filter().winnersGroup((q) => q.kindEqualTo(PlayerGroupKind.manual)).findAll();
+    if (draws.isEmpty) return;
+    final groups = <PlayerGroup>[];
+    for (final d in draws) {
+      await d.winnersGroup.load();
+      groups.add(d.winnersGroup.value!..kind = PlayerGroupKind.winners);
+    }
+    await isar.writeTxn(() => isar.playerGroups.putAll(groups));
   }
 
   /// Reprend la base des versions précédentes, qui vivait dans le dossier cache

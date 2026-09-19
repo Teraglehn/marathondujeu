@@ -39,4 +39,17 @@ class PlayerGroupService {
   Future<void> delete(PlayerGroup player) async {
     await _playerGroupRepository.delete(player.id);
   }
+
+  /// Ajoute le joueur au groupe ; `false` s'il y était déjà, rien n'est écrit.
+  Future<bool> addPlayer(PlayerGroup group, Player player) async {
+    if (group.players.contains(player)) return false;
+    group.players.add(player);
+    await _playerGroupRepository.save(group);
+    return true;
+  }
+
+  Future<void> removePlayer(PlayerGroup group, Player player) async {
+    group.players.remove(player);
+    await _playerGroupRepository.save(group);
+  }
 }

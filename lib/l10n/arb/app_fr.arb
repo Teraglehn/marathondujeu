@@ -51,6 +51,12 @@
     "data_playerGroup_name": "Nom",
 
     "data_playerGroup_error_name_required": "Nom is required",
+    "data_playerGroup_kind_winners": "Groupe de gagnants",
+    "data_playerGroup_winners_help": "Groupe de gagnants d'un tirage : il porte le nom du tirage et ne se supprime pas.",
+    "data_playerGroup_usedByDraws": "{count, plural, one {Utilisé par un tirage : il ne peut pas être supprimé.} other {Utilisé par {count} tirages : il ne peut pas être supprimé.}}",
+    "@data_playerGroup_usedByDraws": { "placeholders": { "count": {} } },
+    "data_playerGroup_delete_confirm": "Supprimer le groupe « {name} » ? Ses joueurs ne sont pas supprimés.",
+    "@data_playerGroup_delete_confirm": { "placeholders": { "name": {} } },
 
     "data_draw_objName": "{count, plural, one {Tirage} other {Tirages}}",
     "data_draw_name": "Nom",
@@ -109,8 +115,15 @@
 
     "page_playerGroupsList_title": "Groupes",
     "page_playerGroupsList_menuItem": "Groupes",
+    "page_playerGroupsList_help_winners": "Les groupes de gagnants des tirages ne sont pas listés ici : on les retrouve dans le tirage qui les a créés, et dans les choix d'un tirage.",
 
     "page_playerGroup_title": "Groupe",
+    "page_playerGroup_members": "Membres ({count})",
+    "@page_playerGroup_members": { "placeholders": { "count": {} } },
+    "page_playerGroup_addByNumber": "Ajouter par numéro",
+    "page_playerGroup_alreadyMember": "Numéro {number} déjà dans le groupe",
+    "@page_playerGroup_alreadyMember": { "placeholders": { "number": {} } },
+    "page_playerGroup_help_removeMode": "Mode suppression : chaque joueur reçoit un bouton Retirer, qui l'enlève du groupe tout de suite.",
 
     "page_sessionList_title": "Sessions",
     "page_sessionList_menuItem": "Sessions",

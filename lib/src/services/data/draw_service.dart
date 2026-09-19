@@ -43,6 +43,12 @@ class DrawService {
     await _drawRepository.delete(draw.id);
   }
 
+  /// Combien de tirages, préparés ou effectués, tiennent ce groupe parmi leurs groupes exclus
+  /// ou requis : tant qu'il y en a, le groupe ne se supprime pas (L16).
+  Future<int> countUsingGroup(PlayerGroup group) async {
+    return await _drawRepository.countUsingGroup(group.id);
+  }
+
   /// Le nom par défaut d'un tirage : « Tirage N°n », n = plus grand identifiant + 1.
   Future<String> nextName() async {
     final draws = await _drawRepository.getAll();
@@ -178,6 +184,7 @@ class DrawService {
     if (winners.isNotEmpty) {
       final group = PlayerGroup.empty()
         ..name = 'Gagnants du tirage « ${draw.name} »'
+        ..kind = PlayerGroupKind.winners
         ..event.value = draw.event.value;
       group.players.addAll(winners.map((w) => w.winner.value!));
       await _playerGroupRepository.save(group);

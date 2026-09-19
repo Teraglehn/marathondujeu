@@ -168,6 +168,29 @@ class SFr extends S {
   String get data_playerGroup_error_name_required => 'Nom is required';
 
   @override
+  String get data_playerGroup_kind_winners => 'Groupe de gagnants';
+
+  @override
+  String get data_playerGroup_winners_help =>
+      'Groupe de gagnants d\'un tirage : il porte le nom du tirage et ne se supprime pas.';
+
+  @override
+  String data_playerGroup_usedByDraws(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Utilisé par $count tirages : il ne peut pas être supprimé.',
+      one: 'Utilisé par un tirage : il ne peut pas être supprimé.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String data_playerGroup_delete_confirm(Object name) {
+    return 'Supprimer le groupe « $name » ? Ses joueurs ne sont pas supprimés.';
+  }
+
+  @override
   String data_draw_objName(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -348,7 +371,28 @@ class SFr extends S {
   String get page_playerGroupsList_menuItem => 'Groupes';
 
   @override
+  String get page_playerGroupsList_help_winners =>
+      'Les groupes de gagnants des tirages ne sont pas listés ici : on les retrouve dans le tirage qui les a créés, et dans les choix d\'un tirage.';
+
+  @override
   String get page_playerGroup_title => 'Groupe';
+
+  @override
+  String page_playerGroup_members(Object count) {
+    return 'Membres ($count)';
+  }
+
+  @override
+  String get page_playerGroup_addByNumber => 'Ajouter par numéro';
+
+  @override
+  String page_playerGroup_alreadyMember(Object number) {
+    return 'Numéro $number déjà dans le groupe';
+  }
+
+  @override
+  String get page_playerGroup_help_removeMode =>
+      'Mode suppression : chaque joueur reçoit un bouton Retirer, qui l\'enlève du groupe tout de suite.';
 
   @override
   String get page_sessionList_title => 'Sessions';
