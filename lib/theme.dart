@@ -377,31 +377,31 @@ class MaterialTheme {
       );
 
 
-  static getLightExtensions(){
+  static List<CustomColors> getLightExtensions(){
     return getExtensions((ExtendedColor colors) => colors.light);
   }
 
-  static getLightMediumContrastExtensions(){
+  static List<CustomColors> getLightMediumContrastExtensions(){
     return getExtensions((ExtendedColor colors) => colors.lightMediumContrast);
   }
 
-  static getLightHighContrastExtensions(){
+  static List<CustomColors> getLightHighContrastExtensions(){
     return getExtensions((ExtendedColor colors) => colors.lightHighContrast);
   }
 
-  static getDarkExtensions(){
+  static List<CustomColors> getDarkExtensions(){
     return getExtensions((ExtendedColor colors) => colors.dark);
   }
 
-  static getDarkMediumContrastExtensions(){
+  static List<CustomColors> getDarkMediumContrastExtensions(){
     return getExtensions((ExtendedColor colors) => colors.darkMediumContrast);
   }
 
-  static getDarkHighContrastExtensions(){
+  static List<CustomColors> getDarkHighContrastExtensions(){
     return getExtensions((ExtendedColor colors) => colors.darkHighContrast);
   }
 
-  static getExtensions(ColorFamily Function(ExtendedColor) fromBrightness){
+  static List<CustomColors> getExtensions(ColorFamily Function(ExtendedColor) fromBrightness){
     return [
       CustomColors(
         positive: fromBrightness(positive), 

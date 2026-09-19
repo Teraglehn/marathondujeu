@@ -67,7 +67,7 @@ class _IconSelectorState extends State<IconSelector> {
     super.dispose();
   }
 
-  Widget itemBuilder(icon) => CircleAvatar(
+  Widget itemBuilder(IconData icon) => CircleAvatar(
     backgroundColor: widget.iconBackgroundColor,
     child: Icon(icon, color: widget.iconColor),
   );
@@ -99,7 +99,7 @@ class _IconSelectorState extends State<IconSelector> {
                 errorText: state.hasError ? state.errorText : null,
               ),
             child: ListTile(
-              leading: state.value != null ? itemBuilder(state.value) : null,
+              leading: state.value != null ? itemBuilder(state.value!) : null,
               title: Text(S.of(context).widget_iconSelector_selectTitle),
             )
           )

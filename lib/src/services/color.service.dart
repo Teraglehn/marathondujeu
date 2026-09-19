@@ -3,9 +3,9 @@ import 'dart:ui';
 
 class ColorService {
   static Color getContrastColor(Color bgColor, Color lightColor, Color darkColor) {
-  var r = bgColor.red;
-  var g = bgColor.green;
-  var b = bgColor.blue;
+  var r = (bgColor.r * 255).round() & 0xff;
+  var g = (bgColor.g * 255).round() & 0xff;
+  var b = (bgColor.b * 255).round() & 0xff;
   var uicolors = [r / 255, g / 255, b / 255];
   var c = uicolors.map((col) {
     if (col <= 0.03928) {

@@ -6,7 +6,7 @@ class Debouncer {
 
   Debouncer({required this.milliseconds});
 
-  run(void Function() action) {
+  void run(void Function() action) {
     if (_timer != null) {
       _timer?.cancel();
     }

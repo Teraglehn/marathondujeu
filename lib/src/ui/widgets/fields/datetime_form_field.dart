@@ -45,16 +45,15 @@ class DateTimeFormField extends FormField<DateTime> {
           firstDate: firstDateActual,
           lastDate: lastDateActual,
         );
+        if (date == null || !state.mounted) return;
         final time = await showTimePicker(
           context: state.context, 
           initialTime: state.value != null ? TimeOfDay.fromDateTime(state.value!) : TimeOfDay.now(),
         );
-        if (date != null) {
-          if(time != null){
-            date = date.copyWith(hour: time.hour, minute: time.minute);
-          }
-          state.didChange(date);
+        if(time != null){
+          date = date.copyWith(hour: time.hour, minute: time.minute);
         }
+        state.didChange(date);
       },
       child: InputDecorator(
         decoration: InputDecoration(

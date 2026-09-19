@@ -22,3 +22,10 @@ corrigé ; `_getPlayerList` ne mute plus les liens du tirage ; base déplacée d
 `com.example` → `com.saroc` partout ; premiers tests (17, sur une vraie base Isar temporaire).
 *Écarts* : `DrawRepository.write` ne sauvegardait pas `requiredPlayers` — corrigé, hors liste
 initiale ; la copie de tirage (`createDrawFromDraw`) est sortie du lot → L06.
+
+## 2026-09-19 — L07
+
+**L07 — Hygiène du code.** `flutter analyze` à `No issues found!` : couleurs dépréciées
+converties (même échelle 0–255), types de retour annotés (`theme.dart`, `Debouncer.run`,
+`IconSelector.itemBuilder`), `BuildContext` protégé après `await`. *Écart assumé* : un seul
+changement de comportement, décidé (Q1 b) — annuler la date n'ouvre plus le sélecteur d'heure.
