@@ -1,10 +1,12 @@
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/routes.dart';
+import 'package:marathondujeu/src/pods/events.dart';
 import 'package:marathondujeu/src/ui/models/route_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class MainRail extends StatelessWidget {
+class MainRail extends ConsumerWidget {
   final GoRouterState routerState;
 
   const MainRail({
@@ -26,21 +28,27 @@ class MainRail extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = routes.indexWhere((r) => r.routeName == routerState.topRoute?.name);
+    // Sans événement en base, seule la liste des événements a quelque chose à montrer.
+    final noEvent = ref.watch(eventsProvider()).value?.isEmpty ?? false;
     return NavigationRail(
         useIndicator: true,
         onDestinationSelected: (i) => _handleNavigation(context, i),
         labelType: NavigationRailLabelType.all,
         selectedIndex: selectedIndex < 0 ? 0 : selectedIndex,
         destinations: [
-          ...routes.map((route) => NavigationRailDestination(
-            label: Text(route.getTitle(context)),
-            icon: Icon(route.icon),
-          ))
+          ...routes.map((route) {
+            final disabled = noEvent && route.routeName != Routes.eventList;
+            return NavigationRailDestination(
+              label: Text(route.getTitle(context)),
+              icon: disabled
+                ? Tooltip(message: S.of(context).widget_mainRail_createEventFirst, child: Icon(route.icon))
+                : Icon(route.icon),
+              disabled: disabled,
+            );
+          })
         ],
     );
   }
 }
-
-

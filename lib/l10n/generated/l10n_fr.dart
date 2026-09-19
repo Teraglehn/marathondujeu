@@ -446,6 +446,13 @@ class SFr extends S {
       'Générer les sessions (supprime les sessions existantes)';
 
   @override
+  String get page_eventList_empty_title => 'Créer un événement';
+
+  @override
+  String get page_eventList_empty_text =>
+      'Tout commence par un événement : ses dates, ses sessions, ses joueurs.';
+
+  @override
   String get page_cardGenerator_title => 'Générateur de Carte';
 
   @override
@@ -603,7 +610,13 @@ class SFr extends S {
 
   @override
   String get widget_eventSelectedGuard_pleaseSelectEvent =>
-      'Veuillez selectionner un évènement';
+      'Veuillez sélectionner un événement';
+
+  @override
+  String get widget_eventSelectedGuard_chooseEvent => 'Choisir un événement';
+
+  @override
+  String get widget_mainRail_createEventFirst => 'Créez d\'abord un événement';
 
   @override
   String get widget_eventSelector_selectTitle => 'Sélectionner un évènement';

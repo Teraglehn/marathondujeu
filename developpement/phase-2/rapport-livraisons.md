@@ -70,3 +70,17 @@ couleurs, cartes plus basses, « n présents », curseur main. `docs/gestes.md` 
 revus, SE-8 à SE-10 ajoutés. *Écarts assumés* : Q1 (a) sans confirmation, Q2 (b) présents seuls ;
 la recherche par numéro (C5) retirée, le champ n'est pas une recherche ; pas de mention
 « Ouverte » sur la liste, la couleur suffit ; le retour de scan reste en `SnackBar` (L15).
+
+## 2026-09-20 — L14
+
+**L14 — Guidage sans événement.** Sur une page qui exige un événement sans qu'aucun soit choisi,
+le sélecteur s'ouvre de lui-même à l'arrivée ; fermé sans choisir, la page montre le message et
+un bouton « Choisir un événement » qui le rouvre. Aucun événement en base : les cinq entrées du
+rail hors *Événements* sont grisées (infobulle « Créez d'abord un événement ») et la garde
+renvoie à la liste des événements. Liste vide sans recherche : un bloc central « Créer un
+événement » remplace la liste. `docs/gestes.md` : TR-1, TR-2, EV-1. *Écarts assumés* : Q1 (b),
+l'événement n'est pas retenu d'un lancement à l'autre ; la redirection vit dans
+`EventSelectedGuard`, pas dans le routeur (C3) ; le sélecteur ouvert d'office est celui du
+bouton central, la vue s'ancre donc au milieu de la page ; `SearchSelector` suit désormais
+`initialValue` (le sélecteur de la barre restait vide après un choix depuis la garde) ; le pod
+`SelectedEvent` n'émet plus d'erreur silencieuse quand aucun événement n'est choisi.

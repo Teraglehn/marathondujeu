@@ -11,8 +11,8 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 ## Prochain geste
 
 Tous les lots de la phase ont leur rapport. Ordre proposé : **L15** (sans question ouverte),
-**L14**, **L16**, **L17**, puis **L12** en dernier, après tout le retravail (Bastien,
-2026-09-19). Questions ouvertes : L14 Q1, L16 Q1–Q2, L17 Q1, L12 Q2 — défauts
+**L16**, **L17**, puis **L12** en dernier, après tout le retravail (Bastien,
+2026-09-19). Questions ouvertes : L16 Q1–Q2, L17 Q1, L12 Q2 — défauts
 proposés. L09 (sauvegarde) hors phase, rapport sur demande.
 
 ## Phases
@@ -20,8 +20,8 @@ proposés. L09 (sauvegarde) hors phase, rapport sur demande.
 **Phase 1 — remise en état du dépôt** : close le 2026-09-19, figée dans
 `developpement/livraisons/phase-1/`.
 
-**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L12, L14, L15, L16, L17 ; L04, L05, L06, L10, L11 et L13
-livrés le 2026-09-19. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
+**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L12, L15, L16, L17 ; L04, L05, L06, L10, L11 et L13
+livrés le 2026-09-19, L14 le 2026-09-20. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
 
 L09 n'est rattaché à aucune phase : son rapport naîtra dans `lots/`.
 
@@ -34,7 +34,6 @@ Les numéros ne sont **jamais réattribués**.
 |---|---|---|---|---|
 | L09 | Fichier de sauvegarde par événement : export automatique, import dans la liste | — | à faire | à rédiger |
 | L12 | Aide et tutoriels : bouton « i » en haut à droite de chaque page, explications dans les écrans | 2 | à faire | `phase-2/L12-aide-et-tutoriels.md` |
-| L14 | Guidage sans événement : sélecteur ouvert d'office, rail grisé, « Créer un événement » central | 2 | à faire | `phase-2/L14-guidage-sans-evenement.md` |
 | L15 | Retour de scan sur toutes les pages, et gestes manquants (relevé des gestes) | 2 | à faire | `phase-2/L15-scan-et-gestes-manquants.md` |
 | L16 | Gestion des groupes : catégories, groupes de gagnants à part, suppression, retrait d'un joueur, ajout par numéro | 2 | à faire | `phase-2/L16-gestion-des-groupes.md` |
 | L17 | Modifications en cours : « quitter / revenir » à la fermeture d'un éditeur modifié | 2 | à faire | `phase-2/L17-modifications-en-cours.md` |

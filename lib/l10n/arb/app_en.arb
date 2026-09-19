@@ -182,6 +182,8 @@
     "page_eventList_title": "Events",
     "page_eventList_menuItem": "Events",
     "page_eventList_generateSessions": "Generate sessions (deletes existing sessions)",
+    "page_eventList_empty_title": "Create an event",
+    "page_eventList_empty_text": "Everything starts with an event: its dates, its sessions, its players.",
 
     "page_cardGenerator_title": "Card Generator",
     "page_cardGenerator_menuItem": "Card Generator",
@@ -232,7 +234,10 @@
     "page_drawList_menuItem": "Draws",
 
 
-    "widget_eventSelectedGuard_pleaseSelectEvent" : "Please select an Event",
+    "widget_eventSelectedGuard_pleaseSelectEvent" : "Please select an event",
+    "widget_eventSelectedGuard_chooseEvent" : "Choose an event",
+
+    "widget_mainRail_createEventFirst" : "Create an event first",
 
     
     "widget_eventSelector_selectTitle": "Select event",

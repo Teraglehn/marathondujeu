@@ -446,6 +446,13 @@ class SEn extends S {
       'Generate sessions (deletes existing sessions)';
 
   @override
+  String get page_eventList_empty_title => 'Create an event';
+
+  @override
+  String get page_eventList_empty_text =>
+      'Everything starts with an event: its dates, its sessions, its players.';
+
+  @override
   String get page_cardGenerator_title => 'Card Generator';
 
   @override
@@ -601,7 +608,13 @@ class SEn extends S {
 
   @override
   String get widget_eventSelectedGuard_pleaseSelectEvent =>
-      'Please select an Event';
+      'Please select an event';
+
+  @override
+  String get widget_eventSelectedGuard_chooseEvent => 'Choose an event';
+
+  @override
+  String get widget_mainRail_createEventFirst => 'Create an event first';
 
   @override
   String get widget_eventSelector_selectTitle => 'Select event';

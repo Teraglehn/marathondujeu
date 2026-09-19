@@ -13,6 +13,7 @@ class EventSelector extends SearchSelector<Event> {
     super.anchorBuilder,
     super.onChanged,
     super.allowRemove,
+    super.autoOpen,
     super.autovalidateMode,
     super.onSaved,
     super.validator,

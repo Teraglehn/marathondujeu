@@ -16,6 +16,7 @@ class SelectedEvent extends _$SelectedEvent {
     final main = ref.watch(mainPodProvider);
     if(main.selectedEventId == null){
       yield null;
+      return;
     }
     yield* await _service.getByIdStream(main.selectedEventId!); 
   }

@@ -745,6 +745,18 @@ abstract class S {
   /// **'Generate sessions (deletes existing sessions)'**
   String get page_eventList_generateSessions;
 
+  /// No description provided for @page_eventList_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an event'**
+  String get page_eventList_empty_title;
+
+  /// No description provided for @page_eventList_empty_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything starts with an event: its dates, its sessions, its players.'**
+  String get page_eventList_empty_text;
+
   /// No description provided for @page_cardGenerator_title.
   ///
   /// In en, this message translates to:
@@ -1011,8 +1023,20 @@ abstract class S {
   /// No description provided for @widget_eventSelectedGuard_pleaseSelectEvent.
   ///
   /// In en, this message translates to:
-  /// **'Please select an Event'**
+  /// **'Please select an event'**
   String get widget_eventSelectedGuard_pleaseSelectEvent;
+
+  /// No description provided for @widget_eventSelectedGuard_chooseEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an event'**
+  String get widget_eventSelectedGuard_chooseEvent;
+
+  /// No description provided for @widget_mainRail_createEventFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an event first'**
+  String get widget_mainRail_createEventFirst;
 
   /// No description provided for @widget_eventSelector_selectTitle.
   ///

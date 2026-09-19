@@ -33,6 +33,29 @@ class _EventListPageState extends ConsumerState<EventListPage> {
   }
 
 
+  // Base vide (hors recherche) : la liste n'a rien à montrer, on guide vers la création.
+  Widget emptyBlock(BuildContext context, EditorPod editor) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.event, size: 96, color: theme.colorScheme.primary),
+          const SizedBox(height: 16),
+          Text(S.of(context).page_eventList_empty_title, style: theme.textTheme.headlineMedium),
+          const SizedBox(height: 8),
+          Text(S.of(context).page_eventList_empty_text, style: theme.textTheme.bodyLarge),
+          const SizedBox(height: 24),
+          FilledButton.icon(
+            onPressed: () => editor.editEvent(null),
+            icon: const Icon(Icons.add),
+            label: Text(S.of(context).page_eventList_empty_title),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final editor = ref.read(editorPodProvider.notifier);
@@ -66,7 +89,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
           ),
           Expanded(
             child: events.when(
-              data: (data) => ListView.separated(
+              data: (data) => data.isEmpty && criteria.keyword.isEmpty ? emptyBlock(context, editor) : ListView.separated(
                 padding: const EdgeInsets.all(8.0),
                 itemCount: data.length,
                 separatorBuilder: (context, index) => const Divider(

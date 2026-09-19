@@ -24,8 +24,8 @@ Paramètres : **événement sélectionné** (oui / non) · **éditeur latéral o
 
 | Geste | Variantes | Effet observable | Test |
 |---|---|---|---|
-| **TR-1** Choisir une page dans le rail de gauche (six entrées : Événements, Joueurs, Groupes, Sessions, Tirages, Générateur de carte) | — | la page s'affiche ; l'entrée est marquée | — |
-| **TR-2** Choisir l'événement courant dans la barre du haut (cinq pages : joueurs, groupes, sessions, tirages, générateur) | événement choisi / effacé | toutes les pages travaillent sur cet événement ; effacé → la page affiche « Veuillez sélectionner un évènement » et rien d'autre (`EventSelectedGuard`) | — |
+| **TR-1** Choisir une page dans le rail de gauche (six entrées : Événements, Joueurs, Groupes, Sessions, Tirages, Générateur de carte) | aucun événement en base | la page s'affiche ; l'entrée est marquée. Aucun événement en base → les cinq entrées hors *Événements* sont **grisées**, infobulle « Créez d'abord un événement » ; arriver sur l'une de ces pages **renvoie** à la liste des événements (`EventSelectedGuard`) | — |
+| **TR-2** Choisir l'événement courant dans la barre du haut (cinq pages : joueurs, groupes, sessions, tirages, générateur) | événement choisi / aucun | toutes les pages travaillent sur cet événement. Aucun → à l'arrivée sur la page, le sélecteur **s'ouvre de lui-même** ; fermé sans choisir, la page affiche « Veuillez sélectionner un événement » et un bouton **« Choisir un événement »** qui le rouvre (`EventSelectedGuard`). Le choix n'est pas retenu d'un lancement à l'autre | — |
 | **TR-3** Fermer l'éditeur latéral : *Annuler* / *Fermer*, la croix du titre, un clic hors du tiroir | modifications faites ou non | rien n'est enregistré ; le tiroir se ferme | — |
 | **TR-4** Scanner une carte (douchette) sur une page qui écoute (joueurs, groupes, un groupe, sessions, une session) | carte connue / inconnue ; événement sélectionné ou non | selon la page (voir chaque page) ; carte inconnue ou sans événement → rien ne se passe, sans message | — |
 
@@ -38,7 +38,7 @@ des cartes** (allumée / éteinte) · **sessions existantes** (oui / non).
 
 | Geste | Variantes | Effet observable | Test |
 |---|---|---|---|
-| **EV-1** Créer un événement (bouton « + ») | — | l'éditeur s'ouvre, titre *Créer un événement*, champs vides, dates par défaut (maintenant, +1 jour) | — |
+| **EV-1** Créer un événement (bouton « + », ou le bloc central « Créer un événement » quand la liste est vide sans recherche) | liste vide / non | l'éditeur s'ouvre, titre *Créer un événement*, champs vides, dates par défaut (maintenant, +1 jour). Liste vide sans mot-clé → le bloc central remplace la liste | — |
 | **EV-2** Ouvrir un événement (clic sur sa ligne) | — | l'éditeur s'ouvre, titre *Modifier un événement*, champs remplis | — |
 | **EV-3** Renseigner nom, début, fin, durée de session (min), intervalle de session (min) | champ vide → message « … est requis » à l'enregistrement | — | — |
 | **EV-4** Allumer *Protéger les cartes contre la copie et la réutilisation* | des joueurs existent → interrupteur **grisé**, texte « Des joueurs existent déjà… » | un code secret (8 caractères) est tiré ; les cartes et joueurs générés ensuite portent `sel-numéro` (`Event.qrCodeFor`) | service (`qrCodeFor`, `saltFromCode`) |

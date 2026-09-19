@@ -138,6 +138,8 @@
     "page_eventList_title": "Evénements",
     "page_eventList_menuItem": "Evénements",
     "page_eventList_generateSessions": "Générer les sessions (supprime les sessions existantes)",
+    "page_eventList_empty_title": "Créer un événement",
+    "page_eventList_empty_text": "Tout commence par un événement : ses dates, ses sessions, ses joueurs.",
 
     "page_cardGenerator_title": "Générateur de Carte",
     "page_cardGenerator_menuItem": "Générateur de Carte",
@@ -188,7 +190,10 @@
     "page_drawList_menuItem": "Tirages",
 
 
-    "widget_eventSelectedGuard_pleaseSelectEvent" : "Veuillez selectionner un évènement",
+    "widget_eventSelectedGuard_pleaseSelectEvent" : "Veuillez sélectionner un événement",
+    "widget_eventSelectedGuard_chooseEvent" : "Choisir un événement",
+
+    "widget_mainRail_createEventFirst" : "Créez d'abord un événement",
 
     
     "widget_eventSelector_selectTitle": "Sélectionner un évènement",

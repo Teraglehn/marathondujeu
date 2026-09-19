@@ -11,6 +11,8 @@ class SearchSelector<OBJ> extends ConsumerStatefulWidget {
   final Function(OBJ?)? onSaved;
   final bool enabled;
   final bool allowRemove;
+  /// Ouvre la vue de recherche dès la création du widget (une fois).
+  final bool autoOpen;
   final OBJ? initialValue;
   final String? restorationId;
   final AutovalidateMode? autovalidateMode;
@@ -49,6 +51,7 @@ class SearchSelector<OBJ> extends ConsumerStatefulWidget {
     this.validator,
     this.enabled = true,
     this.allowRemove = false,
+    this.autoOpen = false,
     this.restorationId,
     super.key,
   });
@@ -59,11 +62,26 @@ class SearchSelector<OBJ> extends ConsumerStatefulWidget {
 
 class _SearchSelectorState<OBJ> extends ConsumerState<SearchSelector<OBJ>> {
   late final SearchController _controller;
+  final GlobalKey<FormFieldState<OBJ>> _fieldKey = GlobalKey<FormFieldState<OBJ>>();
 
   @override
   void initState() {
     super.initState();
     _controller = SearchController();
+    if (widget.autoOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && !_controller.isOpen) _controller.openView();
+      });
+    }
+  }
+
+  // FormField ignore un changement d'initialValue : on le répercute, sans passer par onChanged.
+  @override
+  void didUpdateWidget(SearchSelector<OBJ> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialValue != oldWidget.initialValue) {
+      _fieldKey.currentState?.didChange(widget.initialValue);
+    }
   }
 
   @override
@@ -115,6 +133,7 @@ class _SearchSelectorState<OBJ> extends ConsumerState<SearchSelector<OBJ>> {
   @override
   Widget build(BuildContext context) {
     return FormField<OBJ>(
+      key: _fieldKey,
       validator: widget.validator,
       onSaved: widget.onSaved,
       initialValue: widget.initialValue,
