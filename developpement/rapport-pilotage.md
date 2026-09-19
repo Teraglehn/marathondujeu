@@ -10,8 +10,7 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Trancher H5 (« Questions transversales »). Puis rédiger, sur demande, le rapport de L07 ou L08
-(phase 1) ou de L04, L05, L06 (`lots/`).
+Rédiger, sur demande, le rapport de L07 ou L08 (phase 1) ou de L04, L05, L06 (`lots/`).
 
 ## Phases
 
@@ -68,7 +67,7 @@ sauvegarde. Sorti de L02 (L02 Q2).
 **L07** — sortir d'`analyze` à zéro `info` (13 le 2026-09-19, après L03) : `Color.red/green/blue`
 dépréciés dans `color.service.dart` ; types top-level manquants dans `theme.dart` (7),
 `debouncer.service.dart`, `icon_selector.dart` ; `BuildContext` après `await` dans
-`datetime_form_field.dart`. Selon H5, y joindre `throw "WTF"` (`draw_service.dart`).
+`datetime_form_field.dart`.
 
 **L08** — `flutter pub outdated` du 2026-09-19. Bloqué par Dart 3.9 (Flutter 3.35) : riverpod
 3.4, riverpod_annotation / riverpod_generator 4, freezed 4, riverpod_lint 3.1, isar_community
@@ -83,6 +82,3 @@ Les contraintes `any` du `pubspec.yaml` sont à remplacer par des `^x.y.z` à ce
 - **Tests** : 17 tests depuis L02 (tirage, égalité, persistance), sur une vraie base Isar
   temporaire. Défaut appliqué, pas acté : chaque lot ajoute les tests de son périmètre — pas de
   lot « tests » dédié. Prochain candidat : le calcul de mise en page des cartes (L05).
-- **H5 — `throw "WTF"` dans `DrawService.getWinner`** : garde-fou interne (le total des jetons
-  doit égaler le nombre de lots), qui lève une chaîne brute. Options : *(a)* le remplacer par une
-  `StateError` nommée, dans L07 ; *(b)* le supprimer, le calcul ne peut pas diverger. En attente.

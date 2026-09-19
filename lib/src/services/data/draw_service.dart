@@ -125,9 +125,6 @@ class DrawService {
       }
     }
 
-    final tally = players.fold(0, (t, p) => t + p.getTokenCount());
-    if(tally != lots.length) throw "WTF";
-
     final winnerLot = _random.nextInt(lots.length);
     return lots[winnerLot];
   }
