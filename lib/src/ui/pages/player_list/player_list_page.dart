@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/services_injector.dart';
@@ -6,6 +8,7 @@ import 'package:marathondujeu/src/pods/main_pod.dart';
 import 'package:marathondujeu/src/pods/players.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:marathondujeu/src/pods/selected_event.dart';
+import 'package:marathondujeu/src/services/debouncer.service.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
@@ -24,15 +27,56 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
 
   final TextEditingController _playerCountController = TextEditingController();
 
+  // Chaque sauvegarde fait recharger toute la liste : les clics sur « + » / « − » sont
+  // regroupés, la carte réagit tout de suite (setState) et la base suit après une pause.
+  final Map<int, Player> _pendingBonus = {};
+  final Debouncer _bonusDebouncer = Debouncer(milliseconds: 400);
+
   @override
   void initState() {
     super.initState();
   }
 
-  void plusOneBonus(Player player){
-    player.bonusSession += 1;
+  @override
+  void dispose() {
+    _bonusDebouncer.dispose();
+    _flushBonus();
+    super.dispose();
+  }
 
-    ref.watch(playerServiceProvider).save(player);
+  void addBonus(Player player, int delta){
+    setState(() => player.bonusSession = max(0, player.bonusSession + delta));
+
+    _pendingBonus[player.id] = player;
+    _bonusDebouncer.run(_flushBonus);
+  }
+
+  void _flushBonus(){
+    if (_pendingBonus.isEmpty) return;
+    final players = _pendingBonus.values.toList();
+    _pendingBonus.clear();
+    ref.read(playerServiceProvider).saveAll(players);
+  }
+
+  Widget bonusButton(IconData icon, VoidCallback? onPressed) => IconButton.filledTonal(
+    onPressed: onPressed,
+    icon: Icon(icon, size: 16),
+    padding: EdgeInsets.zero,
+    mouseCursor: SystemMouseCursors.click,
+    constraints: const BoxConstraints.tightFor(width: 28, height: 28),
+  );
+
+  // Bille de compteur : grisée à zéro.
+  Widget countAvatar(BuildContext context, int count) {
+    final scheme = Theme.of(context).colorScheme;
+    return CircleAvatar(
+      radius: 12,
+      backgroundColor: count == 0 ? scheme.surfaceContainerHighest : null,
+      child: Text(
+        count.toString(),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: count == 0 ? scheme.outline : null),
+      ),
+    );
   }
 
   @override
@@ -115,27 +159,24 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                           title: Text(player.name)
                         ),
                         ListTile(
-                          leading: CircleAvatar(
-                            radius: 12,
-                            child: Text(player.getSessionNumber().toString(), style: Theme.of(context).textTheme.bodySmall)
-                          ),
+                          leading: countAvatar(context, player.getSessionNumber()),
                           title: Text(S.of(context).data_session_objName(player.getSessionNumber()), style: Theme.of(context).textTheme.bodySmall),
                           dense: true
                         ),
                         ListTile(
-                          leading: CircleAvatar(
-                            radius: 12,
-                            child: Text(player.bonusSession.toString(), style: Theme.of(context).textTheme.bodySmall)
-                          ),
+                          leading: countAvatar(context, player.bonusSession),
                           title: Text(S.of(context).data_player_bonus, style: Theme.of(context).textTheme.bodySmall),
-                          //trailing: IconButton(onPressed: () => plusOneBonus(player), icon: Icon(Icons.plus_one)),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              bonusButton(Icons.remove, player.bonusSession > 0 ? () => addBonus(player, -1) : null),
+                              bonusButton(Icons.add, () => addBonus(player, 1)),
+                            ],
+                          ),
                           dense: true
                         ),
                         ListTile(
-                          leading: CircleAvatar(
-                            radius: 12,
-                            child: Text(player.getTokenCount().toString(), style: Theme.of(context).textTheme.bodySmall)
-                          ),
+                          leading: countAvatar(context, player.getTokenCount()),
                           title: Text(S.of(context).data_player_tokens(player.getTokenCount()), style: Theme.of(context).textTheme.bodySmall),
                           dense: true
                         ),

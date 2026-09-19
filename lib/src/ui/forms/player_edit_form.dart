@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
@@ -35,12 +37,20 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
     _playerBonusController.text = widget.player.bonusSession.toString();
   }
 
+  int get _bonus => int.tryParse(_playerBonusController.text) ?? 0;
+
+  void addBonus(int delta){
+    setState(() {
+      _playerBonusController.text = max(0, _bonus + delta).toString();
+    });
+  }
+
   void save(){
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    widget.player.bonusSession = int.parse(_playerBonusController.text);
+    widget.player.bonusSession = _bonus;
 
     _formKey.currentState!.save();
     
@@ -107,14 +117,26 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: _playerBonusController,
-              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-              inputFormatters: <TextInputFormatter>[FormattersService.integer],
-              decoration: InputDecoration(
-                labelText: S.of(context).data_player_bonus,
-                border: const OutlineInputBorder(),
-              ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  child: TextFormField(
+                    controller: _playerBonusController,
+                    keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                    inputFormatters: <TextInputFormatter>[FormattersService.integer],
+                    onChanged: (_) => setState(() {}),
+                    decoration: InputDecoration(
+                      labelText: S.of(context).data_player_bonus,
+                      border: const OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                IconButton.filledTonal(onPressed: _bonus > 0 ? () => addBonus(-1) : null, icon: const Icon(Icons.remove), mouseCursor: SystemMouseCursors.click),
+                const SizedBox(width: 8),
+                IconButton.filledTonal(onPressed: () => addBonus(1), icon: const Icon(Icons.add), mouseCursor: SystemMouseCursors.click),
+              ],
             ),
           ),
           Padding(

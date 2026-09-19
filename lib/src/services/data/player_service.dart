@@ -37,6 +37,10 @@ class PlayerService {
     await _playerRepository.save(player);
   }
 
+  Future<void> saveAll(Iterable<Player> players) async {
+    await _playerRepository.saveAll(players);
+  }
+
   Future<void> delete(Player player) async {
     await _playerRepository.delete(player.id);
   }
