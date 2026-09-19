@@ -5,6 +5,7 @@ regroupement. C'est de l'historique, pas un outil de travail.
 
 | Phase | Contenu |
 |---|---|
+| `phase-1/` | remise en état du dépôt, 2026-09-19 : Isar → `isar_community`, corrections du modèle et du tirage, Riverpod 3 / freezed 3 / go_router_builder 4, `analyze` à zéro, Flutter 3.47 et dépendances à jour (L01, L02, L03, L07, L08) |
 
 Conséquence assumée du gel : une phase archivée cite l'organisation et le vocabulaire de son époque —
 chemins depuis déplacés, noms depuis renommés. Ces renvois ne sont pas rafraîchis.

@@ -34,6 +34,9 @@ Les joueurs viennent **badger à heure fixe** ; plus ils sont présents, plus il
 tirage au sort. Chaque joueur reçoit une carte imprimée avec un QR code ; une douchette le scanne
 pour l'inscrire à la session en cours. Le logiciel a servi sur l'édition 2025.
 
+**Les joueurs sont anonymes** *(acté 2026-09-19)* : les cartes sont prégénérées, personne ne
+saisit de joueur dans l'application, et `Player.name` porte le **numéro de carte**.
+
 Concepts, tels que le code les nomme : `Event` (l'événement, ses horaires, le gabarit de carte),
 `Player`, `Session`, `PlayerGroup`, `Draw` (un tirage : contraintes de sessions et de joueurs
 requis / exclus), `DrawWinner`.

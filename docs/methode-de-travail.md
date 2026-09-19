@@ -361,7 +361,9 @@ particulier, qui se justifie explicitement.
 
 ## Ce qui est gelé, nommément
 
-Rien. Aucune phase close, aucun arbitrage transversal daté.
+- `developpement/livraisons/phase-1/` — phase 1, close le 2026-09-19.
+
+Aucun arbitrage transversal daté.
 
 ## Les maquettes
 
