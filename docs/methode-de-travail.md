@@ -82,8 +82,13 @@ La règle « la documentation et le code qu'elle justifie vont dans le même com
 
 ## 3. Les rapports de lot
 
-**Un rapport ne se rédige que sur demande explicite, un à la fois.** Jamais en avance, jamais en
-série, même quand la liste des lots est validée.
+**Un rapport ne se rédige que sur demande explicite.** Jamais en avance, jamais de sa propre
+initiative, même quand la liste des lots est validée. L'auteur du projet peut en demander
+plusieurs d'un coup : sa demande vaut pour chacun.
+
+**La demande d'un rapport vaut « vas-y » pour ce rapport** *(acté 2026-09-19)* : le fichier se
+crée directement, sans plan préalable ni arrêt. Le § 1 s'applique au code, pas au rapport —
+qui est lui-même la proposition.
 
 > **Pourquoi** : les arbitrages à venir invalident les hypothèses des rapports lointains. Une
 > prévision détaillée sur des décisions non prises est du travail à refaire — et de la lecture

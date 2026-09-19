@@ -1,0 +1,12 @@
+# Fins de ligne : LF dans le dépôt et dans le working tree. Les générateurs (build_runner,
+# flutter) écrivent du LF ; sans cette règle, Git avertit sur chaque fichier à chaque commande.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.dll binary
+*.isar binary

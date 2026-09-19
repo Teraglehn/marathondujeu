@@ -10,13 +10,13 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Rédiger le rapport de L04, L05 ou L06, sur demande — ils naissent dans `lots/`. Ou rattacher à
-la phase 1 un des points « hors lots » ci-dessous.
+Trancher H5 (« Questions transversales »). Puis rédiger, sur demande, le rapport de L07 ou L08
+(phase 1) ou de L04, L05, L06 (`lots/`).
 
 ## Phases
 
 **Phase 1 — remise en état du dépôt**, ouverte le 2026-09-19. L01, L02, L03 livrés le
-2026-09-19 ; aucun lot ouvert. Objet et critère d'appartenance dans `developpement/phase-1/README.md`,
+2026-09-19 ; L07 et L08 ouverts. Objet et critère d'appartenance dans `developpement/phase-1/README.md`,
 livraisons dans `developpement/phase-1/rapport-livraisons.md`.
 
 L04, L05 et L06 ne sont rattachés à aucune phase : leurs rapports naîtront dans `lots/`.
@@ -31,6 +31,8 @@ Les numéros ne sont **jamais réattribués**.
 | L04 | Liste des gagnants d'un tirage : retour à la ligne et défilement | — | à faire | à rédiger |
 | L05 | Génération des cartes joueur paramétrable depuis l'interface | — | à faire | à rédiger |
 | L06 | Copier un tirage : reprise du paramétrage, gagnants précédents exclus | — | à faire | à rédiger |
+| L07 | Hygiène du code : `analyze` à zéro info | 1 | à faire | à rédiger |
+| L08 | Montée de Flutter et des dépendances restées en retard | 1 | à faire | à rédiger |
 
 ### Notes pour la rédaction des rapports
 
@@ -63,11 +65,24 @@ son paramétrage et exclut ses gagnants. La fonction oublie `requiredPlayers` et
 et ne sauvegarde pas. Manquent : le bouton dans la liste des tirages, les textes fr/en, la
 sauvegarde. Sorti de L02 (L02 Q2).
 
+**L07** — sortir d'`analyze` à zéro `info` (13 le 2026-09-19, après L03) : `Color.red/green/blue`
+dépréciés dans `color.service.dart` ; types top-level manquants dans `theme.dart` (7),
+`debouncer.service.dart`, `icon_selector.dart` ; `BuildContext` après `await` dans
+`datetime_form_field.dart`. Selon H5, y joindre `throw "WTF"` (`draw_service.dart`).
+
+**L08** — `flutter pub outdated` du 2026-09-19. Bloqué par Dart 3.9 (Flutter 3.35) : riverpod
+3.4, riverpod_annotation / riverpod_generator 4, freezed 4, riverpod_lint 3.1, isar_community
+3.3.2, build_runner 2.16. Atteignable sans monter Flutter, mais en majeure : go_router 17,
+google_fonts 8, file_picker 11. Mineures sans risque : pdf 3.12, printing 5.14.3,
+pretty_qr_code 3.6, uuid 4.6, build_runner 2.7. Ordre proposé : monter Flutter d'abord, puis
+`flutter pub upgrade --major-versions` en une fois, avec la recette de L03 (parcours des écrans).
+Les contraintes `any` du `pubspec.yaml` sont à remplacer par des `^x.y.z` à cette occasion.
+
 ## Questions transversales en attente
 
-- **Tests** : aucun test à ce jour (le seul fichier est le gabarit Flutter, qui échoue). Défaut
-  proposé : chaque lot ajoute les tests de son périmètre, à commencer par le tirage (L02) et le
-  calcul de mise en page des cartes (L05) — pas de lot « tests » dédié.
-- Hors lots, relevé sans décision : `README.md` est celui du gabarit Flutter ; plateformes
-  iOS/macOS/Linux/web présentes sans usage ; pas de `.gitattributes` (bruit CRLF à chaque
-  génération). À trier en lots ou à écarter.
+- **Tests** : 17 tests depuis L02 (tirage, égalité, persistance), sur une vraie base Isar
+  temporaire. Défaut appliqué, pas acté : chaque lot ajoute les tests de son périmètre — pas de
+  lot « tests » dédié. Prochain candidat : le calcul de mise en page des cartes (L05).
+- **H5 — `throw "WTF"` dans `DrawService.getWinner`** : garde-fou interne (le total des jetons
+  doit égaler le nombre de lots), qui lève une chaîne brute. Options : *(a)* le remplacer par une
+  `StateError` nommée, dans L07 ; *(b)* le supprimer, le calcul ne peut pas diverger. En attente.

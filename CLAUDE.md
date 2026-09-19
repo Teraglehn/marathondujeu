@@ -43,8 +43,8 @@ requis / exclus), `DrawWinner`.
 | Rôle | Choix |
 |---|---|
 | UI | Flutter 3.35 (stable), Material 3, `go_router` + `go_router_builder` |
-| État | Riverpod 2 avec `riverpod_generator` (les « pods ») |
-| Données | Isar 3 — base locale, un fichier par machine |
+| État | Riverpod 3 avec `riverpod_generator` (les « pods ») |
+| Données | Isar 3 via le fork `isar_community` 3.3 — base locale, un fichier par machine, dans `%APPDATA%\com.saroc\marathondujeu` |
 | Modèles immuables | `freezed` |
 | Localisation | `flutter_localizations`, ARB fr/en, générée par `flutter: generate: true` |
 | Cartes / impression | `pdf`, `printing`, `pretty_qr_code`, `flutter_barcode_listener` |
@@ -81,11 +81,20 @@ après `build_runner`, ils font partie du commit.
 - **Le dépôt se travaille depuis un disque local**, sous un chemin court (`C:\Dev\marathondujeu`).
   Flutter pose des liens symboliques vers le cache pub ; un partage réseau les refuse, et un chemin
   long fait échouer MSBuild (limite 260 caractères).
-- Isar 3 vient du fork *isar-community*. Son hébergeur `pub.isar-community.dev` **ne répond plus** :
-  la résolution ne tient que par le cache pub local. Ne pas purger ce cache avant la migration.
+- Isar 3 vient du fork `isar_community` sur pub.dev ; l'original et son hébergeur sont morts.
+  `isar_community_generator` 3.3.2 exige `analyzer` 8, hors de portée de Dart 3.9 : rester en
+  3.3.0 tant que Flutter n'est pas monté.
+- Les tests ouvrent une vraie base Isar dans un dossier temporaire, avec la DLL livrée par
+  `isar_community_flutter_libs` (`test/isar_test_support.dart`). Pas de réseau.
 
 ## Ce qui est propre à ce projet
 
 - `docs/` accueille les **éléments de définition globaux** de l'application *(acté 2026-09-19)*.
   Il n'en contient aucun pour l'instant : la cible se lit dans le code et dans les lots.
-- Aucune autre règle projet actée à ce jour. Ce qui sera acté s'écrira ici, daté.
+- Identifiant d'organisation : **`com.saroc`** partout *(acté 2026-09-19)*.
+- La base des versions antérieures à 2026-09-19 vivait dans `%LOCALAPPDATA%\com.example\marathondujeu` ;
+  elle est reprise par copie au premier lancement et laissée en place, sans suppression prévue
+  *(acté 2026-09-19)*.
+- Les dossiers Android / iOS / macOS / Linux / web restent dans le dépôt **volontairement**, bien
+  que seule la cible Windows soit construite *(acté 2026-09-19)*.
+- Ce qui sera acté ensuite s'écrira ici, daté.
