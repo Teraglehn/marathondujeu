@@ -83,6 +83,19 @@ class SEn extends S {
   String get editor_title_draw_view => 'View a draw';
 
   @override
+  String get editor_dirty_title => 'Unsaved changes';
+
+  @override
+  String get editor_dirty_text =>
+      'Do you want to leave? What was changed will be lost.';
+
+  @override
+  String get editor_dirty_stay => 'Go back';
+
+  @override
+  String get editor_dirty_leave => 'Leave';
+
+  @override
   String get utils_button_reset => 'Reset';
 
   @override

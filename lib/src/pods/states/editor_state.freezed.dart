@@ -14,7 +14,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$EditorState {
 
- Player? get player; Event? get event; Draw? get draw; PlayerGroup? get playerGroup;
+ Player? get player; Event? get event; Draw? get draw; PlayerGroup? get playerGroup;/// La clé du formulaire ouvert, neuve à chaque ouverture : le tiroir l'interroge avant de
+/// fermer (`DirtyAware`), et un nouvel objet recrée le formulaire.
+ GlobalKey<State<StatefulWidget>>? get formKey;
 /// Create a copy of EditorState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +27,16 @@ $EditorStateCopyWith<EditorState> get copyWith => _$EditorStateCopyWithImpl<Edit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EditorState&&(identical(other.player, player) || other.player == player)&&(identical(other.event, event) || other.event == event)&&(identical(other.draw, draw) || other.draw == draw)&&(identical(other.playerGroup, playerGroup) || other.playerGroup == playerGroup));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EditorState&&(identical(other.player, player) || other.player == player)&&(identical(other.event, event) || other.event == event)&&(identical(other.draw, draw) || other.draw == draw)&&(identical(other.playerGroup, playerGroup) || other.playerGroup == playerGroup)&&(identical(other.formKey, formKey) || other.formKey == formKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,player,event,draw,playerGroup);
+int get hashCode => Object.hash(runtimeType,player,event,draw,playerGroup,formKey);
 
 @override
 String toString() {
-  return 'EditorState(player: $player, event: $event, draw: $draw, playerGroup: $playerGroup)';
+  return 'EditorState(player: $player, event: $event, draw: $draw, playerGroup: $playerGroup, formKey: $formKey)';
 }
 
 
@@ -45,7 +47,7 @@ abstract mixin class $EditorStateCopyWith<$Res>  {
   factory $EditorStateCopyWith(EditorState value, $Res Function(EditorState) _then) = _$EditorStateCopyWithImpl;
 @useResult
 $Res call({
- Player? player, Event? event, Draw? draw, PlayerGroup? playerGroup
+ Player? player, Event? event, Draw? draw, PlayerGroup? playerGroup, GlobalKey<State<StatefulWidget>>? formKey
 });
 
 
@@ -62,13 +64,14 @@ class _$EditorStateCopyWithImpl<$Res>
 
 /// Create a copy of EditorState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? player = freezed,Object? event = freezed,Object? draw = freezed,Object? playerGroup = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? player = freezed,Object? event = freezed,Object? draw = freezed,Object? playerGroup = freezed,Object? formKey = freezed,}) {
   return _then(_self.copyWith(
 player: freezed == player ? _self.player : player // ignore: cast_nullable_to_non_nullable
 as Player?,event: freezed == event ? _self.event : event // ignore: cast_nullable_to_non_nullable
 as Event?,draw: freezed == draw ? _self.draw : draw // ignore: cast_nullable_to_non_nullable
 as Draw?,playerGroup: freezed == playerGroup ? _self.playerGroup : playerGroup // ignore: cast_nullable_to_non_nullable
-as PlayerGroup?,
+as PlayerGroup?,formKey: freezed == formKey ? _self.formKey : formKey // ignore: cast_nullable_to_non_nullable
+as GlobalKey<State<StatefulWidget>>?,
   ));
 }
 
@@ -153,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Player? player,  Event? event,  Draw? draw,  PlayerGroup? playerGroup)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Player? player,  Event? event,  Draw? draw,  PlayerGroup? playerGroup,  GlobalKey<State<StatefulWidget>>? formKey)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EditorState() when $default != null:
-return $default(_that.player,_that.event,_that.draw,_that.playerGroup);case _:
+return $default(_that.player,_that.event,_that.draw,_that.playerGroup,_that.formKey);case _:
   return orElse();
 
 }
@@ -174,10 +177,10 @@ return $default(_that.player,_that.event,_that.draw,_that.playerGroup);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Player? player,  Event? event,  Draw? draw,  PlayerGroup? playerGroup)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Player? player,  Event? event,  Draw? draw,  PlayerGroup? playerGroup,  GlobalKey<State<StatefulWidget>>? formKey)  $default,) {final _that = this;
 switch (_that) {
 case _EditorState():
-return $default(_that.player,_that.event,_that.draw,_that.playerGroup);case _:
+return $default(_that.player,_that.event,_that.draw,_that.playerGroup,_that.formKey);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +197,10 @@ return $default(_that.player,_that.event,_that.draw,_that.playerGroup);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Player? player,  Event? event,  Draw? draw,  PlayerGroup? playerGroup)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Player? player,  Event? event,  Draw? draw,  PlayerGroup? playerGroup,  GlobalKey<State<StatefulWidget>>? formKey)?  $default,) {final _that = this;
 switch (_that) {
 case _EditorState() when $default != null:
-return $default(_that.player,_that.event,_that.draw,_that.playerGroup);case _:
+return $default(_that.player,_that.event,_that.draw,_that.playerGroup,_that.formKey);case _:
   return null;
 
 }
@@ -209,13 +212,16 @@ return $default(_that.player,_that.event,_that.draw,_that.playerGroup);case _:
 
 
 class _EditorState extends EditorState {
-  const _EditorState({this.player, this.event, this.draw, this.playerGroup}): super._();
+  const _EditorState({this.player, this.event, this.draw, this.playerGroup, this.formKey}): super._();
   
 
 @override final  Player? player;
 @override final  Event? event;
 @override final  Draw? draw;
 @override final  PlayerGroup? playerGroup;
+/// La clé du formulaire ouvert, neuve à chaque ouverture : le tiroir l'interroge avant de
+/// fermer (`DirtyAware`), et un nouvel objet recrée le formulaire.
+@override final  GlobalKey<State<StatefulWidget>>? formKey;
 
 /// Create a copy of EditorState
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +233,16 @@ _$EditorStateCopyWith<_EditorState> get copyWith => __$EditorStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EditorState&&(identical(other.player, player) || other.player == player)&&(identical(other.event, event) || other.event == event)&&(identical(other.draw, draw) || other.draw == draw)&&(identical(other.playerGroup, playerGroup) || other.playerGroup == playerGroup));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EditorState&&(identical(other.player, player) || other.player == player)&&(identical(other.event, event) || other.event == event)&&(identical(other.draw, draw) || other.draw == draw)&&(identical(other.playerGroup, playerGroup) || other.playerGroup == playerGroup)&&(identical(other.formKey, formKey) || other.formKey == formKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,player,event,draw,playerGroup);
+int get hashCode => Object.hash(runtimeType,player,event,draw,playerGroup,formKey);
 
 @override
 String toString() {
-  return 'EditorState(player: $player, event: $event, draw: $draw, playerGroup: $playerGroup)';
+  return 'EditorState(player: $player, event: $event, draw: $draw, playerGroup: $playerGroup, formKey: $formKey)';
 }
 
 
@@ -247,7 +253,7 @@ abstract mixin class _$EditorStateCopyWith<$Res> implements $EditorStateCopyWith
   factory _$EditorStateCopyWith(_EditorState value, $Res Function(_EditorState) _then) = __$EditorStateCopyWithImpl;
 @override @useResult
 $Res call({
- Player? player, Event? event, Draw? draw, PlayerGroup? playerGroup
+ Player? player, Event? event, Draw? draw, PlayerGroup? playerGroup, GlobalKey<State<StatefulWidget>>? formKey
 });
 
 
@@ -264,13 +270,14 @@ class __$EditorStateCopyWithImpl<$Res>
 
 /// Create a copy of EditorState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? player = freezed,Object? event = freezed,Object? draw = freezed,Object? playerGroup = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? player = freezed,Object? event = freezed,Object? draw = freezed,Object? playerGroup = freezed,Object? formKey = freezed,}) {
   return _then(_EditorState(
 player: freezed == player ? _self.player : player // ignore: cast_nullable_to_non_nullable
 as Player?,event: freezed == event ? _self.event : event // ignore: cast_nullable_to_non_nullable
 as Event?,draw: freezed == draw ? _self.draw : draw // ignore: cast_nullable_to_non_nullable
 as Draw?,playerGroup: freezed == playerGroup ? _self.playerGroup : playerGroup // ignore: cast_nullable_to_non_nullable
-as PlayerGroup?,
+as PlayerGroup?,formKey: freezed == formKey ? _self.formKey : formKey // ignore: cast_nullable_to_non_nullable
+as GlobalKey<State<StatefulWidget>>?,
   ));
 }
 

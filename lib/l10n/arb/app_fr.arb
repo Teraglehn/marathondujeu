@@ -25,6 +25,10 @@
     "editor_title_draw_create": "Créer un tirage",
     "editor_title_draw_edit": "Modifier un tirage",
     "editor_title_draw_view": "Consulter un tirage",
+    "editor_dirty_title": "Modification en cours",
+    "editor_dirty_text": "Voulez-vous quitter ? Ce qui a été modifié sera perdu.",
+    "editor_dirty_stay": "Revenir",
+    "editor_dirty_leave": "Quitter",
     "utils_button_reset": "Réinitialiser",
 
     "utils_icon_filled": "Rempli",

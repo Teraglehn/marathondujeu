@@ -41,7 +41,7 @@ final class EditorPodProvider
   }
 }
 
-String _$editorPodHash() => r'0380be24cd08c74c120cc8e2f370ebca0c347d08';
+String _$editorPodHash() => r'9c18ccaf72e790edb4dcd801d73341a908c3f283';
 
 abstract class _$EditorPod extends $Notifier<EditorState> {
   EditorState build();

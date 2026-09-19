@@ -17,29 +17,33 @@ class EditDrawerWidget extends ConsumerWidget {
     required this.state,
   });
   
-  Widget getEditForm(EditorState state, void Function() close){
+  // La clé vient du pod : neuve à chaque ouverture (une copie de tirage recrée le formulaire),
+  // et c'est par elle que `requestClose` interroge le formulaire.
+  Widget getEditForm(EditorState state){
     if(state.player != null){
       return PlayerEditForm(
+        key: state.formKey,
         allowRemove: false,
         state.player!,
       );
     }
     if(state.event != null){
       return EventEditForm(
+        key: state.formKey,
         allowRemove: false,
         state.event!,
       );
     }
     if(state.draw != null){
-      // Clé : ouvrir un autre tirage (une copie, par exemple) recrée le formulaire.
       return DrawEditForm(
-        key: ObjectKey(state.draw),
+        key: state.formKey,
         allowRemove: false,
         state.draw!,
       );
     }
     if(state.playerGroup != null){
       return PlayerGroupEditForm(
+        key: state.formKey,
         state.playerGroup!,
       );
     }
@@ -61,7 +65,7 @@ class EditDrawerWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cancel = ref.read(editorPodProvider.notifier).close;
+    void cancel() => ref.read(editorPodProvider.notifier).requestClose(context);
     final width = MediaQuery.of(context).size.width;
     return Drawer(
       width: width * 0.5,
@@ -78,7 +82,7 @@ class EditDrawerWidget extends ConsumerWidget {
           ),
           const Divider(height: 1),
           Expanded(
-            child: getEditForm(state, cancel),
+            child: getEditForm(state),
           ),
         ],
       ),

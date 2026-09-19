@@ -235,6 +235,30 @@ abstract class S {
   /// **'View a draw'**
   String get editor_title_draw_view;
 
+  /// No description provided for @editor_dirty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsaved changes'**
+  String get editor_dirty_title;
+
+  /// No description provided for @editor_dirty_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to leave? What was changed will be lost.'**
+  String get editor_dirty_text;
+
+  /// No description provided for @editor_dirty_stay.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get editor_dirty_stay;
+
+  /// No description provided for @editor_dirty_leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get editor_dirty_leave;
+
   /// No description provided for @utils_button_reset.
   ///
   /// In en, this message translates to:

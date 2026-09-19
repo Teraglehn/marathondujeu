@@ -4,6 +4,7 @@ import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/pods/player_groups.dart';
+import 'package:marathondujeu/src/ui/forms/dirty_aware.dart';
 
 class PlayerGroupEditForm extends ConsumerStatefulWidget {
 
@@ -22,8 +23,9 @@ class PlayerGroupEditForm extends ConsumerStatefulWidget {
   ConsumerState<PlayerGroupEditForm> createState() => _PlayerGroupEditFormState();
 }
 
-class _PlayerGroupEditFormState extends ConsumerState<PlayerGroupEditForm> {
+class _PlayerGroupEditFormState extends ConsumerState<PlayerGroupEditForm> implements DirtyAware {
   final _formKey = GlobalKey<FormState>();
+  final _nameKey = GlobalKey<FormFieldState<String>>();
 
   @override
   void initState(){
@@ -49,8 +51,11 @@ class _PlayerGroupEditFormState extends ConsumerState<PlayerGroupEditForm> {
   }
 
   void cancel(){
-    ref.read(editorPodProvider.notifier).close();
+    ref.read(editorPodProvider.notifier).requestClose(context);
   }
+
+  @override
+  bool get isDirty => playerGroupFormIsDirty(widget.group, name: _nameKey.currentState?.value ?? widget.group.name);
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +67,7 @@ class _PlayerGroupEditFormState extends ConsumerState<PlayerGroupEditForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
+              key: _nameKey,
               initialValue: widget.group.name,
               decoration: InputDecoration(
                 labelText: S.of(context).data_playerGroup_name,

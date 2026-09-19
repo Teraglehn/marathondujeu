@@ -33,7 +33,7 @@ final class SelectedEventProvider
   SelectedEvent create() => SelectedEvent();
 }
 
-String _$selectedEventHash() => r'e8a7c565d821e760e3c981b743bb5eae0bc1732f';
+String _$selectedEventHash() => r'b17a7c2fbc763f87dcfa39f42c7883c2771e2c51';
 
 abstract class _$SelectedEvent extends $StreamNotifier<Event?> {
   Stream<Event?> build();

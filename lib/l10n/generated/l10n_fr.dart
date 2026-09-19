@@ -83,6 +83,19 @@ class SFr extends S {
   String get editor_title_draw_view => 'Consulter un tirage';
 
   @override
+  String get editor_dirty_title => 'Modification en cours';
+
+  @override
+  String get editor_dirty_text =>
+      'Voulez-vous quitter ? Ce qui a été modifié sera perdu.';
+
+  @override
+  String get editor_dirty_stay => 'Revenir';
+
+  @override
+  String get editor_dirty_leave => 'Quitter';
+
+  @override
   String get utils_button_reset => 'Réinitialiser';
 
   @override

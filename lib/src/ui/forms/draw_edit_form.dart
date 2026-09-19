@@ -7,6 +7,7 @@ import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
+import 'package:marathondujeu/src/ui/forms/dirty_aware.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/player_group_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/session_multi_selector.dart';
 
@@ -27,8 +28,9 @@ class DrawEditForm extends ConsumerStatefulWidget {
   ConsumerState<DrawEditForm> createState() => _DrawEditFormState();
 }
 
-class _DrawEditFormState extends ConsumerState<DrawEditForm> {
+class _DrawEditFormState extends ConsumerState<DrawEditForm> implements DirtyAware {
   final _formKey = GlobalKey<FormState>();
+  final _nameKey = GlobalKey<FormFieldState<String>>();
   final _minSessionNumberController = TextEditingController();
   final _maxSessionNumberController = TextEditingController();
   final _winnerCountController = TextEditingController();
@@ -151,8 +153,21 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
   }
 
   void cancel(){
-    ref.read(editorPodProvider.notifier).close();
+    ref.read(editorPodProvider.notifier).requestClose(context);
   }
+
+  /// Un tirage effectué ne se modifie pas ; avant le chargement, rien n'a pu l'être.
+  @override
+  bool get isDirty => loaded && !readOnly && drawFormIsDirty(widget.draw,
+    name: _nameKey.currentState?.value ?? widget.draw.name,
+    winnerCount: int.tryParse(_winnerCountController.text),
+    minSessionNumber: int.tryParse(_minSessionNumberController.text),
+    maxSessionNumber: int.tryParse(_maxSessionNumberController.text),
+    excludedGroups: excludedGroups,
+    requiredGroups: requiredGroups,
+    excludedSessions: excludedSessions,
+    requiredSessions: requiredSessions,
+  );
 
   Widget help(BuildContext context, String text) => Padding(
     padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -209,6 +224,7 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      key: _nameKey,
                       initialValue: draw.name,
                       enabled: !readOnly,
                       decoration: InputDecoration(

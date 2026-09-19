@@ -36,6 +36,10 @@
     "editor_title_draw_create": "Create a draw",
     "editor_title_draw_edit": "Edit a draw",
     "editor_title_draw_view": "View a draw",
+    "editor_dirty_title": "Unsaved changes",
+    "editor_dirty_text": "Do you want to leave? What was changed will be lost.",
+    "editor_dirty_stay": "Go back",
+    "editor_dirty_leave": "Leave",
     "utils_button_reset": "Reset",
 
     "utils_icon_filled": "Filled",

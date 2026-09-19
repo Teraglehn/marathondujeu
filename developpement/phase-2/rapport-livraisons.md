@@ -84,3 +84,18 @@ l'événement n'est pas retenu d'un lancement à l'autre ; la redirection vit da
 bouton central, la vue s'ancre donc au milieu de la page ; `SearchSelector` suit désormais
 `initialValue` (le sélecteur de la barre restait vide après un choix depuis la garde) ; le pod
 `SelectedEvent` n'émet plus d'erreur silencieuse quand aucun événement n'est choisi.
+
+## 2026-09-20 — L17
+
+**L17 — Modifications en cours.** Fermer un éditeur latéral sans enregistrer — *Annuler* /
+*Fermer*, la croix, Échap, un clic hors du tiroir — passe par une seule voie,
+`EditorPod.requestClose` : si le formulaire est modifié, modale « Modification en cours »
+*Revenir* / *Quitter* ; sinon fermeture directe. Chaque formulaire expose `isDirty`
+(`DirtyAware`) par une fonction pure qui compare les valeurs à l'écran à l'objet ouvert — une
+valeur remise ne compte pas, un champ numérique vidé compte, les badgeages manuels en attente
+comptent (`forms_dirty_test.dart`). `docs/gestes.md` : TR-3 revu, EV-11, JO-12, GR-9, TI-13.
+*Écarts assumés* : Q1 (a), un formulaire neuf jamais touché se ferme sans question ; le tiroir
+n'est plus le `endDrawer` du `Scaffold` (celui-ci démonte son contenu avant de prévenir), c'est
+un `ModalBarrier` et un `Drawer` posés par `DesktopLayout` ; `requestClose` reçoit un
+`BuildContext` pour la modale ; Échap n'est capté que si le focus est dans le tiroir, et Tab
+n'y est pas piégé.

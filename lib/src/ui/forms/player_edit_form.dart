@@ -12,6 +12,7 @@ import 'package:marathondujeu/src/pods/sessions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
+import 'package:marathondujeu/src/ui/forms/dirty_aware.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class PlayerEditForm extends ConsumerStatefulWidget {
@@ -31,8 +32,9 @@ class PlayerEditForm extends ConsumerStatefulWidget {
   ConsumerState<PlayerEditForm> createState() => _AccountEditFormState();
 }
 
-class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
+class _AccountEditFormState extends ConsumerState<PlayerEditForm> implements DirtyAware {
   final _formKey = GlobalKey<FormState>();
+  final _nameKey = GlobalKey<FormFieldState<String>>();
   final _playerBonusController = TextEditingController();
 
   // Badgeages manuels en attente : écrits à « Enregistrer », jetés à « Annuler ».
@@ -89,8 +91,16 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
   }
 
   void cancel(){
-    ref.read(editorPodProvider.notifier).close();
+    ref.read(editorPodProvider.notifier).requestClose(context);
   }
+
+  @override
+  bool get isDirty => playerFormIsDirty(widget.player,
+    name: _nameKey.currentState?.value ?? widget.player.name,
+    bonus: int.tryParse(_playerBonusController.text),
+    sessionsToAdd: _sessionsToAdd,
+    sessionsToRemove: _sessionsToRemove,
+  );
 
   // Même carte que la liste des sessions ; la bille du numéro passe au vert si le joueur a badgé.
   Widget sessionCard(BuildContext context, Session session) {
@@ -189,6 +199,7 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
+                                key: _nameKey,
                                 initialValue: widget.player.name,
                                 decoration: InputDecoration(
                                   labelText: S.of(context).data_player_name,

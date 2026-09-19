@@ -1,6 +1,6 @@
 # Les gestes de l'application
 
-Dernière mise à jour : 2026-09-19. **Document de référence** (voir `docs/methode-de-travail.md`,
+Dernière mise à jour : 2026-09-20. **Document de référence** (voir `docs/methode-de-travail.md`,
 partie II) : il décrit ce que l'application permet de faire, page par page — la cible telle
 qu'elle est aujourd'hui dans le code livré.
 
@@ -19,14 +19,14 @@ Ce document cite le code ; le code ne le cite pas.
 
 ## Transversal (toutes les pages)
 
-Paramètres : **événement sélectionné** (oui / non) · **éditeur latéral ouvert** (oui / non) ·
+Paramètres : **événement sélectionné** (oui / non) · **éditeur latéral ouvert** (oui / non), **modifié** (oui / non) ·
 **douchette** (branchée ou non — un scan est une frappe clavier terminée par Entrée).
 
 | Geste | Variantes | Effet observable | Test |
 |---|---|---|---|
 | **TR-1** Choisir une page dans le rail de gauche (six entrées : Événements, Joueurs, Groupes, Sessions, Tirages, Générateur de carte) | aucun événement en base | la page s'affiche ; l'entrée est marquée. Aucun événement en base → les cinq entrées hors *Événements* sont **grisées**, infobulle « Créez d'abord un événement » ; arriver sur l'une de ces pages **renvoie** à la liste des événements (`EventSelectedGuard`) | — |
 | **TR-2** Choisir l'événement courant dans la barre du haut (cinq pages : joueurs, groupes, sessions, tirages, générateur) | événement choisi / aucun | toutes les pages travaillent sur cet événement. Aucun → à l'arrivée sur la page, le sélecteur **s'ouvre de lui-même** ; fermé sans choisir, la page affiche « Veuillez sélectionner un événement » et un bouton **« Choisir un événement »** qui le rouvre (`EventSelectedGuard`). Le choix n'est pas retenu d'un lancement à l'autre | — |
-| **TR-3** Fermer l'éditeur latéral : *Annuler* / *Fermer*, la croix du titre, un clic hors du tiroir | modifications faites ou non | rien n'est enregistré ; le tiroir se ferme | — |
+| **TR-3** Fermer l'éditeur latéral : *Annuler* / *Fermer*, la croix du titre, Échap, un clic hors du tiroir | modifié ou non | rien n'est enregistré. Non modifié → le tiroir se ferme. Modifié (une valeur différente de l'ouverture, ou un badgeage manuel en attente ; une valeur remise ne compte pas) → modale « Modification en cours » : *Revenir* garde l'éditeur et la saisie, *Quitter* ferme ; Échap dans la modale = *Revenir* (`EditorPod.requestClose`, `DirtyAware`) | `forms_dirty_test.dart` |
 | **TR-4** Scanner une carte (douchette) sur une page qui écoute (joueurs, groupes, un groupe, sessions, une session) | carte connue / inconnue ; événement sélectionné ou non | selon la page (voir chaque page) ; carte inconnue ou sans événement → rien ne se passe, sans message | — |
 
 ---
@@ -48,6 +48,7 @@ des cartes** (allumée / éteinte) · **sessions existantes** (oui / non).
 | **EV-8** Cocher *Générer les sessions (supprime les sessions existantes)* puis *Enregistrer* | sessions existantes ou non | les sessions sont recréées de début à fin, une toutes les *intervalle* minutes, longues de *durée* ; les badgeages des anciennes sont perdus | — |
 | **EV-9** *Enregistrer* | neuf / existant ; EV-8 coché ou non | l'événement apparaît ou se met à jour dans la liste ; le tiroir se ferme | — |
 | **EV-10** *Supprimer* (dans l'éditeur d'un événement existant) | — | *(non proposé : le tiroir ouvre l'éditeur sans suppression)* | — |
+| **EV-11** *Annuler* (ou TR-3) | modifié ou non — compte : nom, dates, durée, intervalle, protection (EV-4), génération cochée (EV-8) | rien n'est enregistré ; modifié → modale de TR-3 d'abord | `forms_dirty_test.dart` (`eventFormIsDirty`) |
 
 ---
 
@@ -77,7 +78,7 @@ session **passée / à venir**.
 | **JO-9** Allumer *Badgeage manuel* | — | les cartes de session deviennent cliquables (curseur main) | — |
 | **JO-10** Cliquer une session en badgeage manuel | badgée → devient absente ; absente → devient présente ; badgeage manuel éteint → rien | bille verte / grise dans la fiche ; **rien en base avant *Enregistrer*** | service (`setPlayerSessions`) |
 | **JO-11** *Enregistrer* | avec / sans badgeages en attente | nom, bonus, badgeages écrits en une fois ; la carte du joueur et la page session le reflètent ; tiroir fermé | service |
-| **JO-12** *Annuler* | — | rien n'a changé, badgeages en attente jetés | — |
+| **JO-12** *Annuler* (ou TR-3) | modifié ou non — compte : nom, bonus, badgeages manuels en attente | rien n'a changé, badgeages en attente jetés ; modifié → modale de TR-3 d'abord | `forms_dirty_test.dart` (`playerFormIsDirty`) |
 | **JO-13** Lire la fiche : légende présent / absent / badgeage manuel ; aide du bonus | session passée → carte grise | — | — |
 
 ---
@@ -96,6 +97,7 @@ Paramètres : **groupes existants** (n) · **joueurs dans le groupe** (n).
 | **GR-6** Retirer un joueur d'un groupe | — | *(non proposé aujourd'hui)* | — |
 | **GR-7** Supprimer un groupe | — | *(non proposé : le tiroir ouvre l'éditeur sans suppression)* | — |
 | **GR-8** Les groupes « Gagnants du tirage « … » » | créés par un tirage lancé (TI-8) | apparaissent dans la liste comme les autres | service |
+| **GR-9** *Annuler* (ou TR-3) dans l'éditeur d'un groupe | modifié ou non — compte : le nom | rien n'est enregistré ; modifié → modale de TR-3 d'abord | `forms_dirty_test.dart` (`playerGroupFormIsDirty`) |
 
 ---
 
@@ -138,6 +140,7 @@ l'urne** (0 / n) · **groupes existants** · **gagnants** du tirage (0 / n).
 | **TI-10** Cliquer un gagnant | — | la fiche du joueur s'ouvre | — |
 | **TI-11** Rechercher un tirage (champ en haut) | — | *(le champ existe ; la liste ne filtre pas — constat 2026-09-19)* | — |
 | **TI-12** Supprimer un tirage | — | *(non proposé — acté 2026-09-19, L06)* | — |
+| **TI-13** *Annuler* / *Fermer* (ou TR-3) | préparé : compte nom, gagnants, min / max, groupes et sessions choisis ; neuf avec ses défauts → non modifié ; effectué → jamais modifié | rien n'est enregistré ; modifié → modale de TR-3 d'abord | `forms_dirty_test.dart` (`drawFormIsDirty`) |
 
 ---
 

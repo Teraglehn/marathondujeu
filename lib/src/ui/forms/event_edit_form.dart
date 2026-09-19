@@ -8,6 +8,7 @@ import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
+import 'package:marathondujeu/src/ui/forms/dirty_aware.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/datetime_form_field.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 import 'package:uuid/uuid.dart';
@@ -29,8 +30,12 @@ class EventEditForm extends ConsumerStatefulWidget {
   ConsumerState<EventEditForm> createState() => _EventEditFormState();
 }
 
-class _EventEditFormState extends ConsumerState<EventEditForm> {
+class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyAware {
   final _formKey = GlobalKey<FormState>();
+  // Clés des champs à `initialValue` : pour relire leur valeur (`isDirty`).
+  final _nameKey = GlobalKey<FormFieldState<String>>();
+  final _startKey = GlobalKey<FormFieldState<DateTime>>();
+  final _endKey = GlobalKey<FormFieldState<DateTime>>();
   final _sessionTimeMinuteController = TextEditingController();
   final _sessionIntervalMinuteController = TextEditingController();
   bool generateSessions = false;
@@ -69,8 +74,19 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
   }
 
   void cancel(){
-    ref.read(editorPodProvider.notifier).close();
+    ref.read(editorPodProvider.notifier).requestClose(context);
   }
+
+  @override
+  bool get isDirty => eventFormIsDirty(widget.event,
+    name: _nameKey.currentState?.value ?? widget.event.name,
+    start: _startKey.currentState?.value,
+    end: _endKey.currentState?.value,
+    sessionTime: int.tryParse(_sessionTimeMinuteController.text),
+    sessionInterval: int.tryParse(_sessionIntervalMinuteController.text),
+    qrSalt: _qrSalt,
+    generateSessions: generateSessions,
+  );
 
   void setProtected(bool protected) {
     setState(() => _qrSalt = protected ? const Uuid().v4().substring(0, 8) : '');
@@ -181,6 +197,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      key: _nameKey,
                       initialValue: widget.event.name,
                       decoration: InputDecoration(
                         labelText: S.of(context).data_event_name,
@@ -200,6 +217,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DateTimeFormField(
+                      key: _startKey,
                       initialValue: widget.event.startDateTime,
                       label: S.of(context).data_event_datetime_start,
                       validator: (value) {
@@ -216,6 +234,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DateTimeFormField(
+                      key: _endKey,
                       initialValue: widget.event.endDateTime,
                       label: S.of(context).data_event_datetime_end,
                       validator: (value) {
