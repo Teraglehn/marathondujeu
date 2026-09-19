@@ -10,20 +10,20 @@ part of 'selected_player_group.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(SelectedPlayerGroup)
-const selectedPlayerGroupProvider = SelectedPlayerGroupProvider._();
+final selectedPlayerGroupProvider = SelectedPlayerGroupProvider._();
 
 final class SelectedPlayerGroupProvider
     extends $StreamNotifierProvider<SelectedPlayerGroup, PlayerGroup?> {
-  const SelectedPlayerGroupProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'selectedPlayerGroupProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  SelectedPlayerGroupProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'selectedPlayerGroupProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$selectedPlayerGroupHash();
@@ -41,13 +41,15 @@ abstract class _$SelectedPlayerGroup extends $StreamNotifier<PlayerGroup?> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<AsyncValue<PlayerGroup?>, PlayerGroup?>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<PlayerGroup?>, PlayerGroup?>,
-        AsyncValue<PlayerGroup?>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<PlayerGroup?>, PlayerGroup?>,
+              AsyncValue<PlayerGroup?>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
   }
 }

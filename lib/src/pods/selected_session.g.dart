@@ -10,20 +10,20 @@ part of 'selected_session.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(SelectedSession)
-const selectedSessionProvider = SelectedSessionProvider._();
+final selectedSessionProvider = SelectedSessionProvider._();
 
 final class SelectedSessionProvider
     extends $StreamNotifierProvider<SelectedSession, Session?> {
-  const SelectedSessionProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'selectedSessionProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  SelectedSessionProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'selectedSessionProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$selectedSessionHash();
@@ -40,13 +40,15 @@ abstract class _$SelectedSession extends $StreamNotifier<Session?> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<AsyncValue<Session?>, Session?>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<Session?>, Session?>,
-        AsyncValue<Session?>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<Session?>, Session?>,
+              AsyncValue<Session?>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
   }
 }

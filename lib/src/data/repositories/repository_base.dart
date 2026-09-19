@@ -94,6 +94,8 @@ abstract class RepositoryBase<T> {
       filters.addAll([...getFiltersOnEvent(searchCriteria.event!)]);
     }
 
+    // Marqué expérimental par isar_community 3.3.2 ; seule voie pour un filtre dynamique.
+    // ignore: experimental_member_use
     return collection.buildQuery<T>(
       filter: FilterGroup.and(filters),
       sortBy: getSortProperties(),

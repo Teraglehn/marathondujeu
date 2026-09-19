@@ -10,19 +10,19 @@ part of 'main_pod.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(MainPod)
-const mainPodProvider = MainPodProvider._();
+final mainPodProvider = MainPodProvider._();
 
 final class MainPodProvider extends $NotifierProvider<MainPod, MainState> {
-  const MainPodProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'mainPodProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  MainPodProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'mainPodProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$mainPodHash();
@@ -47,10 +47,15 @@ abstract class _$MainPod extends $Notifier<MainState> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<MainState, MainState>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<MainState, MainState>, MainState, Object?, Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<MainState, MainState>,
+              MainState,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
   }
 }

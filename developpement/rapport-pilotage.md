@@ -10,12 +10,13 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Attaquer **L08** (phase 1). Rapports de L04, L05, L06 à rédiger sur demande, dans `lots/`.
+Phase 1 sans lot ouvert : la clore, ou y rattacher autre chose. Rapports de L04, L05, L06 à
+rédiger sur demande. Rapports de L04, L05, L06 à rédiger sur demande, dans `lots/`.
 
 ## Phases
 
 **Phase 1 — remise en état du dépôt**, ouverte le 2026-09-19. L01, L02, L03 livrés le
-2026-09-19, L07 livré le 2026-09-19 ; L08 ouvert. Objet et critère d'appartenance dans `developpement/phase-1/README.md`,
+2026-09-19, L07 et L08 livrés le 2026-09-19 ; aucun lot ouvert. Objet et critère d'appartenance dans `developpement/phase-1/README.md`,
 livraisons dans `developpement/phase-1/rapport-livraisons.md`.
 
 L04, L05 et L06 ne sont rattachés à aucune phase : leurs rapports naîtront dans `lots/`.
@@ -30,7 +31,6 @@ Les numéros ne sont **jamais réattribués**.
 | L04 | Liste des gagnants d'un tirage : retour à la ligne et défilement | — | à faire | à rédiger |
 | L05 | Génération des cartes joueur paramétrable depuis l'interface | — | à faire | à rédiger |
 | L06 | Copier un tirage : reprise du paramétrage, gagnants précédents exclus | — | à faire | à rédiger |
-| L08 | Montée de Flutter et des dépendances restées en retard | 1 | à faire | `phase-1/L08-montee-flutter-et-dependances.md` — après L07 |
 
 ### Notes pour la rédaction des rapports
 

@@ -10,20 +10,20 @@ part of 'selected_event.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(SelectedEvent)
-const selectedEventProvider = SelectedEventProvider._();
+final selectedEventProvider = SelectedEventProvider._();
 
 final class SelectedEventProvider
     extends $StreamNotifierProvider<SelectedEvent, Event?> {
-  const SelectedEventProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'selectedEventProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  SelectedEventProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'selectedEventProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$selectedEventHash();
@@ -40,13 +40,15 @@ abstract class _$SelectedEvent extends $StreamNotifier<Event?> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<AsyncValue<Event?>, Event?>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<Event?>, Event?>,
-        AsyncValue<Event?>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<Event?>, Event?>,
+              AsyncValue<Event?>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
   }
 }

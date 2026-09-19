@@ -27,17 +27,14 @@ const DrawSchema = CollectionSchema(
       name: r'minSessionNumber',
       type: IsarType.long,
     ),
-    r'name': PropertySchema(
-      id: 2,
-      name: r'name',
-      type: IsarType.string,
-    ),
+    r'name': PropertySchema(id: 2, name: r'name', type: IsarType.string),
     r'winnerCount': PropertySchema(
       id: 3,
       name: r'winnerCount',
       type: IsarType.long,
-    )
+    ),
   },
+
   estimateSize: _drawEstimateSize,
   serialize: _drawSerialize,
   deserialize: _drawDeserialize,
@@ -81,13 +78,14 @@ const DrawSchema = CollectionSchema(
       name: r'event',
       target: r'Event',
       single: true,
-    )
+    ),
   },
   embeddedSchemas: {},
+
   getId: _drawGetId,
   getLinks: _drawGetLinks,
   attach: _drawAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _drawEstimateSize(
@@ -158,20 +156,36 @@ List<IsarLinkBase<dynamic>> _drawGetLinks(Draw object) {
     object.excludedPlayers,
     object.requiredPlayers,
     object.winners,
-    object.event
+    object.event,
   ];
 }
 
 void _drawAttach(IsarCollection<dynamic> col, Id id, Draw object) {
   object.id = id;
-  object.excludedSessions
-      .attach(col, col.isar.collection<Session>(), r'excludedSessions', id);
-  object.requiredSessions
-      .attach(col, col.isar.collection<Session>(), r'requiredSessions', id);
-  object.excludedPlayers
-      .attach(col, col.isar.collection<Player>(), r'excludedPlayers', id);
-  object.requiredPlayers
-      .attach(col, col.isar.collection<Player>(), r'requiredPlayers', id);
+  object.excludedSessions.attach(
+    col,
+    col.isar.collection<Session>(),
+    r'excludedSessions',
+    id,
+  );
+  object.requiredSessions.attach(
+    col,
+    col.isar.collection<Session>(),
+    r'requiredSessions',
+    id,
+  );
+  object.excludedPlayers.attach(
+    col,
+    col.isar.collection<Player>(),
+    r'excludedPlayers',
+    id,
+  );
+  object.requiredPlayers.attach(
+    col,
+    col.isar.collection<Player>(),
+    r'requiredPlayers',
+    id,
+  );
   object.winners.attach(col, col.isar.collection<DrawWinner>(), r'winners', id);
   object.event.attach(col, col.isar.collection<Event>(), r'event', id);
 }
@@ -187,10 +201,7 @@ extension DrawQueryWhereSort on QueryBuilder<Draw, Draw, QWhere> {
 extension DrawQueryWhere on QueryBuilder<Draw, Draw, QWhereClause> {
   QueryBuilder<Draw, Draw, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
@@ -216,8 +227,10 @@ extension DrawQueryWhere on QueryBuilder<Draw, Draw, QWhereClause> {
     });
   }
 
-  QueryBuilder<Draw, Draw, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Draw, Draw, QAfterWhereClause> idGreaterThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -225,8 +238,10 @@ extension DrawQueryWhere on QueryBuilder<Draw, Draw, QWhereClause> {
     });
   }
 
-  QueryBuilder<Draw, Draw, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Draw, Draw, QAfterWhereClause> idLessThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -241,12 +256,14 @@ extension DrawQueryWhere on QueryBuilder<Draw, Draw, QWhereClause> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -254,10 +271,9 @@ extension DrawQueryWhere on QueryBuilder<Draw, Draw, QWhereClause> {
 extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
   QueryBuilder<Draw, Draw, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
@@ -266,11 +282,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -279,11 +297,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -294,23 +314,25 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> maxSessionNumberEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'maxSessionNumber',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'maxSessionNumber', value: value),
+      );
     });
   }
 
@@ -319,11 +341,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'maxSessionNumber',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'maxSessionNumber',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -332,11 +356,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'maxSessionNumber',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'maxSessionNumber',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -347,23 +373,25 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'maxSessionNumber',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'maxSessionNumber',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> minSessionNumberEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'minSessionNumber',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'minSessionNumber', value: value),
+      );
     });
   }
 
@@ -372,11 +400,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'minSessionNumber',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'minSessionNumber',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -385,11 +415,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'minSessionNumber',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'minSessionNumber',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -400,13 +432,15 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'minSessionNumber',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'minSessionNumber',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
@@ -415,11 +449,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -429,12 +465,14 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -444,12 +482,14 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -461,14 +501,16 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'name',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -477,11 +519,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -490,61 +534,69 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameContains(String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameMatches(String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> nameMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'name',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'name', value: ''),
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'name', value: ''),
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> winnerCountEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'winnerCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'winnerCount', value: value),
+      );
     });
   }
 
@@ -553,11 +605,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'winnerCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'winnerCount',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -566,11 +620,13 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'winnerCount',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'winnerCount',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -581,13 +637,15 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'winnerCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'winnerCount',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -596,14 +654,16 @@ extension DrawQueryObject on QueryBuilder<Draw, Draw, QFilterCondition> {}
 
 extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedSessions(
-      FilterQuery<Session> q) {
+    FilterQuery<Session> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'excludedSessions');
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedSessionsLengthEqualTo(
-      int length) {
+    int length,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'excludedSessions', length, true, length, true);
     });
@@ -622,23 +682,22 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition>
-      excludedSessionsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
+  excludedSessionsLengthLessThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'excludedSessions', 0, true, length, include);
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition>
-      excludedSessionsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  excludedSessionsLengthGreaterThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'excludedSessions', length, include, 999999, true);
+        r'excludedSessions',
+        length,
+        include,
+        999999,
+        true,
+      );
     });
   }
 
@@ -650,19 +709,26 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'excludedSessions', lower, includeLower, upper, includeUpper);
+        r'excludedSessions',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredSessions(
-      FilterQuery<Session> q) {
+    FilterQuery<Session> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'requiredSessions');
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredSessionsLengthEqualTo(
-      int length) {
+    int length,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'requiredSessions', length, true, length, true);
     });
@@ -681,23 +747,22 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition>
-      requiredSessionsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
+  requiredSessionsLengthLessThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'requiredSessions', 0, true, length, include);
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition>
-      requiredSessionsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  requiredSessionsLengthGreaterThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'requiredSessions', length, include, 999999, true);
+        r'requiredSessions',
+        length,
+        include,
+        999999,
+        true,
+      );
     });
   }
 
@@ -709,19 +774,26 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'requiredSessions', lower, includeLower, upper, includeUpper);
+        r'requiredSessions',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedPlayers(
-      FilterQuery<Player> q) {
+    FilterQuery<Player> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'excludedPlayers');
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedPlayersLengthEqualTo(
-      int length) {
+    int length,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'excludedPlayers', length, true, length, true);
     });
@@ -749,13 +821,15 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition>
-      excludedPlayersLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  excludedPlayersLengthGreaterThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'excludedPlayers', length, include, 999999, true);
+        r'excludedPlayers',
+        length,
+        include,
+        999999,
+        true,
+      );
     });
   }
 
@@ -767,19 +841,26 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'excludedPlayers', lower, includeLower, upper, includeUpper);
+        r'excludedPlayers',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredPlayers(
-      FilterQuery<Player> q) {
+    FilterQuery<Player> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'requiredPlayers');
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredPlayersLengthEqualTo(
-      int length) {
+    int length,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'requiredPlayers', length, true, length, true);
     });
@@ -807,13 +888,15 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition>
-      requiredPlayersLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  requiredPlayersLengthGreaterThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'requiredPlayers', length, include, 999999, true);
+        r'requiredPlayers',
+        length,
+        include,
+        999999,
+        true,
+      );
     });
   }
 
@@ -825,19 +908,26 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'requiredPlayers', lower, includeLower, upper, includeUpper);
+        r'requiredPlayers',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> winners(
-      FilterQuery<DrawWinner> q) {
+    FilterQuery<DrawWinner> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'winners');
     });
   }
 
   QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersLengthEqualTo(
-      int length) {
+    int length,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'winners', length, true, length, true);
     });
@@ -881,7 +971,12 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'winners', lower, includeLower, upper, includeUpper);
+        r'winners',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
@@ -1023,8 +1118,9 @@ extension DrawQueryWhereDistinct on QueryBuilder<Draw, Draw, QDistinct> {
     });
   }
 
-  QueryBuilder<Draw, Draw, QDistinct> distinctByName(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Draw, Draw, QDistinct> distinctByName({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });

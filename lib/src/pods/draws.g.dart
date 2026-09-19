@@ -10,18 +10,19 @@ part of 'draws.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(Draws)
-const drawsProvider = DrawsFamily._();
+final drawsProvider = DrawsFamily._();
 
 final class DrawsProvider extends $StreamNotifierProvider<Draws, List<Draw>> {
-  const DrawsProvider._(
-      {required DrawsFamily super.from, required int? super.argument})
-      : super(
-          retry: null,
-          name: r'drawsProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  DrawsProvider._({
+    required DrawsFamily super.from,
+    required int? super.argument,
+  }) : super(
+         retry: null,
+         name: r'drawsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$drawsHash();
@@ -52,20 +53,23 @@ String _$drawsHash() => r'db348d070e9853b7968bf6b860bd1149f8595b16';
 
 final class DrawsFamily extends $Family
     with
-        $ClassFamilyOverride<Draws, AsyncValue<List<Draw>>, List<Draw>,
-            Stream<List<Draw>>, int?> {
-  const DrawsFamily._()
-      : super(
-          retry: null,
-          name: r'drawsProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+        $ClassFamilyOverride<
+          Draws,
+          AsyncValue<List<Draw>>,
+          List<Draw>,
+          Stream<List<Draw>>,
+          int?
+        > {
+  DrawsFamily._()
+    : super(
+        retry: null,
+        name: r'drawsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  DrawsProvider call({
-    int? eventId,
-  }) =>
+  DrawsProvider call({int? eventId}) =>
       DrawsProvider._(argument: eventId, from: this);
 
   @override
@@ -76,21 +80,19 @@ abstract class _$Draws extends $StreamNotifier<List<Draw>> {
   late final _$args = ref.$arg as int?;
   int? get eventId => _$args;
 
-  Stream<List<Draw>> build({
-    int? eventId,
-  });
+  Stream<List<Draw>> build({int? eventId});
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(
-      eventId: _$args,
-    );
     final ref = this.ref as $Ref<AsyncValue<List<Draw>>, List<Draw>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<List<Draw>>, List<Draw>>,
-        AsyncValue<List<Draw>>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<Draw>>, List<Draw>>,
+              AsyncValue<List<Draw>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, () => build(eventId: _$args));
   }
 }

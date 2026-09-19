@@ -42,7 +42,7 @@ requis / exclus), `DrawWinner`.
 
 | Rôle | Choix |
 |---|---|
-| UI | Flutter 3.35 (stable), Material 3, `go_router` + `go_router_builder` |
+| UI | Flutter 3.47 (stable), Material 3, `go_router` + `go_router_builder` |
 | État | Riverpod 3 avec `riverpod_generator` (les « pods ») |
 | Données | Isar 3 via le fork `isar_community` 3.3 — base locale, un fichier par machine, dans `%APPDATA%\com.saroc\marathondujeu` |
 | Modèles immuables | `freezed` |
@@ -82,8 +82,11 @@ après `build_runner`, ils font partie du commit.
   Flutter pose des liens symboliques vers le cache pub ; un partage réseau les refuse, et un chemin
   long fait échouer MSBuild (limite 260 caractères).
 - Isar 3 vient du fork `isar_community` sur pub.dev ; l'original et son hébergeur sont morts.
-  `isar_community_generator` 3.3.2 exige `analyzer` 8, hors de portée de Dart 3.9 : rester en
-  3.3.0 tant que Flutter n'est pas monté.
+  `isar_community_generator` 3.3.2 plafonne `analyzer` < 11 : c'est lui qui retient riverpod
+  (3.1 / annotation 4.0), freezed (3.2), build_runner (2.15) en deçà de leurs dernières versions.
+- Pas de `custom_lint` ni `riverpod_lint` : Dart 3.13 déprécie leur système de plugin et
+  `custom_lint` 0.8.1 n'a pas suivi *(retirés le 2026-09-19, L08)*. À remettre quand la chaîne
+  le permettra.
 - Les tests ouvrent une vraie base Isar dans un dossier temporaire, avec la DLL livrée par
   `isar_community_flutter_libs` (`test/isar_test_support.dart`). Pas de réseau.
 

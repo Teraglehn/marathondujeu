@@ -22,21 +22,9 @@ const EventSchema = CollectionSchema(
       name: r'endDateTime',
       type: IsarType.dateTime,
     ),
-    r'idPosX': PropertySchema(
-      id: 1,
-      name: r'idPosX',
-      type: IsarType.long,
-    ),
-    r'idPosY': PropertySchema(
-      id: 2,
-      name: r'idPosY',
-      type: IsarType.long,
-    ),
-    r'name': PropertySchema(
-      id: 3,
-      name: r'name',
-      type: IsarType.string,
-    ),
+    r'idPosX': PropertySchema(id: 1, name: r'idPosX', type: IsarType.long),
+    r'idPosY': PropertySchema(id: 2, name: r'idPosY', type: IsarType.long),
+    r'name': PropertySchema(id: 3, name: r'name', type: IsarType.string),
     r'playerCardBackgroundImage': PropertySchema(
       id: 4,
       name: r'playerCardBackgroundImage',
@@ -67,11 +55,7 @@ const EventSchema = CollectionSchema(
       name: r'qrCodeSize',
       type: IsarType.long,
     ),
-    r'qrSalt': PropertySchema(
-      id: 10,
-      name: r'qrSalt',
-      type: IsarType.string,
-    ),
+    r'qrSalt': PropertySchema(id: 10, name: r'qrSalt', type: IsarType.string),
     r'sessionIntervalMinutes': PropertySchema(
       id: 11,
       name: r'sessionIntervalMinutes',
@@ -86,8 +70,9 @@ const EventSchema = CollectionSchema(
       id: 13,
       name: r'startDateTime',
       type: IsarType.dateTime,
-    )
+    ),
   },
+
   estimateSize: _eventEstimateSize,
   serialize: _eventSerialize,
   deserialize: _eventDeserialize,
@@ -108,13 +93,14 @@ const EventSchema = CollectionSchema(
       target: r'Session',
       single: false,
       linkName: r'event',
-    )
+    ),
   },
   embeddedSchemas: {},
+
   getId: _eventGetId,
   getLinks: _eventGetLinks,
   attach: _eventAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _eventEstimateSize(
@@ -246,10 +232,7 @@ extension EventQueryWhereSort on QueryBuilder<Event, Event, QWhere> {
 extension EventQueryWhere on QueryBuilder<Event, Event, QWhereClause> {
   QueryBuilder<Event, Event, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
@@ -275,8 +258,10 @@ extension EventQueryWhere on QueryBuilder<Event, Event, QWhereClause> {
     });
   }
 
-  QueryBuilder<Event, Event, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Event, Event, QAfterWhereClause> idGreaterThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -284,8 +269,10 @@ extension EventQueryWhere on QueryBuilder<Event, Event, QWhereClause> {
     });
   }
 
-  QueryBuilder<Event, Event, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Event, Event, QAfterWhereClause> idLessThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -300,24 +287,26 @@ extension EventQueryWhere on QueryBuilder<Event, Event, QWhereClause> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
 
 extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   QueryBuilder<Event, Event, QAfterFilterCondition> endDateTimeEqualTo(
-      DateTime value) {
+    DateTime value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'endDateTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'endDateTime', value: value),
+      );
     });
   }
 
@@ -326,11 +315,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'endDateTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'endDateTime',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -339,11 +330,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'endDateTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'endDateTime',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -354,22 +347,23 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'endDateTime',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'endDateTime',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
@@ -378,11 +372,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -391,11 +387,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -406,22 +404,23 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> idPosXEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'idPosX',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idPosX', value: value),
+      );
     });
   }
 
@@ -430,11 +429,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'idPosX',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idPosX',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -443,11 +444,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'idPosX',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idPosX',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -458,22 +461,23 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'idPosX',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idPosX',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> idPosYEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'idPosY',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idPosY', value: value),
+      );
     });
   }
 
@@ -482,11 +486,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'idPosY',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idPosY',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -495,11 +501,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'idPosY',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idPosY',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -510,13 +518,15 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'idPosY',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idPosY',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
@@ -525,11 +535,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -539,12 +551,14 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -554,12 +568,14 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -571,14 +587,16 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'name',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -587,11 +605,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -600,130 +620,143 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> nameContains(String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Event, Event, QAfterFilterCondition> nameContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> nameMatches(String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Event, Event, QAfterFilterCondition> nameMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'name',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'name', value: ''),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'name', value: ''),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageIsNull() {
+  playerCardBackgroundImageIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'playerCardBackgroundImage',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'playerCardBackgroundImage'),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageIsNotNull() {
+  playerCardBackgroundImageIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'playerCardBackgroundImage',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'playerCardBackgroundImage'),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageElementEqualTo(int value) {
+  playerCardBackgroundImageElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'playerCardBackgroundImage',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'playerCardBackgroundImage',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageElementGreaterThan(
+  playerCardBackgroundImageElementGreaterThan(
     int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'playerCardBackgroundImage',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'playerCardBackgroundImage',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageElementLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  playerCardBackgroundImageElementLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'playerCardBackgroundImage',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'playerCardBackgroundImage',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageElementBetween(
+  playerCardBackgroundImageElementBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'playerCardBackgroundImage',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'playerCardBackgroundImage',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageLengthEqualTo(int length) {
+  playerCardBackgroundImageLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'playerCardBackgroundImage',
@@ -736,20 +769,14 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageIsEmpty() {
+  playerCardBackgroundImageIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'playerCardBackgroundImage',
-        0,
-        true,
-        0,
-        true,
-      );
+      return query.listLength(r'playerCardBackgroundImage', 0, true, 0, true);
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageIsNotEmpty() {
+  playerCardBackgroundImageIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'playerCardBackgroundImage',
@@ -762,10 +789,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
+  playerCardBackgroundImageLengthLessThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'playerCardBackgroundImage',
@@ -778,7 +802,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageLengthGreaterThan(
+  playerCardBackgroundImageLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
@@ -794,7 +818,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      playerCardBackgroundImageLengthBetween(
+  playerCardBackgroundImageLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -812,12 +836,12 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> playerCardHeightEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'playerCardHeight',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'playerCardHeight', value: value),
+      );
     });
   }
 
@@ -826,11 +850,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'playerCardHeight',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'playerCardHeight',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -839,11 +865,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'playerCardHeight',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'playerCardHeight',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -854,23 +882,25 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'playerCardHeight',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'playerCardHeight',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'playerCardWidth',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'playerCardWidth', value: value),
+      );
     });
   }
 
@@ -879,11 +909,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'playerCardWidth',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'playerCardWidth',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -892,11 +924,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'playerCardWidth',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'playerCardWidth',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -907,23 +941,25 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'playerCardWidth',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'playerCardWidth',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'qrCodePosX',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'qrCodePosX', value: value),
+      );
     });
   }
 
@@ -932,11 +968,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'qrCodePosX',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'qrCodePosX',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -945,11 +983,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'qrCodePosX',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'qrCodePosX',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -960,23 +1000,25 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'qrCodePosX',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'qrCodePosX',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'qrCodePosY',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'qrCodePosY', value: value),
+      );
     });
   }
 
@@ -985,11 +1027,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'qrCodePosY',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'qrCodePosY',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -998,11 +1042,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'qrCodePosY',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'qrCodePosY',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -1013,23 +1059,25 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'qrCodePosY',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'qrCodePosY',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'qrCodeSize',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'qrCodeSize', value: value),
+      );
     });
   }
 
@@ -1038,11 +1086,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'qrCodeSize',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'qrCodeSize',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -1051,11 +1101,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'qrCodeSize',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'qrCodeSize',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -1066,13 +1118,15 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'qrCodeSize',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'qrCodeSize',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
@@ -1081,11 +1135,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'qrSalt',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'qrSalt',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1095,12 +1151,14 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'qrSalt',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'qrSalt',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1110,12 +1168,14 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'qrSalt',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'qrSalt',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1127,14 +1187,16 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'qrSalt',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'qrSalt',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1143,11 +1205,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'qrSalt',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'qrSalt',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1156,132 +1220,140 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'qrSalt',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'qrSalt',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> qrSaltContains(String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrSaltContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'qrSalt',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'qrSalt',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrSaltMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'qrSalt',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'qrSalt',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrSaltIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'qrSalt',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'qrSalt', value: ''),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrSaltIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'qrSalt',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'qrSalt', value: ''),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      sessionIntervalMinutesEqualTo(int value) {
+  sessionIntervalMinutesEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'sessionIntervalMinutes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'sessionIntervalMinutes',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      sessionIntervalMinutesGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  sessionIntervalMinutesGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'sessionIntervalMinutes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'sessionIntervalMinutes',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      sessionIntervalMinutesLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  sessionIntervalMinutesLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'sessionIntervalMinutes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'sessionIntervalMinutes',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      sessionIntervalMinutesBetween(
+  sessionIntervalMinutesBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'sessionIntervalMinutes',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'sessionIntervalMinutes',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> sessionTimeMinutesEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'sessionTimeMinutes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'sessionTimeMinutes', value: value),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition>
-      sessionTimeMinutesGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  sessionTimeMinutesGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'sessionTimeMinutes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'sessionTimeMinutes',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -1290,11 +1362,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'sessionTimeMinutes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'sessionTimeMinutes',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -1305,23 +1379,25 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'sessionTimeMinutes',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'sessionTimeMinutes',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> startDateTimeEqualTo(
-      DateTime value) {
+    DateTime value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'startDateTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'startDateTime', value: value),
+      );
     });
   }
 
@@ -1330,11 +1406,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'startDateTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'startDateTime',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -1343,11 +1421,13 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'startDateTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'startDateTime',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -1358,13 +1438,15 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'startDateTime',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'startDateTime',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -1373,14 +1455,16 @@ extension EventQueryObject on QueryBuilder<Event, Event, QFilterCondition> {}
 
 extension EventQueryLinks on QueryBuilder<Event, Event, QFilterCondition> {
   QueryBuilder<Event, Event, QAfterFilterCondition> players(
-      FilterQuery<Player> q) {
+    FilterQuery<Player> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'players');
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> playersLengthEqualTo(
-      int length) {
+    int length,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'players', length, true, length, true);
     });
@@ -1424,19 +1508,26 @@ extension EventQueryLinks on QueryBuilder<Event, Event, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'players', lower, includeLower, upper, includeUpper);
+        r'players',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> sessions(
-      FilterQuery<Session> q) {
+    FilterQuery<Session> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'sessions');
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> sessionsLengthEqualTo(
-      int length) {
+    int length,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'sessions', length, true, length, true);
     });
@@ -1480,7 +1571,12 @@ extension EventQueryLinks on QueryBuilder<Event, Event, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'sessions', lower, includeLower, upper, includeUpper);
+        r'sessions',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 }
@@ -1832,8 +1928,9 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
-  QueryBuilder<Event, Event, QDistinct> distinctByName(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Event, Event, QDistinct> distinctByName({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });
@@ -1875,8 +1972,9 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
-  QueryBuilder<Event, Event, QDistinct> distinctByQrSalt(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Event, Event, QDistinct> distinctByQrSalt({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'qrSalt', caseSensitive: caseSensitive);
     });
@@ -1933,7 +2031,7 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
   }
 
   QueryBuilder<Event, List<int>?, QQueryOperations>
-      playerCardBackgroundImageProperty() {
+  playerCardBackgroundImageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'playerCardBackgroundImage');
     });

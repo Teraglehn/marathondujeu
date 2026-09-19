@@ -10,20 +10,20 @@ part of 'editor_pod.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(EditorPod)
-const editorPodProvider = EditorPodProvider._();
+final editorPodProvider = EditorPodProvider._();
 
 final class EditorPodProvider
     extends $NotifierProvider<EditorPod, EditorState> {
-  const EditorPodProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'editorPodProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  EditorPodProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'editorPodProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$editorPodHash();
@@ -48,10 +48,15 @@ abstract class _$EditorPod extends $Notifier<EditorState> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<EditorState, EditorState>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<EditorState, EditorState>, EditorState, Object?, Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<EditorState, EditorState>,
+              EditorState,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
   }
 }

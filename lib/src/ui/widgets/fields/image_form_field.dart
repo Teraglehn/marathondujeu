@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:isar_community/isar.dart';
@@ -27,13 +26,12 @@ class ImageFormField extends FormField<List<byte>> {
   }) : super(
     builder: (state) => InkWell(
       onTap: () async {
-        FilePickerResult? result = await FilePicker.platform.pickFiles(
+        final file = await FilePicker.pickFile(
           type: FileType.image,
-          allowMultiple: false,
-          lockParentWindow: true
+          windowsOptions: const WindowsOptions(lockParentWindow: true),
         );
-        if (result != null) {
-          state.didChange(await File(result.files.first.path!).readAsBytes());
+        if (file != null) {
+          state.didChange(await file.readAsBytes());
           if(onChanged != null){
             onChanged(state.value);
           }

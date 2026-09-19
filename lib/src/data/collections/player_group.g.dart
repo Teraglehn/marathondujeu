@@ -17,12 +17,9 @@ const PlayerGroupSchema = CollectionSchema(
   name: r'PlayerGroup',
   id: 3800216191517184706,
   properties: {
-    r'name': PropertySchema(
-      id: 0,
-      name: r'name',
-      type: IsarType.string,
-    )
+    r'name': PropertySchema(id: 0, name: r'name', type: IsarType.string),
   },
+
   estimateSize: _playerGroupEstimateSize,
   serialize: _playerGroupSerialize,
   deserialize: _playerGroupDeserialize,
@@ -41,13 +38,14 @@ const PlayerGroupSchema = CollectionSchema(
       name: r'event',
       target: r'Event',
       single: true,
-    )
+    ),
   },
   embeddedSchemas: {},
+
   getId: _playerGroupGetId,
   getLinks: _playerGroupGetLinks,
   attach: _playerGroupAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _playerGroupEstimateSize(
@@ -104,7 +102,10 @@ List<IsarLinkBase<dynamic>> _playerGroupGetLinks(PlayerGroup object) {
 }
 
 void _playerGroupAttach(
-    IsarCollection<dynamic> col, Id id, PlayerGroup object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  PlayerGroup object,
+) {
   object.id = id;
   object.players.attach(col, col.isar.collection<Player>(), r'players', id);
   object.event.attach(col, col.isar.collection<Event>(), r'event', id);
@@ -123,15 +124,13 @@ extension PlayerGroupQueryWhere
     on QueryBuilder<PlayerGroup, PlayerGroup, QWhereClause> {
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterWhereClause> idNotEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -153,8 +152,10 @@ extension PlayerGroupQueryWhere
     });
   }
 
-  QueryBuilder<PlayerGroup, PlayerGroup, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterWhereClause> idGreaterThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -162,8 +163,10 @@ extension PlayerGroupQueryWhere
     });
   }
 
-  QueryBuilder<PlayerGroup, PlayerGroup, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<PlayerGroup, PlayerGroup, QAfterWhereClause> idLessThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -178,12 +181,14 @@ extension PlayerGroupQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -191,12 +196,12 @@ extension PlayerGroupQueryWhere
 extension PlayerGroupQueryFilter
     on QueryBuilder<PlayerGroup, PlayerGroup, QFilterCondition> {
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> idEqualTo(
-      Id value) {
+    Id value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
@@ -205,11 +210,13 @@ extension PlayerGroupQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -218,11 +225,13 @@ extension PlayerGroupQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -233,13 +242,15 @@ extension PlayerGroupQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
@@ -248,11 +259,13 @@ extension PlayerGroupQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -262,12 +275,14 @@ extension PlayerGroupQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -277,12 +292,14 @@ extension PlayerGroupQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -294,14 +311,16 @@ extension PlayerGroupQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'name',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -310,11 +329,13 @@ extension PlayerGroupQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -323,54 +344,60 @@ extension PlayerGroupQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> nameContains(
-      String value,
-      {bool caseSensitive = true}) {
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'name',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> nameMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'name',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'name', value: ''),
+      );
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition>
-      nameIsNotEmpty() {
+  nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'name', value: ''),
+      );
     });
   }
 }
@@ -381,55 +408,50 @@ extension PlayerGroupQueryObject
 extension PlayerGroupQueryLinks
     on QueryBuilder<PlayerGroup, PlayerGroup, QFilterCondition> {
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> players(
-      FilterQuery<Player> q) {
+    FilterQuery<Player> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'players');
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition>
-      playersLengthEqualTo(int length) {
+  playersLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'players', length, true, length, true);
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition>
-      playersIsEmpty() {
+  playersIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'players', 0, true, 0, true);
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition>
-      playersIsNotEmpty() {
+  playersIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'players', 0, false, 999999, true);
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition>
-      playersLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
+  playersLengthLessThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'players', 0, true, length, include);
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition>
-      playersLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  playersLengthGreaterThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'players', length, include, 999999, true);
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition>
-      playersLengthBetween(
+  playersLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -437,12 +459,18 @@ extension PlayerGroupQueryLinks
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'players', lower, includeLower, upper, includeUpper);
+        r'players',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
   QueryBuilder<PlayerGroup, PlayerGroup, QAfterFilterCondition> event(
-      FilterQuery<Event> q) {
+    FilterQuery<Event> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'event');
     });
@@ -499,8 +527,9 @@ extension PlayerGroupQuerySortThenBy
 
 extension PlayerGroupQueryWhereDistinct
     on QueryBuilder<PlayerGroup, PlayerGroup, QDistinct> {
-  QueryBuilder<PlayerGroup, PlayerGroup, QDistinct> distinctByName(
-      {bool caseSensitive = true}) {
+  QueryBuilder<PlayerGroup, PlayerGroup, QDistinct> distinctByName({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });

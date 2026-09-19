@@ -29,3 +29,12 @@ initiale ; la copie de tirage (`createDrawFromDraw`) est sortie du lot → L06.
 converties (même échelle 0–255), types de retour annotés (`theme.dart`, `Debouncer.run`,
 `IconSelector.itemBuilder`), `BuildContext` protégé après `await`. *Écart assumé* : un seul
 changement de comportement, décidé (Q1 b) — annuler la date n'ouvre plus le sélecteur d'heure.
+
+## 2026-09-19 — L08
+
+**L08 — Montée de Flutter et des dépendances.** Flutter 3.47.5 (Dart 3.13), `flutter pub upgrade
+--major-versions` : isar_community 3.3.2, riverpod 3.1 / annotation et generator 4.0, go_router 18,
+google_fonts 8, file_picker 13, flex_color_picker 4, etc. `pubspec.yaml` sans `any`, carets sur
+les versions résolues. *Écarts assumés* : `isar_community_generator` plafonne `analyzer` < 11,
+donc riverpod 3.1 (pas 3.4), freezed 3.2 (pas 4), build_runner 2.15 ; `custom_lint` et
+`riverpod_lint` retirés (Q3), leur système de plugin étant déprécié par Dart 3.13.

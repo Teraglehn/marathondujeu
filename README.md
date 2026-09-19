@@ -6,7 +6,7 @@ au sort. Utilisée sur l'édition 2025.
 
 ## Construire
 
-Flutter 3.35 stable. Depuis un disque local, sous un chemin court (`C:\Dev\…`) : un partage
+Flutter 3.47 stable. Depuis un disque local, sous un chemin court (`C:\Dev\…`) : un partage
 réseau ou un chemin long fait échouer le build.
 
 ```bash

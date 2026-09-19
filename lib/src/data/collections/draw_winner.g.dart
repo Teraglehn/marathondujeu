@@ -17,12 +17,9 @@ const DrawWinnerSchema = CollectionSchema(
   name: r'DrawWinner',
   id: 766793821209802962,
   properties: {
-    r'position': PropertySchema(
-      id: 0,
-      name: r'position',
-      type: IsarType.long,
-    )
+    r'position': PropertySchema(id: 0, name: r'position', type: IsarType.long),
   },
+
   estimateSize: _drawWinnerEstimateSize,
   serialize: _drawWinnerSerialize,
   deserialize: _drawWinnerDeserialize,
@@ -41,13 +38,14 @@ const DrawWinnerSchema = CollectionSchema(
       name: r'winner',
       target: r'Player',
       single: true,
-    )
+    ),
   },
   embeddedSchemas: {},
+
   getId: _drawWinnerGetId,
   getLinks: _drawWinnerGetLinks,
   attach: _drawWinnerAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _drawWinnerEstimateSize(
@@ -121,10 +119,7 @@ extension DrawWinnerQueryWhere
     on QueryBuilder<DrawWinner, DrawWinner, QWhereClause> {
   QueryBuilder<DrawWinner, DrawWinner, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
@@ -150,8 +145,10 @@ extension DrawWinnerQueryWhere
     });
   }
 
-  QueryBuilder<DrawWinner, DrawWinner, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<DrawWinner, DrawWinner, QAfterWhereClause> idGreaterThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -159,8 +156,10 @@ extension DrawWinnerQueryWhere
     });
   }
 
-  QueryBuilder<DrawWinner, DrawWinner, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<DrawWinner, DrawWinner, QAfterWhereClause> idLessThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -175,12 +174,14 @@ extension DrawWinnerQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -188,12 +189,12 @@ extension DrawWinnerQueryWhere
 extension DrawWinnerQueryFilter
     on QueryBuilder<DrawWinner, DrawWinner, QFilterCondition> {
   QueryBuilder<DrawWinner, DrawWinner, QAfterFilterCondition> idEqualTo(
-      Id value) {
+    Id value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
@@ -202,11 +203,13 @@ extension DrawWinnerQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -215,11 +218,13 @@ extension DrawWinnerQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -230,37 +235,38 @@ extension DrawWinnerQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DrawWinner, DrawWinner, QAfterFilterCondition> positionEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'position',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'position', value: value),
+      );
     });
   }
 
   QueryBuilder<DrawWinner, DrawWinner, QAfterFilterCondition>
-      positionGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  positionGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'position',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'position',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -269,11 +275,13 @@ extension DrawWinnerQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'position',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'position',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -284,13 +292,15 @@ extension DrawWinnerQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'position',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'position',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -301,7 +311,8 @@ extension DrawWinnerQueryObject
 extension DrawWinnerQueryLinks
     on QueryBuilder<DrawWinner, DrawWinner, QFilterCondition> {
   QueryBuilder<DrawWinner, DrawWinner, QAfterFilterCondition> draw(
-      FilterQuery<Draw> q) {
+    FilterQuery<Draw> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'draw');
     });
@@ -314,7 +325,8 @@ extension DrawWinnerQueryLinks
   }
 
   QueryBuilder<DrawWinner, DrawWinner, QAfterFilterCondition> winner(
-      FilterQuery<Player> q) {
+    FilterQuery<Player> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'winner');
     });

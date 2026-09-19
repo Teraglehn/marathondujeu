@@ -10,25 +10,21 @@ part of 'events.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(Events)
-const eventsProvider = EventsFamily._();
+final eventsProvider = EventsFamily._();
 
 final class EventsProvider
     extends $StreamNotifierProvider<Events, List<Event>> {
-  const EventsProvider._(
-      {required EventsFamily super.from,
-      required ({
-        SearchCriteria? criteria,
-        int? offset,
-        int? limit,
-      })
-          super.argument})
-      : super(
-          retry: null,
-          name: r'eventsProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  EventsProvider._({
+    required EventsFamily super.from,
+    required ({SearchCriteria? criteria, int? offset, int? limit})
+    super.argument,
+  }) : super(
+         retry: null,
+         name: r'eventsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$eventsHash();
@@ -60,45 +56,34 @@ String _$eventsHash() => r'61ce1fb1556c688e467b3d9ff8f2771a0c9b5346';
 final class EventsFamily extends $Family
     with
         $ClassFamilyOverride<
-            Events,
-            AsyncValue<List<Event>>,
-            List<Event>,
-            Stream<List<Event>>,
-            ({
-              SearchCriteria? criteria,
-              int? offset,
-              int? limit,
-            })> {
-  const EventsFamily._()
-      : super(
-          retry: null,
-          name: r'eventsProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+          Events,
+          AsyncValue<List<Event>>,
+          List<Event>,
+          Stream<List<Event>>,
+          ({SearchCriteria? criteria, int? offset, int? limit})
+        > {
+  EventsFamily._()
+    : super(
+        retry: null,
+        name: r'eventsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  EventsProvider call({
-    SearchCriteria? criteria,
-    int? offset,
-    int? limit,
-  }) =>
-      EventsProvider._(argument: (
-        criteria: criteria,
-        offset: offset,
-        limit: limit,
-      ), from: this);
+  EventsProvider call({SearchCriteria? criteria, int? offset, int? limit}) =>
+      EventsProvider._(
+        argument: (criteria: criteria, offset: offset, limit: limit),
+        from: this,
+      );
 
   @override
   String toString() => r'eventsProvider';
 }
 
 abstract class _$Events extends $StreamNotifier<List<Event>> {
-  late final _$args = ref.$arg as ({
-    SearchCriteria? criteria,
-    int? offset,
-    int? limit,
-  });
+  late final _$args =
+      ref.$arg as ({SearchCriteria? criteria, int? offset, int? limit});
   SearchCriteria? get criteria => _$args.criteria;
   int? get offset => _$args.offset;
   int? get limit => _$args.limit;
@@ -111,17 +96,22 @@ abstract class _$Events extends $StreamNotifier<List<Event>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(
-      criteria: _$args.criteria,
-      offset: _$args.offset,
-      limit: _$args.limit,
-    );
     final ref = this.ref as $Ref<AsyncValue<List<Event>>, List<Event>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<List<Event>>, List<Event>>,
-        AsyncValue<List<Event>>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<Event>>, List<Event>>,
+              AsyncValue<List<Event>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(
+      ref,
+      () => build(
+        criteria: _$args.criteria,
+        offset: _$args.offset,
+        limit: _$args.limit,
+      ),
+    );
   }
 }

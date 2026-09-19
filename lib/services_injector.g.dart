@@ -10,21 +10,21 @@ part of 'services_injector.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(_isarClient)
-const _isarClientProvider = _IsarClientProvider._();
+final _isarClientProvider = _IsarClientProvider._();
 
 final class _IsarClientProvider
     extends $FunctionalProvider<IsarClient, IsarClient, IsarClient>
     with $Provider<IsarClient> {
-  const _IsarClientProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'_isarClientProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  _IsarClientProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'_isarClientProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$_isarClientHash();
@@ -51,22 +51,26 @@ final class _IsarClientProvider
 String _$_isarClientHash() => r'18ba66d41450215449f1c0fcb96ac17ba1994307';
 
 @ProviderFor(_playerRepository)
-const _playerRepositoryProvider = _PlayerRepositoryProvider._();
+final _playerRepositoryProvider = _PlayerRepositoryProvider._();
 
-final class _PlayerRepositoryProvider extends $FunctionalProvider<
-    PlayerRepository,
-    PlayerRepository,
-    PlayerRepository> with $Provider<PlayerRepository> {
-  const _PlayerRepositoryProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'_playerRepositoryProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class _PlayerRepositoryProvider
+    extends
+        $FunctionalProvider<
+          PlayerRepository,
+          PlayerRepository,
+          PlayerRepository
+        >
+    with $Provider<PlayerRepository> {
+  _PlayerRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'_playerRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$_playerRepositoryHash();
@@ -93,22 +97,26 @@ final class _PlayerRepositoryProvider extends $FunctionalProvider<
 String _$_playerRepositoryHash() => r'41ba7377bf5591061177e693bc96d71906baa949';
 
 @ProviderFor(_playerGroupRepository)
-const _playerGroupRepositoryProvider = _PlayerGroupRepositoryProvider._();
+final _playerGroupRepositoryProvider = _PlayerGroupRepositoryProvider._();
 
-final class _PlayerGroupRepositoryProvider extends $FunctionalProvider<
-    PlayerGroupRepository,
-    PlayerGroupRepository,
-    PlayerGroupRepository> with $Provider<PlayerGroupRepository> {
-  const _PlayerGroupRepositoryProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'_playerGroupRepositoryProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class _PlayerGroupRepositoryProvider
+    extends
+        $FunctionalProvider<
+          PlayerGroupRepository,
+          PlayerGroupRepository,
+          PlayerGroupRepository
+        >
+    with $Provider<PlayerGroupRepository> {
+  _PlayerGroupRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'_playerGroupRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$_playerGroupRepositoryHash();
@@ -116,8 +124,8 @@ final class _PlayerGroupRepositoryProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<PlayerGroupRepository> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   PlayerGroupRepository create(Ref ref) {
@@ -137,22 +145,26 @@ String _$_playerGroupRepositoryHash() =>
     r'408104429558fb4433337bf6a19742319f0bda4a';
 
 @ProviderFor(_sessionRepository)
-const _sessionRepositoryProvider = _SessionRepositoryProvider._();
+final _sessionRepositoryProvider = _SessionRepositoryProvider._();
 
-final class _SessionRepositoryProvider extends $FunctionalProvider<
-    SessionRepository,
-    SessionRepository,
-    SessionRepository> with $Provider<SessionRepository> {
-  const _SessionRepositoryProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'_sessionRepositoryProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class _SessionRepositoryProvider
+    extends
+        $FunctionalProvider<
+          SessionRepository,
+          SessionRepository,
+          SessionRepository
+        >
+    with $Provider<SessionRepository> {
+  _SessionRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'_sessionRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$_sessionRepositoryHash();
@@ -160,8 +172,8 @@ final class _SessionRepositoryProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<SessionRepository> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   SessionRepository create(Ref ref) {
@@ -181,22 +193,22 @@ String _$_sessionRepositoryHash() =>
     r'257d94309d832412cda86b81fc9d1ddaefbba6d2';
 
 @ProviderFor(_eventRepository)
-const _eventRepositoryProvider = _EventRepositoryProvider._();
+final _eventRepositoryProvider = _EventRepositoryProvider._();
 
-final class _EventRepositoryProvider extends $FunctionalProvider<
-    EventRepository,
-    EventRepository,
-    EventRepository> with $Provider<EventRepository> {
-  const _EventRepositoryProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'_eventRepositoryProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class _EventRepositoryProvider
+    extends
+        $FunctionalProvider<EventRepository, EventRepository, EventRepository>
+    with $Provider<EventRepository> {
+  _EventRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'_eventRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$_eventRepositoryHash();
@@ -223,21 +235,21 @@ final class _EventRepositoryProvider extends $FunctionalProvider<
 String _$_eventRepositoryHash() => r'f237063097f2a01699cfd4e58ad80c9afe47cf57';
 
 @ProviderFor(_drawRepository)
-const _drawRepositoryProvider = _DrawRepositoryProvider._();
+final _drawRepositoryProvider = _DrawRepositoryProvider._();
 
 final class _DrawRepositoryProvider
     extends $FunctionalProvider<DrawRepository, DrawRepository, DrawRepository>
     with $Provider<DrawRepository> {
-  const _DrawRepositoryProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'_drawRepositoryProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  _DrawRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'_drawRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$_drawRepositoryHash();
@@ -264,22 +276,26 @@ final class _DrawRepositoryProvider
 String _$_drawRepositoryHash() => r'110c74f4b64b7285add28cb69732972479552c52';
 
 @ProviderFor(_drawWinnerRepository)
-const _drawWinnerRepositoryProvider = _DrawWinnerRepositoryProvider._();
+final _drawWinnerRepositoryProvider = _DrawWinnerRepositoryProvider._();
 
-final class _DrawWinnerRepositoryProvider extends $FunctionalProvider<
-    DrawWinnerRepository,
-    DrawWinnerRepository,
-    DrawWinnerRepository> with $Provider<DrawWinnerRepository> {
-  const _DrawWinnerRepositoryProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'_drawWinnerRepositoryProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class _DrawWinnerRepositoryProvider
+    extends
+        $FunctionalProvider<
+          DrawWinnerRepository,
+          DrawWinnerRepository,
+          DrawWinnerRepository
+        >
+    with $Provider<DrawWinnerRepository> {
+  _DrawWinnerRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'_drawWinnerRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$_drawWinnerRepositoryHash();
@@ -287,8 +303,8 @@ final class _DrawWinnerRepositoryProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<DrawWinnerRepository> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   DrawWinnerRepository create(Ref ref) {
@@ -308,21 +324,21 @@ String _$_drawWinnerRepositoryHash() =>
     r'35f90923222b7d22dfb30413f25c7d77ce1fe485';
 
 @ProviderFor(playerService)
-const playerServiceProvider = PlayerServiceProvider._();
+final playerServiceProvider = PlayerServiceProvider._();
 
 final class PlayerServiceProvider
     extends $FunctionalProvider<PlayerService, PlayerService, PlayerService>
     with $Provider<PlayerService> {
-  const PlayerServiceProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'playerServiceProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  PlayerServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'playerServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$playerServiceHash();
@@ -349,22 +365,26 @@ final class PlayerServiceProvider
 String _$playerServiceHash() => r'615d2bc007d41c520979694935ea68a95230d055';
 
 @ProviderFor(playerGroupService)
-const playerGroupServiceProvider = PlayerGroupServiceProvider._();
+final playerGroupServiceProvider = PlayerGroupServiceProvider._();
 
-final class PlayerGroupServiceProvider extends $FunctionalProvider<
-    PlayerGroupService,
-    PlayerGroupService,
-    PlayerGroupService> with $Provider<PlayerGroupService> {
-  const PlayerGroupServiceProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'playerGroupServiceProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+final class PlayerGroupServiceProvider
+    extends
+        $FunctionalProvider<
+          PlayerGroupService,
+          PlayerGroupService,
+          PlayerGroupService
+        >
+    with $Provider<PlayerGroupService> {
+  PlayerGroupServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'playerGroupServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$playerGroupServiceHash();
@@ -372,8 +392,8 @@ final class PlayerGroupServiceProvider extends $FunctionalProvider<
   @$internal
   @override
   $ProviderElement<PlayerGroupService> $createElement(
-          $ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   PlayerGroupService create(Ref ref) {
@@ -393,21 +413,21 @@ String _$playerGroupServiceHash() =>
     r'93f90bbbbb84fe681f32189f18b935198e555c3f';
 
 @ProviderFor(sessionService)
-const sessionServiceProvider = SessionServiceProvider._();
+final sessionServiceProvider = SessionServiceProvider._();
 
 final class SessionServiceProvider
     extends $FunctionalProvider<SessionService, SessionService, SessionService>
     with $Provider<SessionService> {
-  const SessionServiceProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'sessionServiceProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  SessionServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'sessionServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$sessionServiceHash();
@@ -434,21 +454,21 @@ final class SessionServiceProvider
 String _$sessionServiceHash() => r'183900c8d401bc89891ad78fc622ab2a5666f085';
 
 @ProviderFor(drawService)
-const drawServiceProvider = DrawServiceProvider._();
+final drawServiceProvider = DrawServiceProvider._();
 
 final class DrawServiceProvider
     extends $FunctionalProvider<DrawService, DrawService, DrawService>
     with $Provider<DrawService> {
-  const DrawServiceProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'drawServiceProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  DrawServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'drawServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$drawServiceHash();
@@ -475,21 +495,21 @@ final class DrawServiceProvider
 String _$drawServiceHash() => r'2fb774b73787ab605171b5ee8108dc8b2fc42923';
 
 @ProviderFor(eventService)
-const eventServiceProvider = EventServiceProvider._();
+final eventServiceProvider = EventServiceProvider._();
 
 final class EventServiceProvider
     extends $FunctionalProvider<EventService, EventService, EventService>
     with $Provider<EventService> {
-  const EventServiceProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'eventServiceProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  EventServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'eventServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$eventServiceHash();

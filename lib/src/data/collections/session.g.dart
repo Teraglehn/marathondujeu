@@ -22,17 +22,14 @@ const SessionSchema = CollectionSchema(
       name: r'endTime',
       type: IsarType.dateTime,
     ),
-    r'number': PropertySchema(
-      id: 1,
-      name: r'number',
-      type: IsarType.long,
-    ),
+    r'number': PropertySchema(id: 1, name: r'number', type: IsarType.long),
     r'startTime': PropertySchema(
       id: 2,
       name: r'startTime',
       type: IsarType.dateTime,
-    )
+    ),
   },
+
   estimateSize: _sessionEstimateSize,
   serialize: _sessionSerialize,
   deserialize: _sessionDeserialize,
@@ -51,13 +48,14 @@ const SessionSchema = CollectionSchema(
       name: r'event',
       target: r'Event',
       single: true,
-    )
+    ),
   },
   embeddedSchemas: {},
+
   getId: _sessionGetId,
   getLinks: _sessionGetLinks,
   attach: _sessionAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _sessionEstimateSize(
@@ -137,10 +135,7 @@ extension SessionQueryWhereSort on QueryBuilder<Session, Session, QWhere> {
 extension SessionQueryWhere on QueryBuilder<Session, Session, QWhereClause> {
   QueryBuilder<Session, Session, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
@@ -166,8 +161,10 @@ extension SessionQueryWhere on QueryBuilder<Session, Session, QWhereClause> {
     });
   }
 
-  QueryBuilder<Session, Session, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Session, Session, QAfterWhereClause> idGreaterThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -175,8 +172,10 @@ extension SessionQueryWhere on QueryBuilder<Session, Session, QWhereClause> {
     });
   }
 
-  QueryBuilder<Session, Session, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Session, Session, QAfterWhereClause> idLessThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -191,12 +190,14 @@ extension SessionQueryWhere on QueryBuilder<Session, Session, QWhereClause> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -204,12 +205,12 @@ extension SessionQueryWhere on QueryBuilder<Session, Session, QWhereClause> {
 extension SessionQueryFilter
     on QueryBuilder<Session, Session, QFilterCondition> {
   QueryBuilder<Session, Session, QAfterFilterCondition> endTimeEqualTo(
-      DateTime value) {
+    DateTime value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'endTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'endTime', value: value),
+      );
     });
   }
 
@@ -218,11 +219,13 @@ extension SessionQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'endTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'endTime',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -231,11 +234,13 @@ extension SessionQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'endTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'endTime',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -246,22 +251,23 @@ extension SessionQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'endTime',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'endTime',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
@@ -270,11 +276,13 @@ extension SessionQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -283,11 +291,13 @@ extension SessionQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -298,23 +308,25 @@ extension SessionQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition> numberEqualTo(
-      int value) {
+    int value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'number',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'number', value: value),
+      );
     });
   }
 
@@ -323,11 +335,13 @@ extension SessionQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'number',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'number',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -336,11 +350,13 @@ extension SessionQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'number',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'number',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -351,23 +367,25 @@ extension SessionQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'number',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'number',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition> startTimeEqualTo(
-      DateTime value) {
+    DateTime value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'startTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'startTime', value: value),
+      );
     });
   }
 
@@ -376,11 +394,13 @@ extension SessionQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'startTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'startTime',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -389,11 +409,13 @@ extension SessionQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'startTime',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'startTime',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -404,13 +426,15 @@ extension SessionQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'startTime',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'startTime',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -421,14 +445,16 @@ extension SessionQueryObject
 extension SessionQueryLinks
     on QueryBuilder<Session, Session, QFilterCondition> {
   QueryBuilder<Session, Session, QAfterFilterCondition> players(
-      FilterQuery<Player> q) {
+    FilterQuery<Player> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'players');
     });
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition> playersLengthEqualTo(
-      int length) {
+    int length,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'players', length, true, length, true);
     });
@@ -456,10 +482,7 @@ extension SessionQueryLinks
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition>
-      playersLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  playersLengthGreaterThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'players', length, include, 999999, true);
     });
@@ -473,12 +496,18 @@ extension SessionQueryLinks
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'players', lower, includeLower, upper, includeUpper);
+        r'players',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
   QueryBuilder<Session, Session, QAfterFilterCondition> event(
-      FilterQuery<Event> q) {
+    FilterQuery<Event> q,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'event');
     });

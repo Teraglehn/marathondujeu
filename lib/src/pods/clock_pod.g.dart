@@ -10,20 +10,20 @@ part of 'clock_pod.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(ClockPod)
-const clockPodProvider = ClockPodProvider._();
+final clockPodProvider = ClockPodProvider._();
 
 final class ClockPodProvider
     extends $StreamNotifierProvider<ClockPod, DateTime> {
-  const ClockPodProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'clockPodProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  ClockPodProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clockPodProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$clockPodHash();
@@ -40,13 +40,15 @@ abstract class _$ClockPod extends $StreamNotifier<DateTime> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<AsyncValue<DateTime>, DateTime>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<DateTime>, DateTime>,
-        AsyncValue<DateTime>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<DateTime>, DateTime>,
+              AsyncValue<DateTime>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
   }
 }

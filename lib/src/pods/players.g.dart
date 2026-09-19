@@ -10,19 +10,20 @@ part of 'players.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(Players)
-const playersProvider = PlayersFamily._();
+final playersProvider = PlayersFamily._();
 
 final class PlayersProvider
     extends $StreamNotifierProvider<Players, List<Player>> {
-  const PlayersProvider._(
-      {required PlayersFamily super.from, required int? super.argument})
-      : super(
-          retry: null,
-          name: r'playersProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  PlayersProvider._({
+    required PlayersFamily super.from,
+    required int? super.argument,
+  }) : super(
+         retry: null,
+         name: r'playersProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$playersHash();
@@ -53,20 +54,23 @@ String _$playersHash() => r'1493a456242eebc8fd7452e01b83e81748adc97c';
 
 final class PlayersFamily extends $Family
     with
-        $ClassFamilyOverride<Players, AsyncValue<List<Player>>, List<Player>,
-            Stream<List<Player>>, int?> {
-  const PlayersFamily._()
-      : super(
-          retry: null,
-          name: r'playersProvider',
-          dependencies: null,
-          $allTransitiveDependencies: null,
-          isAutoDispose: true,
-        );
+        $ClassFamilyOverride<
+          Players,
+          AsyncValue<List<Player>>,
+          List<Player>,
+          Stream<List<Player>>,
+          int?
+        > {
+  PlayersFamily._()
+    : super(
+        retry: null,
+        name: r'playersProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-  PlayersProvider call({
-    int? eventId,
-  }) =>
+  PlayersProvider call({int? eventId}) =>
       PlayersProvider._(argument: eventId, from: this);
 
   @override
@@ -77,21 +81,19 @@ abstract class _$Players extends $StreamNotifier<List<Player>> {
   late final _$args = ref.$arg as int?;
   int? get eventId => _$args;
 
-  Stream<List<Player>> build({
-    int? eventId,
-  });
+  Stream<List<Player>> build({int? eventId});
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(
-      eventId: _$args,
-    );
     final ref = this.ref as $Ref<AsyncValue<List<Player>>, List<Player>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<List<Player>>, List<Player>>,
-        AsyncValue<List<Player>>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<Player>>, List<Player>>,
+              AsyncValue<List<Player>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, () => build(eventId: _$args));
   }
 }
