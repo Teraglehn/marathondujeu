@@ -10,15 +10,14 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Rédiger le rapport de L05 ou L06, sur demande — ils naissent dans `phase-2/`. L04 est prêt à
-être attaqué, sans question ouverte.
+Rédiger le rapport de L05, L06, L10 ou L11, sur demande — ils naissent dans `phase-2/`.
 
 ## Phases
 
 **Phase 1 — remise en état du dépôt** : close le 2026-09-19, figée dans
 `developpement/livraisons/phase-1/`.
 
-**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L04, L05, L06. Objet et critère
+**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L05, L06, L10, L11 ; L04 livré le 2026-09-19. Objet et critère
 d'appartenance dans `developpement/phase-2/README.md`.
 
 L09 n'est rattaché à aucune phase : son rapport naîtra dans `lots/`.
@@ -30,10 +29,11 @@ Les numéros ne sont **jamais réattribués**.
 
 | # | Lot | Phase | Statut | Rapport |
 |---|---|---|---|---|
-| L04 | Liste des gagnants d'un tirage : retour à la ligne et défilement | 2 | à faire | `phase-2/L04-gagnants-retour-ligne-defilement.md` |
 | L05 | Génération des cartes joueur paramétrable depuis l'interface | 2 | à faire | à rédiger |
 | L06 | Copier un tirage : reprise du paramétrage, gagnants précédents exclus | 2 | à faire | à rédiger |
 | L09 | Fichier de sauvegarde par événement : export automatique, import dans la liste | — | à faire | à rédiger |
+| L10 | Bonus d'un joueur : boutons « + » et « − » dans la liste des joueurs et dans l'éditeur latéral | 2 | à faire | à rédiger |
+| L11 | Fiche joueur (éditeur latéral) : QR code, sessions badgées / non badgées, badgeage manuel | 2 | à faire | à rédiger |
 
 ### Notes pour la rédaction des rapports
 
@@ -76,6 +76,27 @@ mémoriser l'emplacement choisi (champ sur `Event` → schéma, partie I, § 12)
 Dans le code : `Debouncer` existe (`debouncer.service.dart`) ; les dépôts passent tous par
 `RepositoryBase.save/delete` — point d'accroche naturel pour « toute modification » ; `Event`
 porte déjà `playerCardBackgroundImage` (`List<byte>`).
+
+**L10** — un « + » et un « − » sur le bonus d'un joueur, **à deux endroits** : la ligne *Bonus* de
+chaque carte de la liste des joueurs, et l'éditeur latéral du joueur (`player_edit_form.dart`,
+en plus ou à la place du champ texte) (Bastien, 2026-09-19).
+Dans le code : `player_list_page.dart` a déjà `plusOneBonus(player)` (ligne 32, incrémente et
+sauvegarde) et un `trailing: IconButton(... Icons.plus_one)` **commenté** sur la tuile *Bonus*
+(ligne 131). Le « − » n'existe pas. À trancher : borne basse (0 ? négatif autorisé ?), et si le
+bonus doit rester éditable dans le formulaire (`player_edit_form.dart`, champ texte). Le compteur
+*jetons* de la carte (`getTokenCount`) doit se rafraîchir dans la foulée.
+
+**L11** — la **fiche joueur** dans l'éditeur latéral (`EditDrawerWidget` → `player_edit_form.dart`)
+(Bastien, 2026-09-19) :
+- l'**image du QR code** du joueur (celle des cartes : `PlayerCard.getQrImage`, `pretty_qr_code`) ;
+- la **liste de toutes les sessions** de l'événement, chacune **verte** si le joueur y a badgé,
+  **grisée** sinon ;
+- un **mode manuel** : une fois activé, cliquer une session badge (ou dé-badge) le joueur depuis
+  l'éditeur — la page session le fait déjà par la douchette (`Session.forceAddPlayer`).
+Aujourd'hui le formulaire n'expose que nom, QR code (texte) et bonus. À trancher : le mode
+manuel permet-il aussi de retirer un badgeage ; faut-il confirmer ; ordre et présentation des
+sessions (numéro + heure de début). `Player.sessions` est un backlink Isar (`load()` avant
+affichage) ; le badgeage s'écrit côté `Session.players`.
 
 ## Questions transversales en attente
 

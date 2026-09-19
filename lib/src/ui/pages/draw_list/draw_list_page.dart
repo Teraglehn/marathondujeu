@@ -88,15 +88,15 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                           child: Text((index+1).toString())
                         ),
                         title: Text(draw.name),
-                        subtitle: Row(children: 
-                          draw.winners.map((w) => Card(
+                        subtitle: Wrap(spacing: 8, runSpacing: 8, children: 
+                          (draw.winners.toList()..sort((a, b) => a.position.compareTo(b.position))).map((w) => Card(
                             clipBehavior: Clip.hardEdge,
                             elevation: 8,
                             child: InkWell(
                               onTap: () => editor.editPlayer(w.winner.value!),
                               child: Padding(
                                 padding: const EdgeInsetsGeometry.all(8),
-                                child: Row(children: [
+                                child: Row(mainAxisSize: MainAxisSize.min, children: [
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8),
                                     child: Text("N°${w.position.toString()}"),

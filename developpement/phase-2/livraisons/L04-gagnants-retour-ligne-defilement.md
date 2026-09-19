@@ -1,6 +1,6 @@
 # L04 — Liste des gagnants d'un tirage : retour à la ligne et défilement
 
-Statut : **à faire** (ouvert le 2026-09-19) · Ne dépend d'aucun lot.
+Statut : **livré** (ouvert le 2026-09-19, attaqué le 2026-09-19, livré le 2026-09-19) · Ne dépend d'aucun lot.
 
 > Numérotation unique : une seule séquence Q1, Q2, … sur tout le rapport ; les choix d'exécution
 > en C1, C2, …
@@ -34,6 +34,12 @@ gagnants doivent tous être visibles.
 3. Les gagnants apparaissent dans l'ordre N°1, N°2, …
 4. `flutter analyze` propre, `flutter test` vert, `flutter build windows` passe.
 
+**Constaté le 2026-09-19** :
+1–3. Recette Bastien, base de test : « parfait » après correction du `Row` interne (C1).
+4. `flutter analyze` : `No issues found!` ; 17 tests verts ; `flutter build windows` construit.
+Écart : le tri utilise `toList()..sort(...)` — `sortedBy` vient du paquet `collection`, qui n'est
+pas une dépendance directe.
+
 ## Questions déterminantes
 
 Aucune.
@@ -45,7 +51,9 @@ Aucune — Q1 tranchée le 2026-09-19.
 ## Choix d'implémentation
 
 - **C1 — `Wrap` avec un espacement de 8 px**, en remplacement du `Row`, sans changer les cartes.
-- **C2 — Tri par `position` avant affichage**, dans la page (`sortedBy`), pas dans le modèle : le
+  Constaté à la recette : le `Row` interne de chaque carte prenait toute la largeur →
+  `mainAxisSize: MainAxisSize.min` ajouté (2026-09-19).
+- **C2 — Tri par `position` avant affichage**, dans la page (`toList()..sort`), pas dans le modèle : le
   lien Isar reste tel quel.
 - **C3 — Pas de test de widget** : le lot change une disposition ; la recette (critère 1) la
   constate mieux qu'un test de mise en page.
