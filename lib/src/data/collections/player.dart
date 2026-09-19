@@ -9,6 +9,9 @@ class Player {
   late String name;
   int bonusSession = 0;
 
+  /// Le numéro de carte, imprimé en clair. Le QR code, lui, porte `sel-numéro` (voir `Event.qrCodeFor`).
+  int number = 0;
+
   late String qrcode;
 
   final event = IsarLink<Event>();
@@ -25,6 +28,11 @@ class Player {
     return Player()
       ..name = ''
       ..qrcode = '';
+  }
+
+  /// Le numéro d'un joueur d'avant ce champ : son nom (qui le portait), sinon la fin de son code.
+  int inferNumber() {
+    return int.tryParse(name) ?? int.tryParse(qrcode.substring(qrcode.lastIndexOf('-') + 1)) ?? 0;
   }
 
   int getSessionNumber(){

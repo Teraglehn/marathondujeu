@@ -21,7 +21,7 @@ class IsarClient {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationSupportDirectory();
       await _recoverLegacyDatabase(dir);
-      return Isar.open([
+      final isar = await Isar.open([
           PlayerSchema,
           SessionSchema,
           EventSchema,
@@ -32,8 +32,21 @@ class IsarClient {
         inspector: isTesting, 
         directory: isWeb ? "" : dir.path
       );
+      await migratePlayerNumbers(isar);
+      return isar;
     }
     return Future.value(Isar.getInstance());
+  }
+
+  /// Donne un numéro aux joueurs créés avant le champ `Player.number` (L05) : une seule fois,
+  /// ceux qui n'en ont pas encore.
+  static Future<void> migratePlayerNumbers(Isar isar) async {
+    final players = await isar.players.filter().numberLessThan(1).findAll();
+    if (players.isEmpty) return;
+    for (final p in players) {
+      p.number = p.inferNumber();
+    }
+    await isar.writeTxn(() => isar.players.putAll(players));
   }
 
   /// Reprend la base des versions précédentes, qui vivait dans le dossier cache

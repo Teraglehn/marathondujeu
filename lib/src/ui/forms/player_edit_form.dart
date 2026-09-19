@@ -171,10 +171,10 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> {
                               TextFormField(
                                 readOnly: true,
                                 enabled: false,
-                                initialValue: widget.player.qrcode,
+                                initialValue: widget.player.number.toString(),
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
-                                  labelText: S.of(context).data_player_qrcode,
+                                  labelText: S.of(context).data_player_number,
                                   border: const OutlineInputBorder(),
                                 ),
                               ),

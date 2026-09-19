@@ -29,3 +29,16 @@ sont refaits dans les quatre éditeurs latéraux ; « Mode manuel » devient « 
 aussi sur la page session ; `PlayerSessionScanner` perd sa `UniqueKey` (le défilement de la
 liste des joueurs repartait en haut à chaque rebuild). Décision consignée dans `CLAUDE.md` :
 public non technique, chaque écran s'explique — L12 ouvert.
+
+## 2026-09-19 — L05
+
+**L05 — Génération des cartes paramétrable.** La page du générateur devient un panneau de
+réglages (tout en mm décimaux, couleurs, fonds, marges, espaces, orientation, plage de numéros)
+à côté d'un aperçu rapide Flutter, avec l'aperçu PDF sur demande ; tout est enregistré sur
+`Event`, image de fond réduite comprise. Le QR code porte `sel-numéro` ; la protection des cartes
+est un interrupteur du formulaire d'événement, verrouillé dès que des joueurs existent,
+récupérable depuis une carte imprimée. *Écarts assumés* : panneau fixe plutôt que tiroir ;
+`flex_color_picker` rétrogradé en 3.8 (la 4 est sur `material_ui` — question transversale
+ouverte) ; `Player.number` séparé du QR code, avec migration à l'ouverture de la base ;
+suppression des joueurs depuis le formulaire d'événement. Non constaté : la lecture d'une carte
+protégée à la douchette.

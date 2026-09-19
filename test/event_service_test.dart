@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/services/services.dart';
+import 'package:marathondujeu/src/data/isar_client.dart';
 
 import 'isar_test_support.dart';
 
@@ -35,8 +36,8 @@ void main() {
     s1 = session(1);
     s2 = session(2);
     p1 = Player()
-      ..name = 'p1'
-      ..qrcode = 'p1'
+      ..name = '1'
+      ..qrcode = '1'
       ..event.value = event;
     await isar.writeTxn(() async {
       await isar.events.put(event);
@@ -55,6 +56,20 @@ void main() {
     await player!.sessions.load();
     return player.sessions.map((s) => s.id).toSet();
   }
+
+  group('migratePlayerNumbers', () {
+    test('un joueur sans numéro le reçoit de son nom, sinon de son code', () async {
+      final byName = Player()..name = '42'..qrcode = 'abcd-42'..event.value = event;
+      final byCode = Player()..name = ''..qrcode = 'abcd-7'..event.value = event;
+      await isar.writeTxn(() => isar.players.putAll([byName, byCode]));
+
+      await IsarClient.migratePlayerNumbers(isar);
+
+      expect((await isar.players.get(byName.id))!.number, 42);
+      expect((await isar.players.get(byCode.id))!.number, 7);
+      expect((await isar.players.get(p1.id))!.number, 1);
+    });
+  });
 
   group('setPlayerSessions', () {
     test('ajoute et retire en une fois, persisté', () async {

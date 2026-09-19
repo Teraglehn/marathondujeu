@@ -241,6 +241,12 @@ abstract class S {
   /// **'QRCode'**
   String get data_player_qrcode;
 
+  /// No description provided for @data_player_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get data_player_number;
+
   /// No description provided for @data_player_bonus.
   ///
   /// In en, this message translates to:
@@ -564,6 +570,245 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Card Generator'**
   String get page_cardGenerator_menuItem;
+
+  /// No description provided for @page_cardGenerator_noImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a background image to preview the cards.'**
+  String get page_cardGenerator_noImage;
+
+  /// No description provided for @page_cardGenerator_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Background image'**
+  String get page_cardGenerator_image;
+
+  /// No description provided for @page_cardGenerator_section_sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Sheet'**
+  String get page_cardGenerator_section_sheet;
+
+  /// No description provided for @page_cardGenerator_cardsPerRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards per row'**
+  String get page_cardGenerator_cardsPerRow;
+
+  /// No description provided for @page_cardGenerator_rowsPerPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Rows per page'**
+  String get page_cardGenerator_rowsPerPage;
+
+  /// No description provided for @page_cardGenerator_portrait.
+  ///
+  /// In en, this message translates to:
+  /// **'Portrait'**
+  String get page_cardGenerator_portrait;
+
+  /// No description provided for @page_cardGenerator_landscape.
+  ///
+  /// In en, this message translates to:
+  /// **'Landscape'**
+  String get page_cardGenerator_landscape;
+
+  /// No description provided for @page_cardGenerator_cardWidth.
+  ///
+  /// In en, this message translates to:
+  /// **'Card width (mm)'**
+  String get page_cardGenerator_cardWidth;
+
+  /// No description provided for @page_cardGenerator_cardHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Height: {mm} mm, from the image'**
+  String page_cardGenerator_cardHeight(Object mm);
+
+  /// No description provided for @page_cardGenerator_pageMargin.
+  ///
+  /// In en, this message translates to:
+  /// **'Page margin (mm)'**
+  String get page_cardGenerator_pageMargin;
+
+  /// No description provided for @page_cardGenerator_gapX.
+  ///
+  /// In en, this message translates to:
+  /// **'Gap between cards (mm)'**
+  String get page_cardGenerator_gapX;
+
+  /// No description provided for @page_cardGenerator_gapY.
+  ///
+  /// In en, this message translates to:
+  /// **'Gap between rows (mm)'**
+  String get page_cardGenerator_gapY;
+
+  /// No description provided for @page_cardGenerator_pageBackgroundColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Page background colour'**
+  String get page_cardGenerator_pageBackgroundColor;
+
+  /// No description provided for @page_cardGenerator_section_qrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'QR code'**
+  String get page_cardGenerator_section_qrCode;
+
+  /// No description provided for @page_cardGenerator_section_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Card number'**
+  String get page_cardGenerator_section_number;
+
+  /// No description provided for @page_cardGenerator_size.
+  ///
+  /// In en, this message translates to:
+  /// **'Size (mm)'**
+  String get page_cardGenerator_size;
+
+  /// No description provided for @page_cardGenerator_posX.
+  ///
+  /// In en, this message translates to:
+  /// **'X position (mm)'**
+  String get page_cardGenerator_posX;
+
+  /// No description provided for @page_cardGenerator_posY.
+  ///
+  /// In en, this message translates to:
+  /// **'Y position (mm)'**
+  String get page_cardGenerator_posY;
+
+  /// No description provided for @page_cardGenerator_fontSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Font size (pt)'**
+  String get page_cardGenerator_fontSize;
+
+  /// No description provided for @page_cardGenerator_color.
+  ///
+  /// In en, this message translates to:
+  /// **'Colour'**
+  String get page_cardGenerator_color;
+
+  /// No description provided for @page_cardGenerator_background.
+  ///
+  /// In en, this message translates to:
+  /// **'Background'**
+  String get page_cardGenerator_background;
+
+  /// No description provided for @page_cardGenerator_backgroundColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Background colour'**
+  String get page_cardGenerator_backgroundColor;
+
+  /// No description provided for @page_cardGenerator_padding.
+  ///
+  /// In en, this message translates to:
+  /// **'Background padding (mm)'**
+  String get page_cardGenerator_padding;
+
+  /// No description provided for @page_cardGenerator_help_positions.
+  ///
+  /// In en, this message translates to:
+  /// **'Positions are in mm from the top-left corner of the card.'**
+  String get page_cardGenerator_help_positions;
+
+  /// No description provided for @page_cardGenerator_section_range.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards to print'**
+  String get page_cardGenerator_section_range;
+
+  /// No description provided for @page_cardGenerator_from.
+  ///
+  /// In en, this message translates to:
+  /// **'From number'**
+  String get page_cardGenerator_from;
+
+  /// No description provided for @page_cardGenerator_to.
+  ///
+  /// In en, this message translates to:
+  /// **'To number'**
+  String get page_cardGenerator_to;
+
+  /// No description provided for @page_cardGenerator_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cards, from number {start} to number {end}, on {pages, plural, one {1 page} other {{pages} pages}}. The last sheet is always complete.'**
+  String page_cardGenerator_summary(
+    Object count,
+    Object start,
+    Object end,
+    num pages,
+  );
+
+  /// No description provided for @page_cardGenerator_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings saved'**
+  String get page_cardGenerator_saved;
+
+  /// No description provided for @page_cardGenerator_quickPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick preview'**
+  String get page_cardGenerator_quickPreview;
+
+  /// No description provided for @page_cardGenerator_pdfPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF preview'**
+  String get page_cardGenerator_pdfPreview;
+
+  /// No description provided for @page_cardGenerator_quickPreview_help.
+  ///
+  /// In en, this message translates to:
+  /// **'First page only, approximate rendering. The PDF preview shows every page as it prints.'**
+  String get page_cardGenerator_quickPreview_help;
+
+  /// No description provided for @data_event_protectCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect cards against copying and reuse'**
+  String get data_event_protectCards;
+
+  /// No description provided for @data_event_protectCards_help.
+  ///
+  /// In en, this message translates to:
+  /// **'A secret code specific to this event is added to the cards\' QR code: a card from another edition is not recognised.'**
+  String get data_event_protectCards_help;
+
+  /// No description provided for @data_event_protectCards_locked.
+  ///
+  /// In en, this message translates to:
+  /// **'Players already exist: the protection can no longer change.'**
+  String get data_event_protectCards_locked;
+
+  /// No description provided for @data_event_recoverSalt.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover the protection from a printed card'**
+  String get data_event_recoverSalt;
+
+  /// No description provided for @data_event_recoverSalt_scan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a printed card with the scanner…'**
+  String get data_event_recoverSalt_scan;
+
+  /// No description provided for @data_event_recoverSalt_none.
+  ///
+  /// In en, this message translates to:
+  /// **'This card has no protection.'**
+  String get data_event_recoverSalt_none;
+
+  /// No description provided for @data_event_deletePlayers_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete the {count} players of this event? Their badges and the draw winners will be lost. Printed cards will not be recognised until the players are generated again.'**
+  String data_event_deletePlayers_confirm(Object count);
 
   /// No description provided for @page_drawList_title.
   ///

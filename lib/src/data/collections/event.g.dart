@@ -22,52 +22,113 @@ const EventSchema = CollectionSchema(
       name: r'endDateTime',
       type: IsarType.dateTime,
     ),
-    r'idPosX': PropertySchema(id: 1, name: r'idPosX', type: IsarType.long),
-    r'idPosY': PropertySchema(id: 2, name: r'idPosY', type: IsarType.long),
-    r'name': PropertySchema(id: 3, name: r'name', type: IsarType.string),
-    r'playerCardBackgroundImage': PropertySchema(
+    r'idBackgroundColor': PropertySchema(
+      id: 1,
+      name: r'idBackgroundColor',
+      type: IsarType.long,
+    ),
+    r'idColor': PropertySchema(id: 2, name: r'idColor', type: IsarType.long),
+    r'idFontSize': PropertySchema(
+      id: 3,
+      name: r'idFontSize',
+      type: IsarType.long,
+    ),
+    r'idPadding': PropertySchema(
       id: 4,
+      name: r'idPadding',
+      type: IsarType.double,
+    ),
+    r'idPosX': PropertySchema(id: 5, name: r'idPosX', type: IsarType.double),
+    r'idPosY': PropertySchema(id: 6, name: r'idPosY', type: IsarType.double),
+    r'name': PropertySchema(id: 7, name: r'name', type: IsarType.string),
+    r'pageBackgroundColor': PropertySchema(
+      id: 8,
+      name: r'pageBackgroundColor',
+      type: IsarType.long,
+    ),
+    r'pageMargin': PropertySchema(
+      id: 9,
+      name: r'pageMargin',
+      type: IsarType.double,
+    ),
+    r'playerCardBackgroundImage': PropertySchema(
+      id: 10,
       name: r'playerCardBackgroundImage',
       type: IsarType.byteList,
     ),
+    r'playerCardGapX': PropertySchema(
+      id: 11,
+      name: r'playerCardGapX',
+      type: IsarType.double,
+    ),
+    r'playerCardGapY': PropertySchema(
+      id: 12,
+      name: r'playerCardGapY',
+      type: IsarType.double,
+    ),
     r'playerCardHeight': PropertySchema(
-      id: 5,
+      id: 13,
       name: r'playerCardHeight',
       type: IsarType.long,
     ),
-    r'playerCardWidth': PropertySchema(
-      id: 6,
-      name: r'playerCardWidth',
+    r'playerCardLandscape': PropertySchema(
+      id: 14,
+      name: r'playerCardLandscape',
+      type: IsarType.bool,
+    ),
+    r'playerCardRowsPerPage': PropertySchema(
+      id: 15,
+      name: r'playerCardRowsPerPage',
       type: IsarType.long,
+    ),
+    r'playerCardWidth': PropertySchema(
+      id: 16,
+      name: r'playerCardWidth',
+      type: IsarType.double,
+    ),
+    r'playerCardsPerRow': PropertySchema(
+      id: 17,
+      name: r'playerCardsPerRow',
+      type: IsarType.long,
+    ),
+    r'qrCodeBackgroundColor': PropertySchema(
+      id: 18,
+      name: r'qrCodeBackgroundColor',
+      type: IsarType.long,
+    ),
+    r'qrCodePadding': PropertySchema(
+      id: 19,
+      name: r'qrCodePadding',
+      type: IsarType.double,
     ),
     r'qrCodePosX': PropertySchema(
-      id: 7,
+      id: 20,
       name: r'qrCodePosX',
-      type: IsarType.long,
+      type: IsarType.double,
     ),
     r'qrCodePosY': PropertySchema(
-      id: 8,
+      id: 21,
       name: r'qrCodePosY',
-      type: IsarType.long,
+      type: IsarType.double,
     ),
     r'qrCodeSize': PropertySchema(
-      id: 9,
+      id: 22,
       name: r'qrCodeSize',
-      type: IsarType.long,
+      type: IsarType.double,
     ),
-    r'qrSalt': PropertySchema(id: 10, name: r'qrSalt', type: IsarType.string),
+    r'qrSalt': PropertySchema(id: 23, name: r'qrSalt', type: IsarType.string),
     r'sessionIntervalMinutes': PropertySchema(
-      id: 11,
+      id: 24,
       name: r'sessionIntervalMinutes',
       type: IsarType.long,
     ),
     r'sessionTimeMinutes': PropertySchema(
-      id: 12,
+      id: 25,
       name: r'sessionTimeMinutes',
       type: IsarType.long,
     ),
     r'startDateTime': PropertySchema(
-      id: 13,
+      id: 26,
       name: r'startDateTime',
       type: IsarType.dateTime,
     ),
@@ -127,19 +188,32 @@ void _eventSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.endDateTime);
-  writer.writeLong(offsets[1], object.idPosX);
-  writer.writeLong(offsets[2], object.idPosY);
-  writer.writeString(offsets[3], object.name);
-  writer.writeByteList(offsets[4], object.playerCardBackgroundImage);
-  writer.writeLong(offsets[5], object.playerCardHeight);
-  writer.writeLong(offsets[6], object.playerCardWidth);
-  writer.writeLong(offsets[7], object.qrCodePosX);
-  writer.writeLong(offsets[8], object.qrCodePosY);
-  writer.writeLong(offsets[9], object.qrCodeSize);
-  writer.writeString(offsets[10], object.qrSalt);
-  writer.writeLong(offsets[11], object.sessionIntervalMinutes);
-  writer.writeLong(offsets[12], object.sessionTimeMinutes);
-  writer.writeDateTime(offsets[13], object.startDateTime);
+  writer.writeLong(offsets[1], object.idBackgroundColor);
+  writer.writeLong(offsets[2], object.idColor);
+  writer.writeLong(offsets[3], object.idFontSize);
+  writer.writeDouble(offsets[4], object.idPadding);
+  writer.writeDouble(offsets[5], object.idPosX);
+  writer.writeDouble(offsets[6], object.idPosY);
+  writer.writeString(offsets[7], object.name);
+  writer.writeLong(offsets[8], object.pageBackgroundColor);
+  writer.writeDouble(offsets[9], object.pageMargin);
+  writer.writeByteList(offsets[10], object.playerCardBackgroundImage);
+  writer.writeDouble(offsets[11], object.playerCardGapX);
+  writer.writeDouble(offsets[12], object.playerCardGapY);
+  writer.writeLong(offsets[13], object.playerCardHeight);
+  writer.writeBool(offsets[14], object.playerCardLandscape);
+  writer.writeLong(offsets[15], object.playerCardRowsPerPage);
+  writer.writeDouble(offsets[16], object.playerCardWidth);
+  writer.writeLong(offsets[17], object.playerCardsPerRow);
+  writer.writeLong(offsets[18], object.qrCodeBackgroundColor);
+  writer.writeDouble(offsets[19], object.qrCodePadding);
+  writer.writeDouble(offsets[20], object.qrCodePosX);
+  writer.writeDouble(offsets[21], object.qrCodePosY);
+  writer.writeDouble(offsets[22], object.qrCodeSize);
+  writer.writeString(offsets[23], object.qrSalt);
+  writer.writeLong(offsets[24], object.sessionIntervalMinutes);
+  writer.writeLong(offsets[25], object.sessionTimeMinutes);
+  writer.writeDateTime(offsets[26], object.startDateTime);
 }
 
 Event _eventDeserialize(
@@ -151,19 +225,32 @@ Event _eventDeserialize(
   final object = Event();
   object.endDateTime = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.idPosX = reader.readLong(offsets[1]);
-  object.idPosY = reader.readLong(offsets[2]);
-  object.name = reader.readString(offsets[3]);
-  object.playerCardBackgroundImage = reader.readByteList(offsets[4]);
-  object.playerCardHeight = reader.readLong(offsets[5]);
-  object.playerCardWidth = reader.readLong(offsets[6]);
-  object.qrCodePosX = reader.readLong(offsets[7]);
-  object.qrCodePosY = reader.readLong(offsets[8]);
-  object.qrCodeSize = reader.readLong(offsets[9]);
-  object.qrSalt = reader.readString(offsets[10]);
-  object.sessionIntervalMinutes = reader.readLong(offsets[11]);
-  object.sessionTimeMinutes = reader.readLong(offsets[12]);
-  object.startDateTime = reader.readDateTime(offsets[13]);
+  object.idBackgroundColor = reader.readLongOrNull(offsets[1]);
+  object.idColor = reader.readLong(offsets[2]);
+  object.idFontSize = reader.readLong(offsets[3]);
+  object.idPadding = reader.readDouble(offsets[4]);
+  object.idPosX = reader.readDouble(offsets[5]);
+  object.idPosY = reader.readDouble(offsets[6]);
+  object.name = reader.readString(offsets[7]);
+  object.pageBackgroundColor = reader.readLong(offsets[8]);
+  object.pageMargin = reader.readDouble(offsets[9]);
+  object.playerCardBackgroundImage = reader.readByteList(offsets[10]);
+  object.playerCardGapX = reader.readDouble(offsets[11]);
+  object.playerCardGapY = reader.readDouble(offsets[12]);
+  object.playerCardHeight = reader.readLong(offsets[13]);
+  object.playerCardLandscape = reader.readBool(offsets[14]);
+  object.playerCardRowsPerPage = reader.readLong(offsets[15]);
+  object.playerCardWidth = reader.readDouble(offsets[16]);
+  object.playerCardsPerRow = reader.readLong(offsets[17]);
+  object.qrCodeBackgroundColor = reader.readLongOrNull(offsets[18]);
+  object.qrCodePadding = reader.readDouble(offsets[19]);
+  object.qrCodePosX = reader.readDouble(offsets[20]);
+  object.qrCodePosY = reader.readDouble(offsets[21]);
+  object.qrCodeSize = reader.readDouble(offsets[22]);
+  object.qrSalt = reader.readString(offsets[23]);
+  object.sessionIntervalMinutes = reader.readLong(offsets[24]);
+  object.sessionTimeMinutes = reader.readLong(offsets[25]);
+  object.startDateTime = reader.readDateTime(offsets[26]);
   return object;
 }
 
@@ -177,30 +264,56 @@ P _eventDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readByteList(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 6:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 7:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 8:
       return (reader.readLong(offset)) as P;
     case 9:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 10:
-      return (reader.readString(offset)) as P;
+      return (reader.readByteList(offset)) as P;
     case 11:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 12:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 13:
+      return (reader.readLong(offset)) as P;
+    case 14:
+      return (reader.readBool(offset)) as P;
+    case 15:
+      return (reader.readLong(offset)) as P;
+    case 16:
+      return (reader.readDouble(offset)) as P;
+    case 17:
+      return (reader.readLong(offset)) as P;
+    case 18:
+      return (reader.readLongOrNull(offset)) as P;
+    case 19:
+      return (reader.readDouble(offset)) as P;
+    case 20:
+      return (reader.readDouble(offset)) as P;
+    case 21:
+      return (reader.readDouble(offset)) as P;
+    case 22:
+      return (reader.readDouble(offset)) as P;
+    case 23:
+      return (reader.readString(offset)) as P;
+    case 24:
+      return (reader.readLong(offset)) as P;
+    case 25:
+      return (reader.readLong(offset)) as P;
+    case 26:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -416,15 +529,89 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> idPosXEqualTo(int value) {
+  QueryBuilder<Event, Event, QAfterFilterCondition> idBackgroundColorIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'idPosX', value: value),
+        const FilterCondition.isNull(property: r'idBackgroundColor'),
       );
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> idPosXGreaterThan(
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  idBackgroundColorIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'idBackgroundColor'),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idBackgroundColorEqualTo(
+    int? value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idBackgroundColor', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  idBackgroundColorGreaterThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idBackgroundColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idBackgroundColorLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idBackgroundColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idBackgroundColorBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idBackgroundColor',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idColorEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idColor', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idColorGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -432,16 +619,218 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
       return query.addFilterCondition(
         FilterCondition.greaterThan(
           include: include,
+          property: r'idColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idColorLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idColorBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idColor',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idFontSizeEqualTo(
+    int value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idFontSize', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idFontSizeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idFontSize',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idFontSizeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idFontSize',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idFontSizeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idFontSize',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPaddingEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'idPadding',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPaddingGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idPadding',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPaddingLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idPadding',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPaddingBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idPadding',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosXEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
           property: r'idPosX',
           value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosXGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idPosX',
+          value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> idPosXLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -449,16 +838,19 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'idPosX',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> idPosXBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -468,22 +860,33 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           includeLower: includeLower,
           upper: upper,
           includeUpper: includeUpper,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> idPosYEqualTo(int value) {
+  QueryBuilder<Event, Event, QAfterFilterCondition> idPosYEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'idPosY', value: value),
+        FilterCondition.equalTo(
+          property: r'idPosY',
+          value: value,
+
+          epsilon: epsilon,
+        ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> idPosYGreaterThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -491,14 +894,17 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'idPosY',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> idPosYLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -506,16 +912,19 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'idPosY',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> idPosYBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -525,6 +934,8 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           includeLower: includeLower,
           upper: upper,
           includeUpper: includeUpper,
+
+          epsilon: epsilon,
         ),
       );
     });
@@ -672,6 +1083,137 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'name', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> pageBackgroundColorEqualTo(
+    int value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'pageBackgroundColor', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  pageBackgroundColorGreaterThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'pageBackgroundColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> pageBackgroundColorLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'pageBackgroundColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> pageBackgroundColorBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'pageBackgroundColor',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> pageMarginEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'pageMargin',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> pageMarginGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'pageMargin',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> pageMarginLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'pageMargin',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> pageMarginBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'pageMargin',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+
+          epsilon: epsilon,
+        ),
       );
     });
   }
@@ -835,6 +1377,154 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardGapXEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'playerCardGapX',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardGapXGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'playerCardGapX',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardGapXLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'playerCardGapX',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardGapXBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'playerCardGapX',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardGapYEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'playerCardGapY',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardGapYGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'playerCardGapY',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardGapYLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'playerCardGapY',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardGapYBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'playerCardGapY',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterFilterCondition> playerCardHeightEqualTo(
     int value,
   ) {
@@ -894,19 +1584,94 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthEqualTo(
-    int value,
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardLandscapeEqualTo(
+    bool value,
   ) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'playerCardWidth', value: value),
+        FilterCondition.equalTo(property: r'playerCardLandscape', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  playerCardRowsPerPageEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'playerCardRowsPerPage',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  playerCardRowsPerPageGreaterThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'playerCardRowsPerPage',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  playerCardRowsPerPageLessThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'playerCardRowsPerPage',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  playerCardRowsPerPageBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'playerCardRowsPerPage',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'playerCardWidth',
+          value: value,
+
+          epsilon: epsilon,
+        ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthGreaterThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -914,14 +1679,17 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'playerCardWidth',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -929,16 +1697,19 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'playerCardWidth',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> playerCardWidthBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -948,24 +1719,240 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           includeLower: includeLower,
           upper: upper,
           includeUpper: includeUpper,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardsPerRowEqualTo(
+    int value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'playerCardsPerRow', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  playerCardsPerRowGreaterThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'playerCardsPerRow',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardsPerRowLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'playerCardsPerRow',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> playerCardsPerRowBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'playerCardsPerRow',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  qrCodeBackgroundColorIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'qrCodeBackgroundColor'),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  qrCodeBackgroundColorIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'qrCodeBackgroundColor'),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  qrCodeBackgroundColorEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'qrCodeBackgroundColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  qrCodeBackgroundColorGreaterThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'qrCodeBackgroundColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  qrCodeBackgroundColorLessThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'qrCodeBackgroundColor',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition>
+  qrCodeBackgroundColorBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'qrCodeBackgroundColor',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePaddingEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'qrCodePadding',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePaddingGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'qrCodePadding',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePaddingLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'qrCodePadding',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePaddingBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'qrCodePadding',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXEqualTo(
-    int value,
-  ) {
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'qrCodePosX', value: value),
+        FilterCondition.equalTo(
+          property: r'qrCodePosX',
+          value: value,
+
+          epsilon: epsilon,
+        ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXGreaterThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -973,14 +1960,17 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'qrCodePosX',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -988,16 +1978,19 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'qrCodePosX',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosXBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1007,24 +2000,33 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           includeLower: includeLower,
           upper: upper,
           includeUpper: includeUpper,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYEqualTo(
-    int value,
-  ) {
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'qrCodePosY', value: value),
+        FilterCondition.equalTo(
+          property: r'qrCodePosY',
+          value: value,
+
+          epsilon: epsilon,
+        ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYGreaterThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1032,14 +2034,17 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'qrCodePosY',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1047,16 +2052,19 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'qrCodePosY',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodePosYBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1066,24 +2074,33 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           includeLower: includeLower,
           upper: upper,
           includeUpper: includeUpper,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeEqualTo(
-    int value,
-  ) {
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'qrCodeSize', value: value),
+        FilterCondition.equalTo(
+          property: r'qrCodeSize',
+          value: value,
+
+          epsilon: epsilon,
+        ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeGreaterThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1091,14 +2108,17 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'qrCodeSize',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1106,16 +2126,19 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           include: include,
           property: r'qrCodeSize',
           value: value,
+
+          epsilon: epsilon,
         ),
       );
     });
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> qrCodeSizeBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1125,6 +2148,8 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
           includeLower: includeLower,
           upper: upper,
           includeUpper: includeUpper,
+
+          epsilon: epsilon,
         ),
       );
     });
@@ -1594,6 +2619,54 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idBackgroundColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdBackgroundColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idBackgroundColor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idColor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdFontSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idFontSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdFontSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idFontSize', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdPadding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPadding', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByIdPaddingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPadding', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> sortByIdPosX() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idPosX', Sort.asc);
@@ -1630,6 +2703,54 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPageBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pageBackgroundColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPageBackgroundColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pageBackgroundColor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPageMargin() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pageMargin', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPageMarginDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pageMargin', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardGapX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardGapX', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardGapXDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardGapX', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardGapY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardGapY', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardGapYDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardGapY', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardHeight() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playerCardHeight', Sort.asc);
@@ -1642,6 +2763,30 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardLandscape() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardLandscape', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardLandscapeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardLandscape', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardRowsPerPage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardRowsPerPage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardRowsPerPageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardRowsPerPage', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardWidth() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playerCardWidth', Sort.asc);
@@ -1651,6 +2796,42 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
   QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardWidthDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playerCardWidth', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardsPerRow() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardsPerRow', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByPlayerCardsPerRowDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardsPerRow', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodeBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodeBackgroundColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodeBackgroundColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodeBackgroundColor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodePadding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePadding', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByQrCodePaddingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePadding', Sort.desc);
     });
   }
 
@@ -1764,6 +2945,54 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idBackgroundColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdBackgroundColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idBackgroundColor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idColor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdFontSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idFontSize', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdFontSizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idFontSize', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdPadding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPadding', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByIdPaddingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idPadding', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> thenByIdPosX() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idPosX', Sort.asc);
@@ -1800,6 +3029,54 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPageBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pageBackgroundColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPageBackgroundColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pageBackgroundColor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPageMargin() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pageMargin', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPageMarginDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pageMargin', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardGapX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardGapX', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardGapXDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardGapX', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardGapY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardGapY', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardGapYDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardGapY', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardHeight() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playerCardHeight', Sort.asc);
@@ -1812,6 +3089,30 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardLandscape() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardLandscape', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardLandscapeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardLandscape', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardRowsPerPage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardRowsPerPage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardRowsPerPageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardRowsPerPage', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardWidth() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playerCardWidth', Sort.asc);
@@ -1821,6 +3122,42 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
   QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardWidthDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playerCardWidth', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardsPerRow() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardsPerRow', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByPlayerCardsPerRowDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'playerCardsPerRow', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodeBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodeBackgroundColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodeBackgroundColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodeBackgroundColor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodePadding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePadding', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByQrCodePaddingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'qrCodePadding', Sort.desc);
     });
   }
 
@@ -1916,6 +3253,30 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
+  QueryBuilder<Event, Event, QDistinct> distinctByIdBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idBackgroundColor');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByIdColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idColor');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByIdFontSize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idFontSize');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByIdPadding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idPadding');
+    });
+  }
+
   QueryBuilder<Event, Event, QDistinct> distinctByIdPosX() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'idPosX');
@@ -1936,9 +3297,33 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
+  QueryBuilder<Event, Event, QDistinct> distinctByPageBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'pageBackgroundColor');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByPageMargin() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'pageMargin');
+    });
+  }
+
   QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardBackgroundImage() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'playerCardBackgroundImage');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardGapX() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerCardGapX');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardGapY() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerCardGapY');
     });
   }
 
@@ -1948,9 +3333,39 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
+  QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardLandscape() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerCardLandscape');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardRowsPerPage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerCardRowsPerPage');
+    });
+  }
+
   QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardWidth() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'playerCardWidth');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByPlayerCardsPerRow() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerCardsPerRow');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByQrCodeBackgroundColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'qrCodeBackgroundColor');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByQrCodePadding() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'qrCodePadding');
     });
   }
 
@@ -2012,13 +3427,37 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Event, int, QQueryOperations> idPosXProperty() {
+  QueryBuilder<Event, int?, QQueryOperations> idBackgroundColorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idBackgroundColor');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> idColorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idColor');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> idFontSizeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idFontSize');
+    });
+  }
+
+  QueryBuilder<Event, double, QQueryOperations> idPaddingProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idPadding');
+    });
+  }
+
+  QueryBuilder<Event, double, QQueryOperations> idPosXProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idPosX');
     });
   }
 
-  QueryBuilder<Event, int, QQueryOperations> idPosYProperty() {
+  QueryBuilder<Event, double, QQueryOperations> idPosYProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idPosY');
     });
@@ -2030,10 +3469,34 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Event, int, QQueryOperations> pageBackgroundColorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'pageBackgroundColor');
+    });
+  }
+
+  QueryBuilder<Event, double, QQueryOperations> pageMarginProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'pageMargin');
+    });
+  }
+
   QueryBuilder<Event, List<int>?, QQueryOperations>
   playerCardBackgroundImageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'playerCardBackgroundImage');
+    });
+  }
+
+  QueryBuilder<Event, double, QQueryOperations> playerCardGapXProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerCardGapX');
+    });
+  }
+
+  QueryBuilder<Event, double, QQueryOperations> playerCardGapYProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerCardGapY');
     });
   }
 
@@ -2043,25 +3506,55 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Event, int, QQueryOperations> playerCardWidthProperty() {
+  QueryBuilder<Event, bool, QQueryOperations> playerCardLandscapeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerCardLandscape');
+    });
+  }
+
+  QueryBuilder<Event, int, QQueryOperations> playerCardRowsPerPageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerCardRowsPerPage');
+    });
+  }
+
+  QueryBuilder<Event, double, QQueryOperations> playerCardWidthProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'playerCardWidth');
     });
   }
 
-  QueryBuilder<Event, int, QQueryOperations> qrCodePosXProperty() {
+  QueryBuilder<Event, int, QQueryOperations> playerCardsPerRowProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerCardsPerRow');
+    });
+  }
+
+  QueryBuilder<Event, int?, QQueryOperations> qrCodeBackgroundColorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'qrCodeBackgroundColor');
+    });
+  }
+
+  QueryBuilder<Event, double, QQueryOperations> qrCodePaddingProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'qrCodePadding');
+    });
+  }
+
+  QueryBuilder<Event, double, QQueryOperations> qrCodePosXProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'qrCodePosX');
     });
   }
 
-  QueryBuilder<Event, int, QQueryOperations> qrCodePosYProperty() {
+  QueryBuilder<Event, double, QQueryOperations> qrCodePosYProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'qrCodePosY');
     });
   }
 
-  QueryBuilder<Event, int, QQueryOperations> qrCodeSizeProperty() {
+  QueryBuilder<Event, double, QQueryOperations> qrCodeSizeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'qrCodeSize');
     });

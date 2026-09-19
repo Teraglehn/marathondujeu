@@ -10,15 +10,15 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Rédiger le rapport de L05, L06 ou L12, sur demande — ils naissent dans `phase-2/`.
+Rédiger le rapport de L06 ou L12, sur demande — ils naissent dans `phase-2/`.
 
 ## Phases
 
 **Phase 1 — remise en état du dépôt** : close le 2026-09-19, figée dans
 `developpement/livraisons/phase-1/`.
 
-**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L05, L06, L12 ; L04, L10 et L11 livrés le
-2026-09-19. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
+**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L06, L12 ; L04, L05, L10 et L11
+livrés le 2026-09-19. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
 
 L09 n'est rattaché à aucune phase : son rapport naîtra dans `lots/`.
 
@@ -29,7 +29,6 @@ Les numéros ne sont **jamais réattribués**.
 
 | # | Lot | Phase | Statut | Rapport |
 |---|---|---|---|---|
-| L05 | Génération des cartes joueur paramétrable depuis l'interface | 2 | à faire | à rédiger |
 | L06 | Tirages : copie d'un tirage, éditeur latéral revu, lecture seule des tirages passés | 2 | à faire | à rédiger |
 | L09 | Fichier de sauvegarde par événement : export automatique, import dans la liste | — | à faire | à rédiger |
 | L12 | Aide et tutoriels : bouton « i » en haut à droite de chaque page, explications dans les écrans | 2 | à faire | à rédiger |
@@ -37,22 +36,6 @@ Les numéros ne sont **jamais réattribués**.
 ### Notes pour la rédaction des rapports
 
 Constats à reprendre dans le rapport concerné, puis à effacer d'ici.
-
-**L05** — rendre la génération de cartes autonome, réglée depuis l'interface. Ce qui est demandé
-(Bastien, 2026-09-19) :
-- cartes par ligne et par page ; orientation portrait / paysage ;
-- taille de la carte, le ratio étant **lu depuis l'image fournie** ;
-- position et taille du QR code sur la carte ;
-- position et taille de police du numéro de carte ;
-- générer les cartes du numéro x au numéro y ; le nombre de cartes imprimées est **un multiple
-  du nombre de cartes par page** (lignes × cartes par ligne) — pas de feuille incomplète
-  *(Bastien, 2026-09-19)*.
-Dans le code : `card_generator_page.dart` a tout en dur (cartes 201→304, 4 colonnes × 2, A4
-paysage, QR 116 pt en (82, 170), numéro en (10, 10)) ; `PlayerCardService.generatePage` accepte
-déjà ces paramètres. `Event` porte déjà `playerCardHeight/Width`, `playerCardBackgroundImage`,
-`qrCodeSize`, `qrCodePosX/Y`, `idPosX/Y` — jamais alimentés ni lus (le formulaire d'événement ne
-les expose pas). Manquent au modèle : cartes par ligne / par page, orientation, taille de police.
-Toucher au schéma `Event` sur une base qui a servi : partie I, § 12.
 
 **L06** — trois volets sur les tirages (Bastien, 2026-09-19) :
 1. **Copier un tirage** : depuis un tirage, en créer un second qui reprend son paramétrage et
@@ -95,6 +78,12 @@ commun.
 
 ## Questions transversales en attente
 
+- **`material_ui`** : Flutter 3.47 déplace Material dans le paquet `material_ui` ; les paquets
+  tiers y passent (`flex_color_picker` 4, `go_router` 18 le tire déjà). L'application reste sur
+  `flutter/material` — leurs types de thème et de localisation diffèrent (constaté en L05 :
+  sélecteur de couleur rétrogradé). Une migration de l'application est à prévoir, dans un lot
+  dédié ; d'ici là, garder les paquets d'interface sur `flutter/material`.
+
 - **Tests** : 17 tests depuis L02 (tirage, égalité, persistance), sur une vraie base Isar
   temporaire. Défaut appliqué, pas acté : chaque lot ajoute les tests de son périmètre — pas de
-  lot « tests » dédié. Prochain candidat : le calcul de mise en page des cartes (L05).
+  lot « tests » dédié. 32 tests après L05 (mise en page des cartes, format du code, migration).

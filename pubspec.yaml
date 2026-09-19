@@ -22,7 +22,7 @@ dependencies:
   go_router: ^18.0.1
   flutter_riverpod: ^3.1.0
   riverpod_annotation: ^4.0.0
-  flex_color_picker: ^4.0.0
+  flex_color_picker: ^3.7.1  # 4.x est bâti sur material_ui, pas encore adopté ici (L05)
   pretty_qr_code: ^3.6.0
   uuid: ^4.6.0
   pdf: ^3.13.0

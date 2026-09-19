@@ -94,6 +94,9 @@ class SFr extends S {
   String get data_player_qrcode => 'QRCode';
 
   @override
+  String get data_player_number => 'Numéro';
+
+  @override
   String get data_player_bonus => 'Bonus';
 
   @override
@@ -310,6 +313,150 @@ class SFr extends S {
 
   @override
   String get page_cardGenerator_menuItem => 'Générateur de Carte';
+
+  @override
+  String get page_cardGenerator_noImage =>
+      'Choisissez une image de fond pour voir l\'aperçu des cartes.';
+
+  @override
+  String get page_cardGenerator_image => 'Image de fond';
+
+  @override
+  String get page_cardGenerator_section_sheet => 'Planche';
+
+  @override
+  String get page_cardGenerator_cardsPerRow => 'Cartes par ligne';
+
+  @override
+  String get page_cardGenerator_rowsPerPage => 'Lignes par page';
+
+  @override
+  String get page_cardGenerator_portrait => 'Portrait';
+
+  @override
+  String get page_cardGenerator_landscape => 'Paysage';
+
+  @override
+  String get page_cardGenerator_cardWidth => 'Largeur de carte (mm)';
+
+  @override
+  String page_cardGenerator_cardHeight(Object mm) {
+    return 'Hauteur : $mm mm, selon l\'image';
+  }
+
+  @override
+  String get page_cardGenerator_pageMargin => 'Marge de page (mm)';
+
+  @override
+  String get page_cardGenerator_gapX => 'Espace entre cartes (mm)';
+
+  @override
+  String get page_cardGenerator_gapY => 'Espace entre lignes (mm)';
+
+  @override
+  String get page_cardGenerator_pageBackgroundColor =>
+      'Couleur de fond de la page';
+
+  @override
+  String get page_cardGenerator_section_qrCode => 'QR code';
+
+  @override
+  String get page_cardGenerator_section_number => 'Numéro de carte';
+
+  @override
+  String get page_cardGenerator_size => 'Taille (mm)';
+
+  @override
+  String get page_cardGenerator_posX => 'Position X (mm)';
+
+  @override
+  String get page_cardGenerator_posY => 'Position Y (mm)';
+
+  @override
+  String get page_cardGenerator_fontSize => 'Taille de police (pt)';
+
+  @override
+  String get page_cardGenerator_color => 'Couleur';
+
+  @override
+  String get page_cardGenerator_background => 'Fond';
+
+  @override
+  String get page_cardGenerator_backgroundColor => 'Couleur du fond';
+
+  @override
+  String get page_cardGenerator_padding => 'Marge du fond (mm)';
+
+  @override
+  String get page_cardGenerator_help_positions =>
+      'Les positions se comptent en mm depuis le coin haut-gauche de la carte.';
+
+  @override
+  String get page_cardGenerator_section_range => 'Cartes à imprimer';
+
+  @override
+  String get page_cardGenerator_from => 'Du numéro';
+
+  @override
+  String get page_cardGenerator_to => 'Au numéro';
+
+  @override
+  String page_cardGenerator_summary(
+    Object count,
+    Object start,
+    Object end,
+    num pages,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      pages,
+      locale: localeName,
+      other: '$pages pages',
+      one: '1 page',
+    );
+    return '$count cartes, du numéro $start au numéro $end, sur $_temp0. La dernière feuille est toujours complète.';
+  }
+
+  @override
+  String get page_cardGenerator_saved => 'Réglages enregistrés';
+
+  @override
+  String get page_cardGenerator_quickPreview => 'Aperçu rapide';
+
+  @override
+  String get page_cardGenerator_pdfPreview => 'Aperçu PDF';
+
+  @override
+  String get page_cardGenerator_quickPreview_help =>
+      'Première page seulement, rendu approximatif. L\'aperçu PDF montre toutes les pages telles qu\'elles s\'impriment.';
+
+  @override
+  String get data_event_protectCards =>
+      'Protéger les cartes contre la copie et la réutilisation';
+
+  @override
+  String get data_event_protectCards_help =>
+      'Un code secret propre à cet événement est ajouté dans le QR code des cartes : une carte d\'une autre édition n\'est pas reconnue.';
+
+  @override
+  String get data_event_protectCards_locked =>
+      'Des joueurs existent déjà : la protection ne peut plus changer.';
+
+  @override
+  String get data_event_recoverSalt =>
+      'Récupérer la protection depuis une carte imprimée';
+
+  @override
+  String get data_event_recoverSalt_scan =>
+      'Scannez une carte imprimée avec la douchette…';
+
+  @override
+  String get data_event_recoverSalt_none =>
+      'Cette carte n\'a pas de protection.';
+
+  @override
+  String data_event_deletePlayers_confirm(Object count) {
+    return 'Supprimer les $count joueurs de cet événement ? Leurs badgeages et les gagnants des tirages seront perdus. Les cartes imprimées ne seront plus reconnues tant que les joueurs ne sont pas regénérés.';
+  }
 
   @override
   String get page_drawList_title => 'Tirages';

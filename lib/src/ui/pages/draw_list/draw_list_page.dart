@@ -104,7 +104,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                                   CircleAvatar(
                                     backgroundColor: Theme.of(context).colorScheme.primary,
                                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                                    child: Text(w.winner.value!.qrcode)
+                                    child: Text(w.winner.value!.number.toString())
                                   )
                                 ])
                               ),

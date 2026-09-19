@@ -23,7 +23,8 @@ const PlayerSchema = CollectionSchema(
       type: IsarType.long,
     ),
     r'name': PropertySchema(id: 1, name: r'name', type: IsarType.string),
-    r'qrcode': PropertySchema(id: 2, name: r'qrcode', type: IsarType.string),
+    r'number': PropertySchema(id: 2, name: r'number', type: IsarType.long),
+    r'qrcode': PropertySchema(id: 3, name: r'qrcode', type: IsarType.string),
   },
 
   estimateSize: _playerEstimateSize,
@@ -81,7 +82,8 @@ void _playerSerialize(
 ) {
   writer.writeLong(offsets[0], object.bonusSession);
   writer.writeString(offsets[1], object.name);
-  writer.writeString(offsets[2], object.qrcode);
+  writer.writeLong(offsets[2], object.number);
+  writer.writeString(offsets[3], object.qrcode);
 }
 
 Player _playerDeserialize(
@@ -94,7 +96,8 @@ Player _playerDeserialize(
   object.bonusSession = reader.readLong(offsets[0]);
   object.id = id;
   object.name = reader.readString(offsets[1]);
-  object.qrcode = reader.readString(offsets[2]);
+  object.number = reader.readLong(offsets[2]);
+  object.qrcode = reader.readString(offsets[3]);
   return object;
 }
 
@@ -110,6 +113,8 @@ P _playerDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readLong(offset)) as P;
+    case 3:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -472,6 +477,63 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Player, Player, QAfterFilterCondition> numberEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'number', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> numberGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'number',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> numberLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'number',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> numberBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'number',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
   QueryBuilder<Player, Player, QAfterFilterCondition> qrcodeEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -788,6 +850,18 @@ extension PlayerQuerySortBy on QueryBuilder<Player, Player, QSortBy> {
     });
   }
 
+  QueryBuilder<Player, Player, QAfterSortBy> sortByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy> sortByNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.desc);
+    });
+  }
+
   QueryBuilder<Player, Player, QAfterSortBy> sortByQrcode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qrcode', Sort.asc);
@@ -838,6 +912,18 @@ extension PlayerQuerySortThenBy on QueryBuilder<Player, Player, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Player, Player, QAfterSortBy> thenByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterSortBy> thenByNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.desc);
+    });
+  }
+
   QueryBuilder<Player, Player, QAfterSortBy> thenByQrcode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qrcode', Sort.asc);
@@ -866,6 +952,12 @@ extension PlayerQueryWhereDistinct on QueryBuilder<Player, Player, QDistinct> {
     });
   }
 
+  QueryBuilder<Player, Player, QDistinct> distinctByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'number');
+    });
+  }
+
   QueryBuilder<Player, Player, QDistinct> distinctByQrcode({
     bool caseSensitive = true,
   }) {
@@ -891,6 +983,12 @@ extension PlayerQueryProperty on QueryBuilder<Player, Player, QQueryProperty> {
   QueryBuilder<Player, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Player, int, QQueryOperations> numberProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'number');
     });
   }
 

@@ -18,16 +18,31 @@ class Event {
   String qrSalt = "";
 
   int playerCardHeight = 0;
-  int playerCardWidth = 0;
+  double playerCardWidth = 0;
 
   List<byte>? playerCardBackgroundImage;
 
-  int qrCodeSize = 0;
-  int qrCodePosX = 0;
-  int qrCodePosY = 0;
+  double qrCodeSize = 0;
+  double qrCodePosX = 0;
+  double qrCodePosY = 0;
 
-  int idPosX = 0;
-  int idPosY = 0;
+  double idPosX = 0;
+  double idPosY = 0;
+
+  // Mise en page des cartes (L05). Longueurs en mm (décimales), couleurs en ARGB ; un fond `null` = pas de fond.
+  int playerCardsPerRow = 4;
+  int playerCardRowsPerPage = 2;
+  bool playerCardLandscape = true;
+  double playerCardGapX = 0;
+  double playerCardGapY = 0;
+  double pageMargin = 0;
+  int pageBackgroundColor = 0xFFFFFFFF;
+  double qrCodePadding = 0;
+  int? qrCodeBackgroundColor;
+  int idFontSize = 12;
+  int idColor = 0xFF000000;
+  double idPadding = 0;
+  int? idBackgroundColor;
   
   @Backlink(to: 'event')
   final players = IsarLinks<Player>();
@@ -56,4 +71,14 @@ class Event {
 
   @ignore
   bool get exist => id != Isar.autoIncrement;
+
+  /// Le code porté par le QR d'une carte : `sel-numéro`, ou le numéro seul sans protection.
+  /// Le numéro est toujours après le dernier « - ».
+  String qrCodeFor(int number) => qrSalt.isEmpty ? number.toString() : '$qrSalt-$number';
+
+  /// Le sel d'un code scanné : ce qui précède le dernier « - », vide s'il n'y en a pas.
+  static String saltFromCode(String code) {
+    final i = code.lastIndexOf('-');
+    return i < 0 ? '' : code.substring(0, i);
+  }
 }

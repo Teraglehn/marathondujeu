@@ -134,7 +134,8 @@ class EventService {
     for(var i = players.length+1; i < (playerCount+1); i++){
       players.add(Player.empty()
         ..name = i.toString()
-        ..qrcode = event.qrSalt + i.toString()
+        ..number = i
+        ..qrcode = event.qrCodeFor(i)
         ..event.value = event
       );
     }

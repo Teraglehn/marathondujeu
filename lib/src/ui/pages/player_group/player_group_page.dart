@@ -53,7 +53,7 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
                   children: selectedGroup!.players.map((player) => CircleAvatar(
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                        child: Text(player.qrcode)
+                        child: Text(player.number.toString())
                     )
                   ).toList()
                 ),

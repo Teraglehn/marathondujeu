@@ -1,12 +1,16 @@
 import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
+import 'package:marathondujeu/services_injector.dart';
 import 'package:marathondujeu/src/pods/events.dart';
+import 'package:marathondujeu/src/pods/players.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/datetime_form_field.dart';
+import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
+import 'package:uuid/uuid.dart';
 
 class EventEditForm extends ConsumerStatefulWidget {
 
@@ -31,9 +35,13 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
   final _sessionIntervalMinuteController = TextEditingController();
   bool generateSessions = false;
 
+  // La protection des cartes : un sel propre à l'événement dans le QR code. Jamais saisi.
+  late String _qrSalt;
+
   @override
   void initState(){
     super.initState();
+    _qrSalt = widget.event.qrSalt;
     _sessionTimeMinuteController.text = widget.event.sessionTimeMinutes.toString();
     _sessionIntervalMinuteController.text = widget.event.sessionIntervalMinutes.toString();
   }
@@ -45,6 +53,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
 
     widget.event.sessionTimeMinutes = int.parse(_sessionTimeMinuteController.text);
     widget.event.sessionIntervalMinutes = int.parse(_sessionIntervalMinuteController.text);
+    widget.event.qrSalt = _qrSalt;
 
     _formKey.currentState!.save();
     
@@ -63,110 +72,214 @@ class _EventEditFormState extends ConsumerState<EventEditForm> {
     ref.read(editorPodProvider.notifier).close();
   }
 
+  void setProtected(bool protected) {
+    setState(() => _qrSalt = protected ? const Uuid().v4().substring(0, 8) : '');
+  }
+
+  /// Retrouve le sel depuis une carte imprimée : ce qui précède le dernier « - » du code scanné.
+  Future<void> recoverSalt() async {
+    final salt = await showDialog<String>(
+      context: context,
+      builder: (context) => BarcodeKeyboardListener(
+        useKeyDownEvent: true,
+        onBarcodeScanned: (code) => Navigator.of(context).pop(Event.saltFromCode(code.trim())),
+        child: AlertDialog(
+          title: Text(S.of(context).data_event_recoverSalt),
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.qr_code_scanner, size: 32),
+              const SizedBox(width: 16),
+              Text(S.of(context).data_event_recoverSalt_scan),
+            ],
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(S.of(context).utils_button_cancel)),
+          ],
+        ),
+      ),
+    );
+    if (salt == null || !mounted) return;
+    if (salt.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).data_event_recoverSalt_none), duration: const Duration(seconds: 3), showCloseIcon: true));
+      return;
+    }
+    setState(() => _qrSalt = salt);
+  }
+
+  /// Supprime tous les joueurs de l'événement, après confirmation : c'est ce qui débloque la protection.
+  Future<void> deletePlayers(int count) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context).page_playerList_deletePlayers),
+        content: Text(S.of(context).data_event_deletePlayers_confirm(count)),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(S.of(context).utils_button_cancel)),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: FilledButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.error, foregroundColor: Theme.of(context).colorScheme.onError),
+            child: Text(S.of(context).utils_button_delete),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    await ref.read(eventServiceProvider).destroyPlayers(widget.event);
+  }
+
+  /// Le bloc « Protéger les cartes » : interrupteur, explication, récupération ; verrouillé dès
+  /// que des joueurs existent.
+  Widget protectionBlock(BuildContext context, int playerCount) {
+    final hasPlayers = playerCount > 0;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SwitchListTile(
+            title: Text(S.of(context).data_event_protectCards),
+            subtitle: Text(hasPlayers ? S.of(context).data_event_protectCards_locked : S.of(context).data_event_protectCards_help),
+            value: _qrSalt.isNotEmpty,
+            onChanged: hasPlayers ? null : setProtected,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: hasPlayers
+              ? TextButton.icon(
+                  onPressed: () => deletePlayers(playerCount),
+                  icon: const Icon(Icons.delete),
+                  label: Text(S.of(context).page_playerList_deletePlayers),
+                  style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+                )
+              : TextButton.icon(
+                  onPressed: recoverSalt,
+                  icon: const Icon(Icons.qr_code_scanner),
+                  label: Text(S.of(context).data_event_recoverSalt),
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Un événement pas encore enregistré n'a pas de joueur.
+    final playerCount = widget.event.exist
+      ? (ref.watch(playersProvider(eventId: widget.event.id)).value?.length ?? 0)
+      : 0;
+
     return Form(
       key: _formKey,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              initialValue: widget.event.name,
-              decoration: InputDecoration(
-                labelText: S.of(context).data_event_name,
-                border: const OutlineInputBorder(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      initialValue: widget.event.name,
+                      decoration: InputDecoration(
+                        labelText: S.of(context).data_event_name,
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return S.of(context).data_event_error_name_required;
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        widget.event.name = value!;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DateTimeFormField(
+                      initialValue: widget.event.startDateTime,
+                      label: S.of(context).data_event_datetime_start,
+                      validator: (value) {
+                        if (value == null) {
+                          return S.of(context).data_event_error_datetime_start_required;
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        widget.event.startDateTime = value!;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DateTimeFormField(
+                      initialValue: widget.event.endDateTime,
+                      label: S.of(context).data_event_datetime_end,
+                      validator: (value) {
+                        if (value == null) {
+                          return S.of(context).data_event_error_datetime_end_required;
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        widget.event.endDateTime = value!;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: _sessionTimeMinuteController,
+                      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                      inputFormatters: <TextInputFormatter>[FormattersService.integer],
+                      decoration: InputDecoration(
+                        labelText: S.of(context).data_event_session_duration_minute,
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return S.of(context).data_event_error_session_duration_minute_required;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: _sessionIntervalMinuteController,
+                      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                      inputFormatters: <TextInputFormatter>[FormattersService.integer],
+                      decoration: InputDecoration(
+                        labelText: S.of(context).data_event_session_interval_minute,
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return S.of(context).data_event_error_session_interval_minute_required;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  protectionBlock(context, playerCount),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CheckboxListTile(
+                      title: Text(S.of(context).page_eventList_generateSessions),
+                      value: generateSessions,
+                      onChanged:(bool? value) {
+                        setState(() {
+                          generateSessions = !generateSessions;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return S.of(context).data_event_error_name_required;
-                }
-                return null;
-              },
-              onSaved: (value) {
-                widget.event.name = value!;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DateTimeFormField(
-              initialValue: widget.event.startDateTime,
-              label: S.of(context).data_event_datetime_start,
-              validator: (value) {
-                if (value == null) {
-                  return S.of(context).data_event_error_datetime_start_required;
-                }
-                return null;
-              },
-              onSaved: (value) {
-                widget.event.startDateTime = value!;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DateTimeFormField(
-              initialValue: widget.event.endDateTime,
-              label: S.of(context).data_event_datetime_end,
-              validator: (value) {
-                if (value == null) {
-                  return S.of(context).data_event_error_datetime_end_required;
-                }
-                return null;
-              },
-              onSaved: (value) {
-                widget.event.endDateTime = value!;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: _sessionTimeMinuteController,
-              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-              inputFormatters: <TextInputFormatter>[FormattersService.integer],
-              decoration: InputDecoration(
-                labelText: S.of(context).data_event_session_duration_minute,
-                border: const OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return S.of(context).data_event_error_session_duration_minute_required;
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: _sessionIntervalMinuteController,
-              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-              inputFormatters: <TextInputFormatter>[FormattersService.integer],
-              decoration: InputDecoration(
-                labelText: S.of(context).data_event_session_interval_minute,
-                border: const OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return S.of(context).data_event_error_session_interval_minute_required;
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CheckboxListTile(
-              title: Text(S.of(context).page_eventList_generateSessions),
-              value: generateSessions,
-              onChanged:(bool? value) {
-                setState(() {
-                  generateSessions = !generateSessions;
-                });
-              },
             ),
           ),
           Padding(

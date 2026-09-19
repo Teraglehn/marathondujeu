@@ -154,7 +154,7 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                           leading: CircleAvatar(
                             backgroundColor: Theme.of(context).colorScheme.primary,
                             foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                            child: Text(player.qrcode)
+                            child: Text(player.number.toString())
                           ),
                           title: Text(player.name)
                         ),
