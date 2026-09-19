@@ -8,7 +8,7 @@
 PRODUCT_NAME = marathondujeu
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.marathondujeu
+PRODUCT_BUNDLE_IDENTIFIER = com.saroc.marathondujeu
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2025 com.saroc. All rights reserved.

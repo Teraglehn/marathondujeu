@@ -4,7 +4,7 @@ import 'package:marathondujeu/src/data/data.dart';
 part 'editor_state.freezed.dart';
 
 @freezed
-class EditorState with _$EditorState{
+abstract class EditorState with _$EditorState{
   const EditorState._();
 
   const factory EditorState({

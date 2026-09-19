@@ -87,7 +87,7 @@ const DrawSchema = CollectionSchema(
   getId: _drawGetId,
   getLinks: _drawGetLinks,
   attach: _drawAttach,
-  version: '3.1.8',
+  version: '3.3.0',
 );
 
 int _drawEstimateSize(

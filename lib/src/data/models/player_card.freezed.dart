@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,125 +9,291 @@ part of 'player_card.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PlayerCard {
-  String get code => throw _privateConstructorUsedError;
+  String get code;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerCard
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PlayerCardCopyWith<PlayerCard> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PlayerCardCopyWith<$Res> {
-  factory $PlayerCardCopyWith(
-          PlayerCard value, $Res Function(PlayerCard) then) =
-      _$PlayerCardCopyWithImpl<$Res, PlayerCard>;
-  @useResult
-  $Res call({String code});
-}
-
-/// @nodoc
-class _$PlayerCardCopyWithImpl<$Res, $Val extends PlayerCard>
-    implements $PlayerCardCopyWith<$Res> {
-  _$PlayerCardCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? code = null,
-  }) {
-    return _then(_value.copyWith(
-      code: null == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PlayerCardImplCopyWith<$Res>
-    implements $PlayerCardCopyWith<$Res> {
-  factory _$$PlayerCardImplCopyWith(
-          _$PlayerCardImpl value, $Res Function(_$PlayerCardImpl) then) =
-      __$$PlayerCardImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String code});
-}
-
-/// @nodoc
-class __$$PlayerCardImplCopyWithImpl<$Res>
-    extends _$PlayerCardCopyWithImpl<$Res, _$PlayerCardImpl>
-    implements _$$PlayerCardImplCopyWith<$Res> {
-  __$$PlayerCardImplCopyWithImpl(
-      _$PlayerCardImpl _value, $Res Function(_$PlayerCardImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? code = null,
-  }) {
-    return _then(_$PlayerCardImpl(
-      code: null == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$PlayerCardImpl extends _PlayerCard {
-  const _$PlayerCardImpl({required this.code}) : super._();
-
-  @override
-  final String code;
-
-  @override
-  String toString() {
-    return 'PlayerCard(code: $code)';
-  }
+      _$PlayerCardCopyWithImpl<PlayerCard>(this as PlayerCard, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PlayerCardImpl &&
+            other is PlayerCard &&
             (identical(other.code, code) || other.code == code));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, code);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'PlayerCard(code: $code)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $PlayerCardCopyWith<$Res> {
+  factory $PlayerCardCopyWith(
+          PlayerCard value, $Res Function(PlayerCard) _then) =
+      _$PlayerCardCopyWithImpl;
+  @useResult
+  $Res call({String code});
+}
+
+/// @nodoc
+class _$PlayerCardCopyWithImpl<$Res> implements $PlayerCardCopyWith<$Res> {
+  _$PlayerCardCopyWithImpl(this._self, this._then);
+
+  final PlayerCard _self;
+  final $Res Function(PlayerCard) _then;
+
+  /// Create a copy of PlayerCard
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? code = null,
+  }) {
+    return _then(_self.copyWith(
+      code: null == code
+          ? _self.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [PlayerCard].
+extension PlayerCardPatterns on PlayerCard {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PlayerCard value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PlayerCard() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PlayerCard value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PlayerCard():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PlayerCard value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PlayerCard() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String code)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PlayerCard() when $default != null:
+        return $default(_that.code);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String code) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PlayerCard():
+        return $default(_that.code);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String code)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PlayerCard() when $default != null:
+        return $default(_that.code);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+
+class _PlayerCard extends PlayerCard {
+  const _PlayerCard({required this.code}) : super._();
+
+  @override
+  final String code;
+
+  /// Create a copy of PlayerCard
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PlayerCardCopyWith<_PlayerCard> get copyWith =>
+      __$PlayerCardCopyWithImpl<_PlayerCard>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PlayerCard &&
+            (identical(other.code, code) || other.code == code));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, code);
+
+  @override
+  String toString() {
+    return 'PlayerCard(code: $code)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$PlayerCardCopyWith<$Res>
+    implements $PlayerCardCopyWith<$Res> {
+  factory _$PlayerCardCopyWith(
+          _PlayerCard value, $Res Function(_PlayerCard) _then) =
+      __$PlayerCardCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String code});
+}
+
+/// @nodoc
+class __$PlayerCardCopyWithImpl<$Res> implements _$PlayerCardCopyWith<$Res> {
+  __$PlayerCardCopyWithImpl(this._self, this._then);
+
+  final _PlayerCard _self;
+  final $Res Function(_PlayerCard) _then;
+
+  /// Create a copy of PlayerCard
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$PlayerCardImplCopyWith<_$PlayerCardImpl> get copyWith =>
-      __$$PlayerCardImplCopyWithImpl<_$PlayerCardImpl>(this, _$identity);
+  $Res call({
+    Object? code = null,
+  }) {
+    return _then(_PlayerCard(
+      code: null == code
+          ? _self.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
-abstract class _PlayerCard extends PlayerCard {
-  const factory _PlayerCard({required final String code}) = _$PlayerCardImpl;
-  const _PlayerCard._() : super._();
-
-  @override
-  String get code;
-  @override
-  @JsonKey(ignore: true)
-  _$$PlayerCardImplCopyWith<_$PlayerCardImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/data/isar_client.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 abstract class RepositoryBase<T> {
   final IsarClient isarClient;

@@ -1,11 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:isar/isar.dart';
-import 'package:marathondujeu/l10n/generated/l10n.dart';
+import 'package:isar_community/isar.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:intl/intl.dart';
 
 class ImageFormField extends FormField<List<byte>> {
 

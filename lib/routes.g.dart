@@ -16,42 +16,42 @@ RouteBase get $topShellRoute => ShellRouteData.$route(
         GoRouteData.$route(
           path: '/',
           name: 'eventList',
-          factory: $EventListRouteExtension._fromState,
+          factory: $EventListRoute._fromState,
         ),
         GoRouteData.$route(
           path: '/players',
           name: 'playerList',
-          factory: $PlayerListRouteExtension._fromState,
+          factory: $PlayerListRoute._fromState,
         ),
         GoRouteData.$route(
           path: '/draws',
           name: 'drawList',
-          factory: $DrawListRouteExtension._fromState,
+          factory: $DrawListRoute._fromState,
         ),
         GoRouteData.$route(
           path: '/sessions',
           name: 'sessionList',
-          factory: $SessionListRouteExtension._fromState,
+          factory: $SessionListRoute._fromState,
         ),
         GoRouteData.$route(
           path: '/session',
           name: 'session',
-          factory: $SessionRouteExtension._fromState,
+          factory: $SessionRoute._fromState,
         ),
         GoRouteData.$route(
           path: '/playerGroups',
           name: 'playerGroupList',
-          factory: $PlayerGroupListRouteExtension._fromState,
+          factory: $PlayerGroupListRoute._fromState,
         ),
         GoRouteData.$route(
           path: '/playerGroup',
           name: 'playerGroup',
-          factory: $PlayerGroupRouteExtension._fromState,
+          factory: $PlayerGroupRoute._fromState,
         ),
         GoRouteData.$route(
           path: '/cardGenerator',
           name: 'cardGenerator',
-          factory: $CardGeneratorRouteExtension._fromState,
+          factory: $CardGeneratorRoute._fromState,
         ),
       ],
     );
@@ -60,140 +60,180 @@ extension $TopShellRouteExtension on TopShellRoute {
   static TopShellRoute _fromState(GoRouterState state) => TopShellRoute();
 }
 
-extension $EventListRouteExtension on EventListRoute {
+mixin $EventListRoute on GoRouteData {
   static EventListRoute _fromState(GoRouterState state) => EventListRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $PlayerListRouteExtension on PlayerListRoute {
+mixin $PlayerListRoute on GoRouteData {
   static PlayerListRoute _fromState(GoRouterState state) => PlayerListRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/players',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $DrawListRouteExtension on DrawListRoute {
+mixin $DrawListRoute on GoRouteData {
   static DrawListRoute _fromState(GoRouterState state) => DrawListRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/draws',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SessionListRouteExtension on SessionListRoute {
+mixin $SessionListRoute on GoRouteData {
   static SessionListRoute _fromState(GoRouterState state) => SessionListRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/sessions',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SessionRouteExtension on SessionRoute {
+mixin $SessionRoute on GoRouteData {
   static SessionRoute _fromState(GoRouterState state) => SessionRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/session',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $PlayerGroupListRouteExtension on PlayerGroupListRoute {
+mixin $PlayerGroupListRoute on GoRouteData {
   static PlayerGroupListRoute _fromState(GoRouterState state) =>
       PlayerGroupListRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/playerGroups',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $PlayerGroupRouteExtension on PlayerGroupRoute {
+mixin $PlayerGroupRoute on GoRouteData {
   static PlayerGroupRoute _fromState(GoRouterState state) => PlayerGroupRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/playerGroup',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $CardGeneratorRouteExtension on CardGeneratorRoute {
+mixin $CardGeneratorRoute on GoRouteData {
   static CardGeneratorRoute _fromState(GoRouterState state) =>
       CardGeneratorRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/cardGenerator',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }

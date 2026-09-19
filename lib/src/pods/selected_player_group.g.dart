@@ -6,22 +6,48 @@ part of 'selected_player_group.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(SelectedPlayerGroup)
+const selectedPlayerGroupProvider = SelectedPlayerGroupProvider._();
+
+final class SelectedPlayerGroupProvider
+    extends $StreamNotifierProvider<SelectedPlayerGroup, PlayerGroup?> {
+  const SelectedPlayerGroupProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'selectedPlayerGroupProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$selectedPlayerGroupHash();
+
+  @$internal
+  @override
+  SelectedPlayerGroup create() => SelectedPlayerGroup();
+}
+
 String _$selectedPlayerGroupHash() =>
     r'af0774e11a10632fd410d7127c831be5ed9725b8';
 
-/// See also [SelectedPlayerGroup].
-@ProviderFor(SelectedPlayerGroup)
-final selectedPlayerGroupProvider = AutoDisposeStreamNotifierProvider<
-    SelectedPlayerGroup, PlayerGroup?>.internal(
-  SelectedPlayerGroup.new,
-  name: r'selectedPlayerGroupProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$selectedPlayerGroupHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$SelectedPlayerGroup = AutoDisposeStreamNotifier<PlayerGroup?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+abstract class _$SelectedPlayerGroup extends $StreamNotifier<PlayerGroup?> {
+  Stream<PlayerGroup?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<PlayerGroup?>, PlayerGroup?>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<AsyncValue<PlayerGroup?>, PlayerGroup?>,
+        AsyncValue<PlayerGroup?>,
+        Object?,
+        Object?>;
+    element.handleValue(ref, created);
+  }
+}

@@ -49,7 +49,7 @@ class TopShellRoute extends ShellRouteData {
 }
 
 @immutable
-class EventListRoute extends GoRouteData {
+class EventListRoute extends GoRouteData with $EventListRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const EventListPage();
@@ -57,7 +57,7 @@ class EventListRoute extends GoRouteData {
 }
 
 @immutable
-class DrawListRoute extends GoRouteData {
+class DrawListRoute extends GoRouteData with $DrawListRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const DrawListPage();
@@ -65,7 +65,7 @@ class DrawListRoute extends GoRouteData {
 }
 
 @immutable
-class PlayerListRoute extends GoRouteData {
+class PlayerListRoute extends GoRouteData with $PlayerListRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const PlayerListPage();
@@ -73,7 +73,7 @@ class PlayerListRoute extends GoRouteData {
 }
 
 @immutable
-class SessionListRoute extends GoRouteData {
+class SessionListRoute extends GoRouteData with $SessionListRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SessionListPage();
@@ -81,7 +81,7 @@ class SessionListRoute extends GoRouteData {
 }
 
 @immutable
-class SessionRoute extends GoRouteData {
+class SessionRoute extends GoRouteData with $SessionRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SessionPage();
@@ -89,7 +89,7 @@ class SessionRoute extends GoRouteData {
 }
 
 @immutable
-class PlayerGroupListRoute extends GoRouteData {
+class PlayerGroupListRoute extends GoRouteData with $PlayerGroupListRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const PlayerGroupListPage();
@@ -97,7 +97,7 @@ class PlayerGroupListRoute extends GoRouteData {
 }
 
 @immutable
-class PlayerGroupRoute extends GoRouteData {
+class PlayerGroupRoute extends GoRouteData with $PlayerGroupRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const PlayerGroupPage();
@@ -106,7 +106,7 @@ class PlayerGroupRoute extends GoRouteData {
 
 
 @immutable
-class CardGeneratorRoute extends GoRouteData {
+class CardGeneratorRoute extends GoRouteData with $CardGeneratorRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CardGeneratorPage();

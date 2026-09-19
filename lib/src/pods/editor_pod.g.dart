@@ -6,20 +6,52 @@ part of 'editor_pod.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(EditorPod)
+const editorPodProvider = EditorPodProvider._();
+
+final class EditorPodProvider
+    extends $NotifierProvider<EditorPod, EditorState> {
+  const EditorPodProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'editorPodProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$editorPodHash();
+
+  @$internal
+  @override
+  EditorPod create() => EditorPod();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(EditorState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<EditorState>(value),
+    );
+  }
+}
+
 String _$editorPodHash() => r'b95d4bda959545d33a515d64de4004f362db7b3a';
 
-/// See also [EditorPod].
-@ProviderFor(EditorPod)
-final editorPodProvider =
-    AutoDisposeNotifierProvider<EditorPod, EditorState>.internal(
-  EditorPod.new,
-  name: r'editorPodProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$editorPodHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$EditorPod = AutoDisposeNotifier<EditorState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+abstract class _$EditorPod extends $Notifier<EditorState> {
+  EditorState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<EditorState, EditorState>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<EditorState, EditorState>, EditorState, Object?, Object?>;
+    element.handleValue(ref, created);
+  }
+}

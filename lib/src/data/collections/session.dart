@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/src/data/collections/collections.dart';
 
 part 'session.g.dart';

@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/src/data/collections/collections.dart';
 
 part 'draw.g.dart';
@@ -35,7 +35,7 @@ class Draw {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    if (other is Session) {
+    if (other is Draw) {
       return id == other.id && exist;
     }
     return false;

@@ -1,4 +1,4 @@
-package com.example.marathondujeu
+package com.saroc.marathondujeu
 
 import io.flutter.embedding.android.FlutterActivity
 

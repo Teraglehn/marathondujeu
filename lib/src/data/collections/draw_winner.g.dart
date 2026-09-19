@@ -47,7 +47,7 @@ const DrawWinnerSchema = CollectionSchema(
   getId: _drawWinnerGetId,
   getLinks: _drawWinnerGetLinks,
   attach: _drawWinnerAttach,
-  version: '3.1.8',
+  version: '3.3.0',
 );
 
 int _drawWinnerEstimateSize(

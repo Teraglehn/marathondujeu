@@ -47,7 +47,7 @@ const PlayerGroupSchema = CollectionSchema(
   getId: _playerGroupGetId,
   getLinks: _playerGroupGetLinks,
   attach: _playerGroupAttach,
-  version: '3.1.8',
+  version: '3.3.0',
 );
 
 int _playerGroupEstimateSize(

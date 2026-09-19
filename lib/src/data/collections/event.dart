@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/src/data/collections/collections.dart';
 
 part 'event.g.dart';
@@ -48,7 +48,7 @@ class Event {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    if (other is Session) {
+    if (other is Event) {
       return id == other.id && exist;
     }
     return false;

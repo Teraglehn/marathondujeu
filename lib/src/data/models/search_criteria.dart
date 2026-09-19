@@ -4,7 +4,7 @@ import 'package:marathondujeu/src/data/collections/collections.dart';
 part 'search_criteria.freezed.dart';
 
 @freezed
-class SearchCriteria with _$SearchCriteria{
+abstract class SearchCriteria with _$SearchCriteria{
   const SearchCriteria._();
 
   const factory SearchCriteria({

@@ -6,7 +6,7 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 part 'player_card.freezed.dart';
 
 @freezed
-class PlayerCard with _$PlayerCard{
+abstract class PlayerCard with _$PlayerCard{
   const PlayerCard._();
 
   const factory PlayerCard({

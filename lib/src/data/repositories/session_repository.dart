@@ -1,6 +1,6 @@
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/data/repositories/repository_base.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 class SessionRepository extends RepositoryBase<Session> {
   SessionRepository(super.isarClient);

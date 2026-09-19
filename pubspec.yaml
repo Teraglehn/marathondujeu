@@ -4,8 +4,6 @@ description: "Application de gestion des participants du Marathon du Jeu"
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-isar_version: &isar_version 3.1.8 # define the version to be used
-
 environment:
   sdk: '>=3.1.5 <4.0.0'
   flutter: ">=3.0.0"
@@ -16,12 +14,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
-  isar:
-    version: *isar_version
-    hosted: https://pub.isar-community.dev
-  isar_flutter_libs:
-    version: *isar_version
-    hosted: https://pub.isar-community.dev
+  isar_community: ^3.3.0
+  isar_community_flutter_libs: ^3.3.0
   freezed_annotation: any
   path_provider: any
   google_fonts: any
@@ -40,16 +34,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: any
-  isar_generator:
-    version: *isar_version
-    hosted: https://pub.isar-community.dev
+  isar_community_generator: ^3.3.0
   build_runner: any
   freezed: any
   riverpod_generator: any
   custom_lint: any
   riverpod_lint: any
   go_router_builder: any
-  analyzer: ^6.4.1
 
 flutter:
   generate: true

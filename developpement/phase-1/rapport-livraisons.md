@@ -1,0 +1,24 @@
+# Phase 1 — rapport de livraisons
+
+Une synthèse courte par lot livré : ce qui a été livré, et les écarts assumés. Le détail reste dans
+le rapport du lot, dans `livraisons/`.
+
+## 2026-09-19 — L01, L02, L03, livrés ensemble
+
+**L01 — Migration Isar → `isar_community`.** `isar`, `isar_flutter_libs`, `isar_generator` 3.1.8
+(hébergeur mort) remplacés par `isar_community*` **3.3.0** sur pub.dev ; imports réécrits ;
+résolution constatée depuis un cache pub vierge. La base existante s'ouvre avec la nouvelle lib.
+*Écart* : 3.3.0 et non 3.3.2, qui exige `analyzer` 8, incompatible avec Dart 3.9.
+
+**L03 — Montée Riverpod 3, freezed 3, go_router_builder 4.** Inséparable de L01 (L01 Q2) :
+analyzer 7.6, riverpod 3.0.3, freezed 3.2.3, go_router_builder 4.1.1, épingle `analyzer`
+retirée. `analyze` : 0 erreur, 0 warning (13 infos, laissées — L03 Q1). Riverpod 3 n'a demandé
+aucun changement de source ; go_router_builder 4 impose un mixin par route, freezed 3 des
+classes `abstract`.
+
+**L02 — Corrections du modèle et du tirage.** `operator ==` de `Event`, `Draw`, `DrawWinner`
+corrigé ; `_getPlayerList` ne mute plus les liens du tirage ; base déplacée dans
+`%APPDATA%\com.saroc\marathondujeu` avec reprise par copie de l'ancien fichier (intact) ;
+`com.example` → `com.saroc` partout ; premiers tests (17, sur une vraie base Isar temporaire).
+*Écarts* : `DrawRepository.write` ne sauvegardait pas `requiredPlayers` — corrigé, hors liste
+initiale ; la copie de tirage (`createDrawFromDraw`) est sortie du lot → L06.

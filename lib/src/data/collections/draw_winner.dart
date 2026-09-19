@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/src/data/collections/collections.dart';
 
 part 'draw_winner.g.dart';
@@ -26,7 +26,7 @@ class DrawWinner {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    if (other is Session) {
+    if (other is DrawWinner) {
       return id == other.id && exist;
     }
     return false;

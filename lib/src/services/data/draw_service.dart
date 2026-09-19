@@ -5,8 +5,10 @@ import 'package:marathondujeu/src/data/data.dart';
 class DrawService {
   final DrawRepository _drawRepository;
   final DrawWinnerRepository _drawWinnerRepository;
+  final Random _random;
 
-  DrawService(this._drawRepository, this._drawWinnerRepository);
+  DrawService(this._drawRepository, this._drawWinnerRepository, {Random? random})
+      : _random = random ?? Random.secure();
 
   Future<Draw?> getById(int id) async {
     return await _drawRepository.getById(id);
@@ -60,7 +62,7 @@ class DrawService {
   
   Set<Player> _getPlayerList(Event event, int minSessionNumber, int maxSessionNumber, Set<Player> excludedPlayers, Set<Player> requiredPlayers, Set<Session> excludedSessions, Set<Session> requiredSessions) {
     Set<Player> players = event.players.toSet();
-    if(requiredPlayers.isNotEmpty) players = requiredPlayers;
+    if(requiredPlayers.isNotEmpty) players = requiredPlayers.toSet();
 
     if(minSessionNumber > 0){
       players.removeWhere((p) => p.getSessionNumber() < minSessionNumber);
@@ -102,7 +104,7 @@ class DrawService {
 
     for(int i = 0; i<winnerCount; i++){
       if(players.isEmpty) continue;
-      final winner = _getWinner(players);
+      final winner = getWinner(players);
       if(winner == null) continue;
       winners.add(DrawWinner.fromDraw(draw, winner, i+1));
       players.remove(winner);
@@ -112,7 +114,7 @@ class DrawService {
   }
 
 
-  Player? _getWinner(Set<Player> players){
+  Player? getWinner(Set<Player> players){
     if(players.length == 1) return players.first;
     if(players.isEmpty) return null;
 
@@ -126,8 +128,7 @@ class DrawService {
     final tally = players.fold(0, (t, p) => t + p.getTokenCount());
     if(tally != lots.length) throw "WTF";
 
-    final rand = Random.secure();
-    final winnerLot = rand.nextInt(lots.length);
+    final winnerLot = _random.nextInt(lots.length);
     return lots[winnerLot];
   }
 
