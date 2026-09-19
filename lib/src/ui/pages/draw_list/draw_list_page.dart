@@ -1,4 +1,6 @@
+import 'package:intl/intl.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
+import 'package:marathondujeu/services_injector.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/draws.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
@@ -33,9 +35,23 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
     });
   }
 
-  void deleteDraw(Draw draw) {
-    ref.read(drawsProvider().notifier)
-      .delete(draw);
+  /// Ouvre l'éditeur sur une copie, non enregistrée.
+  Future<void> copyDraw(Draw draw) async {
+    final copy = await ref.read(drawServiceProvider).createDrawFromDraw(draw);
+    ref.read(editorPodProvider.notifier).editDraw(copy);
+  }
+
+  /// « Tiré le … » pour un tirage effectué ; rien pour un tirage préparé.
+  Widget? drawnLabel(BuildContext context, Draw draw) {
+    if (!draw.isDrawn) return null;
+    final text = draw.drawnAt != null
+      ? S.of(context).data_draw_drawnAt(DateFormat.yMd(S.of(context).localeName).add_Hm().format(draw.drawnAt!))
+      : S.of(context).data_draw_drawn;
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      const Icon(Icons.lock, size: 16),
+      const SizedBox(width: 4),
+      Text(text, style: Theme.of(context).textTheme.bodySmall),
+    ]);
   }
 
 
@@ -84,10 +100,14 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                   return Column(
                     children: [
                       ListTile(
+                        onTap: () => editor.editDraw(draw),
                         leading: CircleAvatar(
-                          child: Text((index+1).toString())
+                          child: Text(draw.id.toString())
                         ),
-                        title: Text(draw.name),
+                        title: Row(children: [
+                          Text(draw.name),
+                          if (draw.isDrawn) ...[const SizedBox(width: 12), drawnLabel(context, draw)!],
+                        ]),
                         subtitle: Wrap(spacing: 8, runSpacing: 8, children: 
                           (draw.winners.toList()..sort((a, b) => a.position.compareTo(b.position))).map((w) => Card(
                             clipBehavior: Clip.hardEdge,
@@ -111,7 +131,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                             )
                           )).toList()
                         ),
-                        trailing: IconButton(onPressed: () => deleteDraw(draw), icon: Icon(Icons.delete), color: Theme.of(context).colorScheme.error),
+                        trailing: IconButton(onPressed: () => copyDraw(draw), icon: const Icon(Icons.copy), tooltip: S.of(context).data_draw_copy_help),
                       ),
                       
                     ],
@@ -125,7 +145,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
         ],
       )),
       floatingActionButton: selectedEvent.value == null ? null : FloatingActionButton(
-        onPressed: () => editor.newDraw(selectedEvent.value!),
+        onPressed: () async => editor.editDraw(await ref.read(drawServiceProvider).createDraw(selectedEvent.value!)),
         child: const Icon(Icons.add),
       )
     );

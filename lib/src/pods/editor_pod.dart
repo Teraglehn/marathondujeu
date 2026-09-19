@@ -38,13 +38,6 @@ class EditorPod extends _$EditorPod {
     state = EditorState(draw: draw);
   }
 
-  void newDraw(Event event) {
-    Draw draw = Draw.empty();
-    draw.event.value = event;
-
-    state = EditorState(draw: draw);
-  }
-
   void close() {
     state = const EditorState();
   }

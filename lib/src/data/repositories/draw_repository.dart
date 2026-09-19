@@ -18,6 +18,9 @@ class DrawRepository extends RepositoryBase<Draw> {
       if (obj.requiredPlayers.isChanged) obj.requiredPlayers.save(),
       if (obj.excludedSessions.isChanged) obj.excludedSessions.save(),
       if (obj.requiredSessions.isChanged) obj.requiredSessions.save(),
+      if (obj.excludedGroups.isChanged) obj.excludedGroups.save(),
+      if (obj.requiredGroups.isChanged) obj.requiredGroups.save(),
+      if (obj.winnersGroup.isChanged) obj.winnersGroup.save(),
     ]);
   }
 

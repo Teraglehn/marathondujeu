@@ -17,19 +17,24 @@ const DrawSchema = CollectionSchema(
   name: r'Draw',
   id: -3380831115710708004,
   properties: {
-    r'maxSessionNumber': PropertySchema(
+    r'drawnAt': PropertySchema(
       id: 0,
+      name: r'drawnAt',
+      type: IsarType.dateTime,
+    ),
+    r'maxSessionNumber': PropertySchema(
+      id: 1,
       name: r'maxSessionNumber',
       type: IsarType.long,
     ),
     r'minSessionNumber': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'minSessionNumber',
       type: IsarType.long,
     ),
-    r'name': PropertySchema(id: 2, name: r'name', type: IsarType.string),
+    r'name': PropertySchema(id: 3, name: r'name', type: IsarType.string),
     r'winnerCount': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'winnerCount',
       type: IsarType.long,
     ),
@@ -53,6 +58,24 @@ const DrawSchema = CollectionSchema(
       name: r'requiredSessions',
       target: r'Session',
       single: false,
+    ),
+    r'excludedGroups': LinkSchema(
+      id: 6157702328091728168,
+      name: r'excludedGroups',
+      target: r'PlayerGroup',
+      single: false,
+    ),
+    r'requiredGroups': LinkSchema(
+      id: 2368896065481879644,
+      name: r'requiredGroups',
+      target: r'PlayerGroup',
+      single: false,
+    ),
+    r'winnersGroup': LinkSchema(
+      id: 3884303963256631744,
+      name: r'winnersGroup',
+      target: r'PlayerGroup',
+      single: true,
     ),
     r'excludedPlayers': LinkSchema(
       id: 1144827421084127932,
@@ -104,10 +127,11 @@ void _drawSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.maxSessionNumber);
-  writer.writeLong(offsets[1], object.minSessionNumber);
-  writer.writeString(offsets[2], object.name);
-  writer.writeLong(offsets[3], object.winnerCount);
+  writer.writeDateTime(offsets[0], object.drawnAt);
+  writer.writeLong(offsets[1], object.maxSessionNumber);
+  writer.writeLong(offsets[2], object.minSessionNumber);
+  writer.writeString(offsets[3], object.name);
+  writer.writeLong(offsets[4], object.winnerCount);
 }
 
 Draw _drawDeserialize(
@@ -117,11 +141,12 @@ Draw _drawDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Draw();
+  object.drawnAt = reader.readDateTimeOrNull(offsets[0]);
   object.id = id;
-  object.maxSessionNumber = reader.readLong(offsets[0]);
-  object.minSessionNumber = reader.readLong(offsets[1]);
-  object.name = reader.readString(offsets[2]);
-  object.winnerCount = reader.readLong(offsets[3]);
+  object.maxSessionNumber = reader.readLong(offsets[1]);
+  object.minSessionNumber = reader.readLong(offsets[2]);
+  object.name = reader.readString(offsets[3]);
+  object.winnerCount = reader.readLong(offsets[4]);
   return object;
 }
 
@@ -133,12 +158,14 @@ P _drawDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -153,6 +180,9 @@ List<IsarLinkBase<dynamic>> _drawGetLinks(Draw object) {
   return [
     object.excludedSessions,
     object.requiredSessions,
+    object.excludedGroups,
+    object.requiredGroups,
+    object.winnersGroup,
     object.excludedPlayers,
     object.requiredPlayers,
     object.winners,
@@ -172,6 +202,24 @@ void _drawAttach(IsarCollection<dynamic> col, Id id, Draw object) {
     col,
     col.isar.collection<Session>(),
     r'requiredSessions',
+    id,
+  );
+  object.excludedGroups.attach(
+    col,
+    col.isar.collection<PlayerGroup>(),
+    r'excludedGroups',
+    id,
+  );
+  object.requiredGroups.attach(
+    col,
+    col.isar.collection<PlayerGroup>(),
+    r'requiredGroups',
+    id,
+  );
+  object.winnersGroup.attach(
+    col,
+    col.isar.collection<PlayerGroup>(),
+    r'winnersGroup',
     id,
   );
   object.excludedPlayers.attach(
@@ -269,6 +317,81 @@ extension DrawQueryWhere on QueryBuilder<Draw, Draw, QWhereClause> {
 }
 
 extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> drawnAtIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'drawnAt'),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> drawnAtIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'drawnAt'),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> drawnAtEqualTo(
+    DateTime? value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'drawnAt', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> drawnAtGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'drawnAt',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> drawnAtLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'drawnAt',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> drawnAtBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'drawnAt',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
   QueryBuilder<Draw, Draw, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -783,6 +906,142 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedGroups(
+    FilterQuery<PlayerGroup> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'excludedGroups');
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedGroupsLengthEqualTo(
+    int length,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'excludedGroups', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedGroupsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'excludedGroups', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedGroupsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'excludedGroups', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedGroupsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'excludedGroups', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition>
+  excludedGroupsLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'excludedGroups', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedGroupsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+        r'excludedGroups',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredGroups(
+    FilterQuery<PlayerGroup> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'requiredGroups');
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredGroupsLengthEqualTo(
+    int length,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredGroups', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredGroupsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredGroups', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredGroupsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredGroups', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredGroupsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredGroups', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition>
+  requiredGroupsLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'requiredGroups', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> requiredGroupsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+        r'requiredGroups',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersGroup(
+    FilterQuery<PlayerGroup> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'winnersGroup');
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> winnersGroupIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'winnersGroup', 0, true, 0, true);
+    });
+  }
+
   QueryBuilder<Draw, Draw, QAfterFilterCondition> excludedPlayers(
     FilterQuery<Player> q,
   ) {
@@ -994,6 +1253,18 @@ extension DrawQueryLinks on QueryBuilder<Draw, Draw, QFilterCondition> {
 }
 
 extension DrawQuerySortBy on QueryBuilder<Draw, Draw, QSortBy> {
+  QueryBuilder<Draw, Draw, QAfterSortBy> sortByDrawnAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'drawnAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> sortByDrawnAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'drawnAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<Draw, Draw, QAfterSortBy> sortByMaxSessionNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'maxSessionNumber', Sort.asc);
@@ -1044,6 +1315,18 @@ extension DrawQuerySortBy on QueryBuilder<Draw, Draw, QSortBy> {
 }
 
 extension DrawQuerySortThenBy on QueryBuilder<Draw, Draw, QSortThenBy> {
+  QueryBuilder<Draw, Draw, QAfterSortBy> thenByDrawnAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'drawnAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> thenByDrawnAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'drawnAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<Draw, Draw, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1106,6 +1389,12 @@ extension DrawQuerySortThenBy on QueryBuilder<Draw, Draw, QSortThenBy> {
 }
 
 extension DrawQueryWhereDistinct on QueryBuilder<Draw, Draw, QDistinct> {
+  QueryBuilder<Draw, Draw, QDistinct> distinctByDrawnAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'drawnAt');
+    });
+  }
+
   QueryBuilder<Draw, Draw, QDistinct> distinctByMaxSessionNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'maxSessionNumber');
@@ -1137,6 +1426,12 @@ extension DrawQueryProperty on QueryBuilder<Draw, Draw, QQueryProperty> {
   QueryBuilder<Draw, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Draw, DateTime?, QQueryOperations> drawnAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'drawnAt');
     });
   }
 

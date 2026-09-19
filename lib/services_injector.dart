@@ -24,7 +24,7 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<Scaffol
 @riverpod PlayerService playerService(Ref ref) => PlayerService(ref.watch(_playerRepositoryProvider));
 @riverpod PlayerGroupService playerGroupService(Ref ref) => PlayerGroupService(ref.watch(_playerGroupRepositoryProvider));
 @riverpod SessionService sessionService(Ref ref) => SessionService(ref.watch(_sessionRepositoryProvider));
-@riverpod DrawService drawService(Ref ref) => DrawService(ref.watch(_drawRepositoryProvider), ref.watch(_drawWinnerRepositoryProvider));
+@riverpod DrawService drawService(Ref ref) => DrawService(ref.watch(_drawRepositoryProvider), ref.watch(_drawWinnerRepositoryProvider), ref.watch(_playerGroupRepositoryProvider));
 @riverpod EventService eventService(Ref ref) => EventService(ref.watch(_sessionRepositoryProvider), ref.watch(_eventRepositoryProvider), ref.watch(_playerRepositoryProvider));
 
 

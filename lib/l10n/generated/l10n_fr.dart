@@ -22,9 +22,6 @@ class SFr extends S {
   String get utils_button_save => 'Enregistrer';
 
   @override
-  String get utils_button_save_and_draw => 'Sauvegarder et Tirer au sort';
-
-  @override
   String get utils_button_saveAll => 'Tout enregistrer';
 
   @override
@@ -60,6 +57,30 @@ class SFr extends S {
 
   @override
   String get utils_button_close => 'Fermer';
+
+  @override
+  String get editor_title_player => 'Modifier un joueur';
+
+  @override
+  String get editor_title_event_create => 'Créer un événement';
+
+  @override
+  String get editor_title_event_edit => 'Modifier un événement';
+
+  @override
+  String get editor_title_playerGroup_create => 'Créer un groupe de joueurs';
+
+  @override
+  String get editor_title_playerGroup_edit => 'Modifier un groupe de joueurs';
+
+  @override
+  String get editor_title_draw_create => 'Créer un tirage';
+
+  @override
+  String get editor_title_draw_edit => 'Modifier un tirage';
+
+  @override
+  String get editor_title_draw_view => 'Consulter un tirage';
 
   @override
   String get utils_button_reset => 'Réinitialiser';
@@ -181,6 +202,61 @@ class SFr extends S {
 
   @override
   String get data_draw_error_name_required => 'Nom est requis';
+
+  @override
+  String data_draw_tokenCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jetons dans l\'urne',
+      one: '1 jeton dans l\'urne',
+      zero: 'Aucun jeton dans l\'urne',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get data_draw_eligibility_help =>
+      'Seuls les joueurs qui ont au moins un jeton comptent. Chaque jeton est une chance au tirage.';
+
+  @override
+  String data_draw_excludedPlayers_count(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count joueurs exclus individuellement',
+      one: '1 joueur exclu individuellement',
+      zero: 'Aucun joueur exclu individuellement',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String data_draw_drawnAt(Object date) {
+    return 'Tiré le $date';
+  }
+
+  @override
+  String get data_draw_drawn => 'Tiré';
+
+  @override
+  String get data_draw_drawn_help =>
+      'Ce tirage a été effectué : il ne se modifie plus et ne se relance pas. Pour recommencer, copiez-le.';
+
+  @override
+  String get data_draw_copy => 'Copier';
+
+  @override
+  String get data_draw_copy_help =>
+      'La copie reprend les mêmes réglages et exclut les gagnants de ce tirage.';
+
+  @override
+  String get data_draw_launch => 'Tirer au sort';
+
+  @override
+  String data_draw_launch_confirm(Object winners, Object players) {
+    return 'Tirer au sort $winners gagnants parmi $players joueurs ? Un tirage ne se lance qu\'une fois.';
+  }
 
   @override
   String data_event_objName(num count) {

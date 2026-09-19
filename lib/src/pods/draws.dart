@@ -18,8 +18,8 @@ class Draws extends _$Draws {
     yield* await _service.getByEventIdStream(eventId!);
   }
 
-  Future<void> save(Draw item) async {
-    await _service.calculateDraw(item);
+  /// Enregistre sans tirer.
+  Future<void> save(Draw item) {
     return _service.save(item);
   }
 

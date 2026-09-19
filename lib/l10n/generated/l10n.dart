@@ -121,12 +121,6 @@ abstract class S {
   /// **'Save'**
   String get utils_button_save;
 
-  /// No description provided for @utils_button_save_and_draw.
-  ///
-  /// In en, this message translates to:
-  /// **'Save and draw'**
-  String get utils_button_save_and_draw;
-
   /// No description provided for @utils_button_saveAll.
   ///
   /// In en, this message translates to:
@@ -192,6 +186,54 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Close'**
   String get utils_button_close;
+
+  /// No description provided for @editor_title_player.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit a player'**
+  String get editor_title_player;
+
+  /// No description provided for @editor_title_event_create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an event'**
+  String get editor_title_event_create;
+
+  /// No description provided for @editor_title_event_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit an event'**
+  String get editor_title_event_edit;
+
+  /// No description provided for @editor_title_playerGroup_create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a player group'**
+  String get editor_title_playerGroup_create;
+
+  /// No description provided for @editor_title_playerGroup_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit a player group'**
+  String get editor_title_playerGroup_edit;
+
+  /// No description provided for @editor_title_draw_create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a draw'**
+  String get editor_title_draw_create;
+
+  /// No description provided for @editor_title_draw_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit a draw'**
+  String get editor_title_draw_edit;
+
+  /// No description provided for @editor_title_draw_view.
+  ///
+  /// In en, this message translates to:
+  /// **'View a draw'**
+  String get editor_title_draw_view;
 
   /// No description provided for @utils_button_reset.
   ///
@@ -354,6 +396,66 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Name is required'**
   String get data_draw_error_name_required;
+
+  /// No description provided for @data_draw_tokenCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0 {No token in the urn} one {1 token in the urn} other {{count} tokens in the urn}}'**
+  String data_draw_tokenCount(num count);
+
+  /// No description provided for @data_draw_eligibility_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Only players with at least one token count. Each token is one chance in the draw.'**
+  String get data_draw_eligibility_help;
+
+  /// No description provided for @data_draw_excludedPlayers_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0 {No individually excluded player} one {1 individually excluded player} other {{count} individually excluded players}}'**
+  String data_draw_excludedPlayers_count(num count);
+
+  /// No description provided for @data_draw_drawnAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawn on {date}'**
+  String data_draw_drawnAt(Object date);
+
+  /// No description provided for @data_draw_drawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawn'**
+  String get data_draw_drawn;
+
+  /// No description provided for @data_draw_drawn_help.
+  ///
+  /// In en, this message translates to:
+  /// **'This draw has been made: it can no longer be edited or relaunched. To start again, copy it.'**
+  String get data_draw_drawn_help;
+
+  /// No description provided for @data_draw_copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get data_draw_copy;
+
+  /// No description provided for @data_draw_copy_help.
+  ///
+  /// In en, this message translates to:
+  /// **'The copy keeps the same settings and excludes this draw\'s winners.'**
+  String get data_draw_copy_help;
+
+  /// No description provided for @data_draw_launch.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw'**
+  String get data_draw_launch;
+
+  /// No description provided for @data_draw_launch_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw {winners} winners among {players} players? A draw is launched only once.'**
+  String data_draw_launch_confirm(Object winners, Object players);
 
   /// No description provided for @data_event_objName.
   ///

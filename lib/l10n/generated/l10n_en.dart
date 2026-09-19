@@ -22,9 +22,6 @@ class SEn extends S {
   String get utils_button_save => 'Save';
 
   @override
-  String get utils_button_save_and_draw => 'Save and draw';
-
-  @override
   String get utils_button_saveAll => 'Save All';
 
   @override
@@ -60,6 +57,30 @@ class SEn extends S {
 
   @override
   String get utils_button_close => 'Close';
+
+  @override
+  String get editor_title_player => 'Edit a player';
+
+  @override
+  String get editor_title_event_create => 'Create an event';
+
+  @override
+  String get editor_title_event_edit => 'Edit an event';
+
+  @override
+  String get editor_title_playerGroup_create => 'Create a player group';
+
+  @override
+  String get editor_title_playerGroup_edit => 'Edit a player group';
+
+  @override
+  String get editor_title_draw_create => 'Create a draw';
+
+  @override
+  String get editor_title_draw_edit => 'Edit a draw';
+
+  @override
+  String get editor_title_draw_view => 'View a draw';
 
   @override
   String get utils_button_reset => 'Reset';
@@ -181,6 +202,61 @@ class SEn extends S {
 
   @override
   String get data_draw_error_name_required => 'Name is required';
+
+  @override
+  String data_draw_tokenCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tokens in the urn',
+      one: '1 token in the urn',
+      zero: 'No token in the urn',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get data_draw_eligibility_help =>
+      'Only players with at least one token count. Each token is one chance in the draw.';
+
+  @override
+  String data_draw_excludedPlayers_count(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count individually excluded players',
+      one: '1 individually excluded player',
+      zero: 'No individually excluded player',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String data_draw_drawnAt(Object date) {
+    return 'Drawn on $date';
+  }
+
+  @override
+  String get data_draw_drawn => 'Drawn';
+
+  @override
+  String get data_draw_drawn_help =>
+      'This draw has been made: it can no longer be edited or relaunched. To start again, copy it.';
+
+  @override
+  String get data_draw_copy => 'Copy';
+
+  @override
+  String get data_draw_copy_help =>
+      'The copy keeps the same settings and excludes this draw\'s winners.';
+
+  @override
+  String get data_draw_launch => 'Draw';
+
+  @override
+  String data_draw_launch_confirm(Object winners, Object players) {
+    return 'Draw $winners winners among $players players? A draw is launched only once.';
+  }
 
   @override
   String data_event_objName(num count) {

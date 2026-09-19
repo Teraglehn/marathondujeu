@@ -17,6 +17,7 @@ class PlayerGroupSelector extends MultiSearchSelector<PlayerGroup> {
     super.onSaved,
     super.validator,
     super.enabled,
+    super.readOnly,
     super.restorationId,
     super.key,
     required Event event,

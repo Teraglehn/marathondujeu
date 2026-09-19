@@ -42,3 +42,14 @@ récupérable depuis une carte imprimée. *Écarts assumés* : panneau fixe plut
 ouverte) ; `Player.number` séparé du QR code, avec migration à l'ouverture de la base ;
 suppression des joueurs depuis le formulaire d'événement. Non constaté : la lecture d'une carte
 protégée à la douchette.
+
+## 2026-09-19 — L06
+
+**L06 — Tirages : copie, éditeur revu, lecture seule.** Un tirage s'ouvre, s'enregistre sans
+tirer, et se lance **une seule fois** (`Draw.drawnAt`) ; lancé, il se consulte en lecture seule
+et se copie — la copie reprend tout et exclut le groupe « Gagnants du tirage … » créé au
+lancement. `Draw` garde les groupes choisis, résolus au tirage ; les joueurs sans jeton sont hors
+de l'urne, avec un compteur de jetons ; sélecteur de sessions en grille ; noms « Tirage N°n ».
+*Écarts assumés* : plus de suppression de tirage ; titres sur les quatre éditeurs latéraux ;
+actions passées par le service plutôt que par `drawsProvider()` ; pas de date pour les tirages
+d'avant (affichés « Tiré » sans date).

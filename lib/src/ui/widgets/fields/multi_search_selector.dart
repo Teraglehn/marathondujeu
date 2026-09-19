@@ -10,6 +10,8 @@ class MultiSearchSelector<OBJ> extends ConsumerStatefulWidget {
   final Function(Set<OBJ>)? onChanged;
   final Function(Set<OBJ>?)? onSaved;
   final bool enabled;
+  /// Lecture seule : le sélecteur s'ouvre et montre les choix, mais rien ne se coche ni se décoche.
+  final bool readOnly;
   final bool allowRemove;
   final Set<OBJ>? initialValue;
   final String? restorationId;
@@ -35,6 +37,9 @@ class MultiSearchSelector<OBJ> extends ConsumerStatefulWidget {
 
   final FutureOr<Iterable<OBJ>> Function(WidgetRef ref, String keyword) getSuggestions;
 
+  /// Disposition des suggestions ; par défaut, la liste de `SearchAnchor`.
+  final Widget Function(Iterable<Widget> suggestions)? viewBuilder;
+
   final Widget Function(BuildContext, SearchController) Function(FormFieldState<Set<OBJ>> state, Set<OBJ>? value, Function(SearchController) toggleSearch)? anchorBuilder;
 
   const MultiSearchSelector({
@@ -42,6 +47,7 @@ class MultiSearchSelector<OBJ> extends ConsumerStatefulWidget {
     required this.itemBuilder,
     required this.suggestionBuilder,
     this.anchorBuilder,
+    this.viewBuilder,
     this.label,
     this.labelStyle,
     this.initialValue,
@@ -50,6 +56,7 @@ class MultiSearchSelector<OBJ> extends ConsumerStatefulWidget {
     this.onSaved,
     this.validator,
     this.enabled = true,
+    this.readOnly = false,
     this.allowRemove = false,
     this.restorationId,
     super.key,
@@ -75,6 +82,7 @@ class _MultiSearchSelectorState<OBJ> extends ConsumerState<MultiSearchSelector<O
   }
 
   void Function(Set<OBJ>) getChangeValue(SearchController controller, FormFieldState<Set<OBJ>> state) {
+    if (widget.readOnly) return (_) {};
     return (Set<OBJ> value) {
       widget.onChanged?.call(value);
       state.didChange(value);
@@ -83,6 +91,7 @@ class _MultiSearchSelectorState<OBJ> extends ConsumerState<MultiSearchSelector<O
   }
 
   void Function(OBJ) getSwitchValue(SearchController controller, FormFieldState<Set<OBJ>> state) {
+    if (widget.readOnly) return (_) {};
     return (OBJ value) {
       Set<OBJ> set = state.value ?? {};
       if(set.contains(value)) {
@@ -104,11 +113,14 @@ class _MultiSearchSelectorState<OBJ> extends ConsumerState<MultiSearchSelector<O
     if(widget.anchorBuilder != null){
       return widget.anchorBuilder!.call(state, state.value, toggleSearch);
     }
-    return (context, controller) => 
-      InkWell(
+    // Désactivé : aucun clic ne passe, et le champ se grise comme les autres.
+    return (context, controller) => IgnorePointer(
+      ignoring: !widget.enabled,
+      child: InkWell(
         onTap: !widget.enabled ? null : () => toggleSearch(controller),
         child: InputDecorator(
           decoration: InputDecoration(
+            enabled: widget.enabled,
             isDense: true,
             labelText: widget.label,
             border: const OutlineInputBorder(),
@@ -120,8 +132,9 @@ class _MultiSearchSelectorState<OBJ> extends ConsumerState<MultiSearchSelector<O
           ),
           child: widget.itemBuilder(context, state, state.value ?? {}, getChangeValue(controller, state), getSwitchValue(controller, state))
         ),
-      );
-   }
+      ),
+    );
+  }
 
   FutureOr<Iterable<Widget>> Function(BuildContext, SearchController) getSuggestionBuilder(FormFieldState<Set<OBJ>> state) {
     return (context, controller) async {
@@ -142,6 +155,7 @@ class _MultiSearchSelectorState<OBJ> extends ConsumerState<MultiSearchSelector<O
         searchController: _controller,
         builder: getAnchorBuilder(state),
         suggestionsBuilder: getSuggestionBuilder(state),
+        viewBuilder: widget.viewBuilder,
       ),
     );
   }

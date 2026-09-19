@@ -27,7 +27,7 @@ void main() {
 
   DrawService service({Random? random}) {
     final client = TestIsarClient(isar);
-    return DrawService(DrawRepository(client), DrawWinnerRepository(client), random: random);
+    return DrawService(DrawRepository(client), DrawWinnerRepository(client), PlayerGroupRepository(client), random: random);
   }
 
   Session session(int number) => Session()
@@ -102,19 +102,57 @@ void main() {
     });
   });
 
-  group('getPlayerCount (filtres du tirage)', () {
+  group('getEligibilityFor (filtres du tirage)', () {
+    Future<({int players, int tokens})> eligibility({
+      int min = 0,
+      int max = 0,
+      Set<Player> excluded = const {},
+      Set<Player> required = const {},
+      Set<PlayerGroup> excludedGroups = const {},
+      Set<PlayerGroup> requiredGroups = const {},
+      Set<Session> excludedSessions = const {},
+      Set<Session> requiredSessions = const {},
+    }) =>
+        service().getEligibilityFor(event, minSessionNumber: min, maxSessionNumber: max, excludedPlayers: excluded, requiredPlayers: required,
+          excludedGroups: excludedGroups, requiredGroups: requiredGroups, excludedSessions: excludedSessions, requiredSessions: requiredSessions);
+
     Future<int> count({
       int min = 0,
       int max = 0,
       Set<Player> excluded = const {},
       Set<Player> required = const {},
+      Set<PlayerGroup> excludedGroups = const {},
+      Set<PlayerGroup> requiredGroups = const {},
       Set<Session> excludedSessions = const {},
       Set<Session> requiredSessions = const {},
-    }) =>
-        service().getPlayerCount(event, min, max, excluded, required, excludedSessions, requiredSessions);
+    }) async => (await eligibility(min: min, max: max, excluded: excluded, required: required, excludedGroups: excludedGroups,
+        requiredGroups: requiredGroups, excludedSessions: excludedSessions, requiredSessions: requiredSessions)).players;
 
-    test('sans filtre : tous les joueurs de l\'événement', () async {
-      expect(await count(), 3);
+    Future<PlayerGroup> group(String name, List<Player> players) async {
+      final g = PlayerGroup.empty()..name = name..event.value = event;
+      g.players.addAll(players);
+      await isar.writeTxn(() async {
+        await isar.playerGroups.put(g);
+        await g.event.save();
+        await g.players.save();
+      });
+      return g;
+    }
+
+    test('groupes exclus et requis, résolus en joueurs', () async {
+      final g12 = await group('g12', [p1, p2]);
+      final g3 = await group('g3', [p3]);
+      expect(await count(excludedGroups: {g12}), 0);
+      expect(await count(requiredGroups: {g12}), 2);
+      expect(await count(requiredGroups: {g12}, excluded: {p1}), 1);
+      expect(await count(requiredGroups: {g3}, required: {p1}), 1);
+    });
+
+    test('sans filtre : tous les joueurs qui ont un jeton, et leurs jetons', () async {
+      // p3 n'a ni session ni bonus : hors de l'urne.
+      final e = await eligibility();
+      expect(e.players, 2);
+      expect(e.tokens, 4);
     });
 
     test('minimum de sessions', () async {
@@ -123,20 +161,20 @@ void main() {
     });
 
     test('maximum de sessions', () async {
-      expect(await count(max: 1), 2);
+      expect(await count(max: 1), 1);
     });
 
     test('joueurs exclus', () async {
-      expect(await count(excluded: {p2}), 2);
+      expect(await count(excluded: {p2}), 1);
     });
 
     test('joueurs requis : seuls eux, filtrés ensuite', () async {
-      expect(await count(required: {p1, p3}), 2);
+      expect(await count(required: {p1, p3}), 1);
       expect(await count(required: {p1, p3}, min: 1), 1);
     });
 
     test('sessions exclues et requises', () async {
-      expect(await count(excludedSessions: {s2}), 2);
+      expect(await count(excludedSessions: {s2}), 1);
       expect(await count(requiredSessions: {s1}), 2);
       expect(await count(requiredSessions: {s1, s2}), 1);
     });
@@ -164,5 +202,72 @@ void main() {
     final reloaded = await isar.draws.get(draw.id);
     await reloaded!.requiredPlayers.load();
     expect(reloaded.requiredPlayers, {p1});
+  });
+
+  group('lancement et copie', () {
+    Future<Draw> drawWith({int winnerCount = 2}) async {
+      final draw = Draw.empty()..name = 'A'..minSessionNumber = 1..winnerCount = winnerCount..event.value = event;
+      await service().save(draw);
+      return draw;
+    }
+
+    test('lancer date le tirage et désigne les gagnants ; relancer est refusé', () async {
+      final draw = await drawWith();
+      expect(draw.isDrawn, isFalse);
+
+      await service().calculateDraw(draw);
+
+      final reloaded = await isar.draws.get(draw.id);
+      expect(reloaded!.isDrawn, isTrue);
+      await reloaded.winners.load();
+      expect(reloaded.winners.length, 2);
+      // Les gagnants forment un groupe de l'événement.
+      await reloaded.winnersGroup.load();
+      final group = reloaded.winnersGroup.value!;
+      expect(group.name, 'Gagnants du tirage « A »');
+      await group.players.load();
+      expect(group.players, reloaded.winners.map((w) => w.winner.value!).toSet());
+      expect((await isar.playerGroups.get(group.id))!.event.value, event);
+      expect(() => service().calculateDraw(reloaded), throwsStateError);
+    });
+
+    test('sans joueur éligible, le tirage est effectué quand même, sans gagnant', () async {
+      final draw = Draw.empty()..name = 'vide'..minSessionNumber = 9..event.value = event;
+      await service().save(draw);
+      await service().calculateDraw(draw);
+      final reloaded = await isar.draws.get(draw.id);
+      expect(reloaded!.isDrawn, isTrue);
+      await reloaded.winners.load();
+      expect(reloaded.winners, isEmpty);
+    });
+
+    test('la copie reprend tout, exclut le groupe des gagnants, et reste en mémoire', () async {
+      final draw = await drawWith();
+      draw.excludedSessions.add(s2);
+      draw.requiredPlayers.addAll([p1, p2]);
+      await service().save(draw);
+      await service().calculateDraw(draw);
+      final source = await isar.draws.get(draw.id);
+      await source!.winners.load();
+      final winners = source.winners.map((w) => w.winner.value!).toSet();
+      expect(winners, isNotEmpty);
+
+      final copy = await service().createDrawFromDraw(source);
+      expect(copy.exist, isFalse);
+      expect(copy.isDrawn, isFalse);
+      await service().save(copy);
+
+      final reloaded = await isar.draws.get(copy.id);
+      expect(reloaded!.name, 'Tirage N°${draw.id + 1}');
+      expect(reloaded.isDrawn, isFalse);
+      expect(reloaded.minSessionNumber, 1);
+      expect(reloaded.winnerCount, 2);
+      await Future.wait([reloaded.excludedGroups.load(), reloaded.requiredPlayers.load(), reloaded.excludedSessions.load(), reloaded.event.load()]);
+      expect(reloaded.excludedGroups, {source.winnersGroup.value});
+      expect(reloaded.requiredPlayers, {p1, p2});
+      expect(reloaded.excludedSessions, {s2});
+      expect(reloaded.event.value, event);
+      expect(await service().getPlayerList(reloaded), isNot(contains(winners.first)));
+    });
   });
 }

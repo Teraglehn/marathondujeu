@@ -49,7 +49,7 @@ final class DrawsProvider extends $StreamNotifierProvider<Draws, List<Draw>> {
   }
 }
 
-String _$drawsHash() => r'db348d070e9853b7968bf6b860bd1149f8595b16';
+String _$drawsHash() => r'016fc4a55f817009d976c59e49fa41971a8e40db';
 
 final class DrawsFamily extends $Family
     with

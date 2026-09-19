@@ -5,7 +5,6 @@
 
     "utils_button_cancel": "Cancel",
     "utils_button_save": "Save",
-    "utils_button_save_and_draw": "Save and draw",
     "utils_button_saveAll": "Save All",
     "utils_button_saveNItems": "Save {count} {objName}",
     "@utils_button_saveNItems": {
@@ -29,6 +28,14 @@
     "utils_button_select_all": "Select All",
     "utils_button_deselect_all": "Deselect All",
     "utils_button_close": "Close",
+    "editor_title_player": "Edit a player",
+    "editor_title_event_create": "Create an event",
+    "editor_title_event_edit": "Edit an event",
+    "editor_title_playerGroup_create": "Create a player group",
+    "editor_title_playerGroup_edit": "Edit a player group",
+    "editor_title_draw_create": "Create a draw",
+    "editor_title_draw_edit": "Edit a draw",
+    "editor_title_draw_view": "View a draw",
     "utils_button_reset": "Reset",
 
     "utils_icon_filled": "Filled",
@@ -91,6 +98,20 @@
     },
 
     "data_draw_error_name_required": "Name is required",
+    "data_draw_tokenCount": "{count, plural, =0 {No token in the urn} one {1 token in the urn} other {{count} tokens in the urn}}",
+    "@data_draw_tokenCount": { "placeholders": { "count": {} } },
+    "data_draw_eligibility_help": "Only players with at least one token count. Each token is one chance in the draw.",
+    "data_draw_excludedPlayers_count": "{count, plural, =0 {No individually excluded player} one {1 individually excluded player} other {{count} individually excluded players}}",
+    "@data_draw_excludedPlayers_count": { "placeholders": { "count": {} } },
+    "data_draw_drawnAt": "Drawn on {date}",
+    "@data_draw_drawnAt": { "placeholders": { "date": {} } },
+    "data_draw_drawn": "Drawn",
+    "data_draw_drawn_help": "This draw has been made: it can no longer be edited or relaunched. To start again, copy it.",
+    "data_draw_copy": "Copy",
+    "data_draw_copy_help": "The copy keeps the same settings and excludes this draw's winners.",
+    "data_draw_launch": "Draw",
+    "data_draw_launch_confirm": "Draw {winners} winners among {players} players? A draw is launched only once.",
+    "@data_draw_launch_confirm": { "placeholders": { "winners": {}, "players": {} } },
 
     
     "data_event_objName": "{count, plural, one {Event} other {Events}}",

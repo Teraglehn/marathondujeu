@@ -10,14 +10,14 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Rédiger le rapport de L06 ou L12, sur demande — ils naissent dans `phase-2/`.
+Rédiger le rapport de L12, sur demande — il naît dans `phase-2/`.
 
 ## Phases
 
 **Phase 1 — remise en état du dépôt** : close le 2026-09-19, figée dans
 `developpement/livraisons/phase-1/`.
 
-**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L06, L12 ; L04, L05, L10 et L11
+**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L12 ; L04, L05, L06, L10 et L11
 livrés le 2026-09-19. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
 
 L09 n'est rattaché à aucune phase : son rapport naîtra dans `lots/`.
@@ -29,28 +29,12 @@ Les numéros ne sont **jamais réattribués**.
 
 | # | Lot | Phase | Statut | Rapport |
 |---|---|---|---|---|
-| L06 | Tirages : copie d'un tirage, éditeur latéral revu, lecture seule des tirages passés | 2 | à faire | à rédiger |
 | L09 | Fichier de sauvegarde par événement : export automatique, import dans la liste | — | à faire | à rédiger |
 | L12 | Aide et tutoriels : bouton « i » en haut à droite de chaque page, explications dans les écrans | 2 | à faire | à rédiger |
 
 ### Notes pour la rédaction des rapports
 
 Constats à reprendre dans le rapport concerné, puis à effacer d'ici.
-
-**L06** — trois volets sur les tirages (Bastien, 2026-09-19) :
-1. **Copier un tirage** : depuis un tirage, en créer un second qui reprend son paramétrage et
-   exclut ses gagnants. `DrawService.createDrawFromDraw` existe, n'est branchée nulle part,
-   oublie `requiredPlayers` et `winnerCount`, ne sauvegarde pas. Manquent : bouton dans la liste,
-   textes fr/en, sauvegarde. Sorti de L02 (L02 Q2).
-2. **Revoir l'éditeur latéral d'un tirage** (`draw_edit_form.dart`) — **ce qui doit changer est à
-   préciser au rapport**. État actuel : nom, min / max de sessions, nombre de gagnants, joueurs
-   exclus / requis **par groupes de joueurs** (`PlayerGroupSelector`), sessions exclues / requises,
-   compteur de joueurs éligibles recalculé à chaque changement ; un seul bouton, « enregistrer et
-   tirer » — **toute sauvegarde relance le tirage** (`Draws.save` → `calculateDraw`).
-3. **Lecture seule des tirages passés** : un tirage déjà effectué ne doit plus pouvoir être
-   modifié ni retiré au sort par mégarde. À trancher : ce qui rend un tirage « passé »
-   (a des gagnants ? date ? verrou explicite ?), et ce qui reste permis (copier, supprimer ?).
-Le volet 3 protège le volet 1 : copier est le geste normal pour « refaire » un tirage.
 
 **L09** — fichier de sauvegarde par événement (Bastien, 2026-09-19) :
 - **un fichier par événement**, à un emplacement **choisi par l'utilisateur** pour chaque
@@ -86,4 +70,4 @@ commun.
 
 - **Tests** : 17 tests depuis L02 (tirage, égalité, persistance), sur une vraie base Isar
   temporaire. Défaut appliqué, pas acté : chaque lot ajoute les tests de son périmètre — pas de
-  lot « tests » dédié. 32 tests après L05 (mise en page des cartes, format du code, migration).
+  lot « tests » dédié. 37 tests après L06 (tirages : lancement unique, copie, groupes, urne).

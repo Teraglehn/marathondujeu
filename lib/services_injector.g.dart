@@ -492,7 +492,7 @@ final class DrawServiceProvider
   }
 }
 
-String _$drawServiceHash() => r'2fb774b73787ab605171b5ee8108dc8b2fc42923';
+String _$drawServiceHash() => r'6d157a14732ac38b8e3f1450a1c8798b31ce251e';
 
 @ProviderFor(eventService)
 final eventServiceProvider = EventServiceProvider._();
