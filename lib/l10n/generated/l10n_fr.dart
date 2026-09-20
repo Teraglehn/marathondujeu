@@ -1091,4 +1091,82 @@ class SFr extends S {
   @override
   String get help_cardGenerator_8 =>
       'Enregistrez : les réglages sont gardés avec l\'événement.';
+
+  @override
+  String get help_guide_menuItem => 'Guide';
+
+  @override
+  String get help_guide_title => 'Guide — le parcours d\'une édition';
+
+  @override
+  String get help_guide_intro =>
+      'Une édition du Marathon se joue en six temps, dans l\'ordre des pages du rail de gauche. Chaque page a son « i » en haut à droite pour le détail.';
+
+  @override
+  String get help_guide_where_title => 'Où trouver l\'aide';
+
+  @override
+  String get help_guide_where_hint =>
+      'Un petit « i » à côté d\'un champ ou d\'un interrupteur : passez la souris dessus, une phrase l\'explique.';
+
+  @override
+  String get help_guide_where_legend =>
+      'Un texte dans l\'écran, sous une liste ou un formulaire : la légende de ce que vous voyez.';
+
+  @override
+  String get help_guide_where_tour =>
+      'Le « i » en haut à droite de chaque page : un pas à pas sur l\'écran, zone par zone.';
+
+  @override
+  String get help_guide_step_1_title => 'Créez l\'événement';
+
+  @override
+  String get help_guide_step_1_text =>
+      'Nom, début, fin, durée et intervalle des sessions : les sessions se génèrent d\'elles-mêmes. Choisissez ensuite cet événement en haut à droite des autres pages.';
+
+  @override
+  String get help_guide_step_2_title => 'Générez les joueurs';
+
+  @override
+  String get help_guide_step_2_text =>
+      'Indiquez combien de cartes vous imprimez : un joueur par numéro, anonyme. Chaque joueur cumule des jetons — ses chances au tirage.';
+
+  @override
+  String get help_guide_step_3_title => 'Imprimez les cartes';
+
+  @override
+  String get help_guide_step_3_text =>
+      'Dans le Générateur de carte : une image de fond, le code et le numéro placés dessus, puis l\'impression. Chaque joueur reçoit sa carte.';
+
+  @override
+  String get help_guide_step_4_title => 'Badgez à chaque session';
+
+  @override
+  String get help_guide_step_4_text =>
+      'Pendant la session ouverte (en couleur), les joueurs présents scannent leur carte : un jeton par session badgée.';
+
+  @override
+  String get help_guide_step_5_title => 'Rassemblez des joueurs (facultatif)';
+
+  @override
+  String get help_guide_step_5_text =>
+      'Un groupe sert aux tirages, et à rien d\'autre : un tirage peut exiger ou exclure ses membres.';
+
+  @override
+  String get help_guide_step_6_title => 'Tirez au sort';
+
+  @override
+  String get help_guide_step_6_text =>
+      'Nombre de gagnants, sessions ou groupes requis ou exclus, puis « Tirer au sort » : plus un joueur a de jetons, plus il a de chances. Les gagnants s\'affichent, le tirage se verrouille.';
+
+  @override
+  String help_guide_open(Object page) {
+    return 'Ouvrir la page $page';
+  }
+
+  @override
+  String get help_guide_sample_event => 'Marathon du Jeu 2026';
+
+  @override
+  String get help_guide_sample_group => 'Les habitués';
 }

@@ -199,3 +199,18 @@ sur une ligne, *Durée* et *Intervalle* sur la suivante ; dessous, l'**aperçu d
 ces valeurs donneront, refait à chaque saisie — nombre, première, deuxième, « … », dernière (jour
 et heure). Le calcul est celui de la génération, extrait en `EventService.sessionStarts`
 (fonction pure testée) ; l'aperçu ne peut pas mentir. `docs/gestes.md` : EV-3.
+
+## 2026-09-20 — L12b
+
+**L12b — Page d'aide globale.** Une septième entrée du rail, *Guide*, jamais grisée
+(`HelpPage`, route `help`) : en tête, où trouver l'aide (petit « i », légende, « i » de la barre) ;
+puis le parcours d'une édition en six temps — événement, joueurs, cartes, sessions, groupes,
+tirages —, chacun avec deux phrases, un bouton *Ouvrir la page …* (grisé sans événement, comme le
+rail) et **le vrai composant de l'écran** avec des valeurs d'exemple (Q1 *a*) : la carte de joueur,
+la carte de session et ses billes, les gagnants d'un tirage, extraits des pages en widgets purs
+(`PlayerListCard`, `SessionCard`, `WinnerCard`) que les pages appellent à leur tour — rien ne
+change à l'écran. La carte imprimée est dessinée à part (code + numéro), `CardSheetPreview`
+exigeant une image. `docs/gestes.md` : TR-1 à sept entrées, TR-7 avec l'étape 1 du parcours (base
+vide : le guide s'ouvre, seul *Ouvrir la page Événements* répond) ; 74 gestes, 85 tests. *Écarts
+assumés* : les composants extraits prennent des valeurs simples (`IsarLinks` refuse un objet non
+enregistré) ; pas de « i » sur le guide.

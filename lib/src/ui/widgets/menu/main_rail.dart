@@ -21,6 +21,7 @@ class MainRail extends ConsumerWidget {
     RouteItem((context) => S.of(context).page_sessionList_menuItem, Routes.sessionList, Icons.punch_clock),
     RouteItem((context) => S.of(context).page_drawList_menuItem, Routes.drawList, Icons.how_to_vote),
     RouteItem((context) => S.of(context).page_cardGenerator_menuItem, Routes.cardGenerator, Icons.qr_code),
+    RouteItem((context) => S.of(context).help_guide_menuItem, Routes.help, Icons.help_outline),
   ];
 
   void _handleNavigation(BuildContext context, int selectedScreen) {
@@ -30,7 +31,8 @@ class MainRail extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = routes.indexWhere((r) => r.routeName == routerState.topRoute?.name);
-    // Sans événement en base, seule la liste des événements a quelque chose à montrer.
+    // Sans événement en base, seule la liste des événements a quelque chose à montrer — et le
+    // guide, qui dit comment en créer un (L12b).
     final noEvent = ref.watch(eventsProvider()).value?.isEmpty ?? false;
     return NavigationRail(
         useIndicator: true,
@@ -39,7 +41,7 @@ class MainRail extends ConsumerWidget {
         selectedIndex: selectedIndex < 0 ? 0 : selectedIndex,
         destinations: [
           ...routes.map((route) {
-            final disabled = noEvent && route.routeName != Routes.eventList;
+            final disabled = noEvent && route.routeName != Routes.eventList && route.routeName != Routes.help;
             return NavigationRailDestination(
               label: Text(route.getTitle(context)),
               icon: disabled

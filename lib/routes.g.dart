@@ -59,6 +59,12 @@ RouteBase get $topShellRoute => ShellRouteData.$route(
       hasOverriddenOnExit: false,
       factory: $CardGeneratorRoute._fromState,
     ),
+    GoRouteData.$route(
+      path: '/help',
+      name: 'help',
+      hasOverriddenOnExit: false,
+      factory: $HelpRoute._fromState,
+    ),
   ],
 );
 
@@ -213,6 +219,26 @@ mixin $CardGeneratorRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/cardGenerator');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $HelpRoute on GoRouteData {
+  static HelpRoute _fromState(GoRouterState state) => HelpRoute();
+
+  @override
+  String get location => GoRouteData.$location('/help');
 
   @override
   void go(BuildContext context) => context.go(location);

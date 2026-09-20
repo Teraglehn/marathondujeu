@@ -1,6 +1,6 @@
 # L12b — Page d'aide globale : le parcours d'une édition, dans le rail
 
-Statut : **à faire** (ouvert le 2026-09-20) · dépend de **L12** (les aides de page existent avant
+Statut : **livré le 2026-09-20** (ouvert le 2026-09-20, Q1 et Q2 tranchées le 2026-09-20, attaqué le 2026-09-20) · dépend de **L12** (les aides de page existent avant
 le guide qui y renvoie) · **en dernier**, après L12.
 
 > Numérotation unique : une seule séquence Q1, Q2, … sur tout le rapport ; les choix d'exécution
@@ -38,10 +38,11 @@ sessions, barre de scan…) plutôt que de le décrire en mots seuls. Issue de L
 | Cible | Détail |
 |---|---|
 | `src/ui/pages/help/help_page.dart` | la page du guide, route `help`, **septième entrée** du rail, en dernier, icône `help_outline` ; **jamais grisée** (C1) |
+| `src/ui/widgets/` | les composants extraits des pages pour le guide (Q1) : `PlayerListCard` (carte de joueur), `SessionCard` (carte de session), `WinnerCard` (gagnant d'un tirage) — en valeurs simples, sans lien Isar (C5) |
 | Contenu | en tête, **où trouver l'aide** : les trois niveaux de L12, montrés (Q2) ; puis le parcours d'une édition, **une étape par section**, dans l'ordre chronologique ; chaque étape nomme la page où elle se joue et renvoie à son « i » (C2) |
 | Illustrations | une par étape au moins, selon Q1 |
 | Textes | `help_guide_*`, fr/en (C3) |
-| `docs/gestes.md` | TR-1 passe à sept entrées ; un geste **TR-6** « Ouvrir le guide » avec son étape du parcours e2e |
+| `docs/gestes.md` | TR-1 passe à sept entrées ; un geste **TR-7** « Ouvrir le guide » avec son étape du parcours e2e (TR-6 est pris par L12) |
 
 ### Hors périmètre
 
@@ -62,6 +63,11 @@ sessions, barre de scan…) plutôt que de le décrire en mots seuls. Issue de L
 5. `flutter analyze` propre, `flutter test` vert (le parcours e2e ouvre le guide),
    `flutter build windows` passe.
 
+**Constaté le 2026-09-20** : 1. sept entrées, *Guide* en dernier, jamais grisée (étape 1 du
+parcours, base vide) ; 2. six temps, chacun avec son illustration et son bouton *Ouvrir la page …* ;
+3. et 4. se jugent à la recette — les illustrations sont les vrais composants, donc à jour par
+construction ; 5. analyse propre, 85 tests verts, build passé.
+
 ## Questions déterminantes
 
 Aucune — Q1 tranchée le 2026-09-20.
@@ -79,6 +85,11 @@ Aucune — Q2 tranchée le 2026-09-20.
 - **C3 — Textes en ARB**, une clé par phrase, comme L12 C4.
 - **C4 — Sans image en dur dans les textes** : une illustration est un widget ou un asset, jamais
   un chemin dans une chaîne ARB.
+- **C5 — Les composants extraits prennent des valeurs simples**, pas l'objet Isar : `IsarLinks`
+  refuse un objet non enregistré (`player.sessions`, `session.players`), et le guide n'enregistre
+  rien. `PlayerListCard.of(player)` et `presentCount` font le pont pour les pages.
+- **C6 — Le guide porte la barre de scan** comme toute page (TR-4) ; sans « i » : un pas à pas
+  du guide serait un pas à pas de l'aide.
 
 ## Questions tranchées
 

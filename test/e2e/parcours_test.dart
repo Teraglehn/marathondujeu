@@ -39,6 +39,16 @@ void main() {
       await app.see(s.page_eventList_title);
       expect(find.text(s.page_playerList_playerCount), findsNothing);
 
+      app.g('TR-7');
+      await app.goTo(s.help_guide_menuItem);
+      await app.see(s.help_guide_title);
+      await app.see(s.help_guide_step_6_title);
+      // Sans événement, seule la page des événements s'ouvre depuis le guide.
+      final openPlayers = find.widgetWithText(OutlinedButton, s.help_guide_open(s.page_playerList_menuItem));
+      expect(tester.widget<OutlinedButton>(openPlayers).onPressed, isNull);
+      await app.tapText(s.help_guide_open(s.page_eventList_menuItem));
+      await app.see(s.page_eventList_empty_text);
+
       app.g('EV-1');
       await app.see(s.page_eventList_empty_text);
       await app.tap(find.widgetWithText(FilledButton, s.page_eventList_empty_title));

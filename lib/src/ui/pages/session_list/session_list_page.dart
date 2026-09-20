@@ -12,6 +12,7 @@ import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
+import 'package:marathondujeu/src/ui/widgets/session_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -117,41 +118,13 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
                   childAspectRatio: 155 / 125,
                   mainAxisSpacing: 5,
                   crossAxisSpacing: 5,
-                  children: sessions.map((session) {
-                    final open = session.isOpenAt(now);
-                    return SizedBox(
-                      key: session == helpSession ? _cardKey : null,
-                      width: 150,
-                      child: Card(
-                        clipBehavior: Clip.hardEdge,
-                        color: open ? Theme.of(context).colorScheme.primaryContainer : session.endTime.isBefore(now) ? Colors.grey.shade400 : null,
-                        elevation: 8,
-                        child: InkWell(
-                          onTap:() => goToSession(session),
-                          mouseCursor: SystemMouseCursors.click,
-                          child: Column(children: [
-                            ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Theme.of(context).colorScheme.secondary,
-                                foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                                child: Text(session.number.toString())
-                              ),
-                              title: Text(DateFormat("Hm", S.of(context).localeName).format(session.startTime)),
-                              subtitle: Text(DateFormat("Hm", S.of(context).localeName).format(session.endTime)),
-                            ),
-                            ListTile(
-                              leading: CircleAvatar(
-                                radius: 12,
-                                child: Text(session.players.length.toString(), style: Theme.of(context).textTheme.bodySmall)
-                              ),
-                              title: Text(S.of(context).page_sessionList_present(session.players.length), style: Theme.of(context).textTheme.bodySmall),
-                              dense: true
-                            ),
-                          ])
-                        )
-                      )
-                  );
-                  }).toList(),
+                  children: sessions.map((session) => SessionCard(
+                    key: session == helpSession ? _cardKey : null,
+                    session: session,
+                    presentCount: session.players.length,
+                    now: now,
+                    onTap: () => goToSession(session),
+                  )).toList(),
                   );
                 },
                 error: (_, e) => Center(child: Text(e.toString())),

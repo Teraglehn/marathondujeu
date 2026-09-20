@@ -11,6 +11,7 @@ import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
+import 'package:marathondujeu/src/ui/widgets/winner_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -115,26 +116,10 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                           if (draw.isDrawn) ...[const SizedBox(width: 12), drawnLabel(context, draw)!],
                         ]),
                         subtitle: Wrap(spacing: 8, runSpacing: 8, children: 
-                          (draw.winners.toList()..sort((a, b) => a.position.compareTo(b.position))).map((w) => Card(
-                            clipBehavior: Clip.hardEdge,
-                            elevation: 8,
-                            child: InkWell(
-                              onTap: () => editor.editPlayer(w.winner.value!),
-                              child: Padding(
-                                padding: const EdgeInsetsGeometry.all(8),
-                                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: Text("N°${w.position.toString()}"),
-                                  ),
-                                  CircleAvatar(
-                                    backgroundColor: Theme.of(context).colorScheme.primary,
-                                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                                    child: Text(w.winner.value!.number.toString())
-                                  )
-                                ])
-                              ),
-                            )
+                          (draw.winners.toList()..sort((a, b) => a.position.compareTo(b.position))).map((w) => WinnerCard(
+                            position: w.position,
+                            number: w.winner.value!.number,
+                            onTap: () => editor.editPlayer(w.winner.value!),
                           )).toList()
                         ),
                         trailing: IconButton(key: index == 0 ? _copyKey : null, onPressed: () => copyDraw(draw), icon: const Icon(Icons.copy), tooltip: S.of(context).data_draw_copy_help),

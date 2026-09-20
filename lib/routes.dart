@@ -16,6 +16,7 @@ class Routes {
   static const playerGroupList = 'playerGroupList';
   static const playerGroup = 'playerGroup';
   static const drawList = 'drawList';
+  static const help = 'help';
 }
 
 @TypedShellRoute<TopShellRoute>(
@@ -28,6 +29,7 @@ class Routes {
     TypedGoRoute<PlayerGroupListRoute>(path: '/playerGroups', name: Routes.playerGroupList),
     TypedGoRoute<PlayerGroupRoute>(path: '/playerGroup', name: Routes.playerGroup),
     TypedGoRoute<CardGeneratorRoute>(path: '/cardGenerator', name: Routes.cardGenerator),
+    TypedGoRoute<HelpRoute>(path: '/help', name: Routes.help),
   ]
 )
 @immutable
@@ -110,5 +112,13 @@ class CardGeneratorRoute extends GoRouteData with $CardGeneratorRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CardGeneratorPage();
+  }
+}
+
+@immutable
+class HelpRoute extends GoRouteData with $HelpRoute {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const HelpPage();
   }
 }
