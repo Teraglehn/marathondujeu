@@ -42,6 +42,9 @@ class BackupService {
   /// L'heure de la dernière écriture réussie, par événement.
   final Map<int, DateTime> lastWrittenAt = {};
 
+  /// Le nombre de fichiers écrits depuis le départ (les tests comptent).
+  int writes = 0;
+
   Timer? _timer;
   DateTime? _firstChangeAt;
   final List<StreamSubscription<void>> _subscriptions = [];
@@ -116,6 +119,7 @@ class BackupService {
       try {
         await writeEvent(isar, event);
         lastWrittenAt[event.id] = DateTime.now();
+        writes++;
       } catch (e) {
         onError?.call(BackupWriteError(event, e));
       }

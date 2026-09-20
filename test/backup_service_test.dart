@@ -21,7 +21,7 @@ void main() {
       events: EventService(SessionRepository(client), EventRepository(client), PlayerRepository(client), DrawWinnerRepository(client)),
       draws: DrawService(DrawRepository(client), DrawWinnerRepository(client), PlayerGroupRepository(client)),
       groups: PlayerGroupService(PlayerGroupRepository(client)),
-      backup: BackupService(client, delay: delay ?? const Duration(milliseconds: 100), maxDelay: const Duration(milliseconds: 500)),
+      backup: BackupService(client, delay: delay ?? const Duration(milliseconds: 100), maxDelay: const Duration(seconds: 5)),
     );
   }
 
@@ -209,20 +209,22 @@ void main() {
 
       final players = await isar.players.where().findAll();
       final file = File(path);
-      var writes = 0;
-      file.parent.watch().listen((e) { if (e.path.endsWith('auto.json') && e is! FileSystemDeleteEvent) writes++; });
       for (var i = 0; i < 10; i++) {
         players[0].bonusSession = i;
         await isar.writeTxn(() => isar.players.put(players[0]));
       }
       expect(s.backup.pending, isTrue);
-      await Future.delayed(const Duration(milliseconds: 400));
+      // Le délai, puis l'écriture : on attend qu'elle soit faite, sans présumer de la vitesse du poste.
+      final deadline = DateTime.now().add(const Duration(seconds: 5));
+      while (s.backup.pending && DateTime.now().isBefore(deadline)) {
+        await Future.delayed(const Duration(milliseconds: 20));
+      }
       expect(s.backup.pending, isFalse);
       expect(file.existsSync(), isTrue);
       final json = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
       expect((json['players'] as List).firstWhere((p) => p['number'] == players[0].number)['bonusSession'], 9);
       expect(s.backup.lastWrittenAt[event.id], isNotNull);
-      expect(writes, lessThanOrEqualTo(2), reason: 'une écriture (.tmp renommé), pas dix');
+      expect(s.backup.writes, 1, reason: 'une écriture, pas dix');
     });
 
     test('flush écrit tout de suite ce qui est en attente', () async {

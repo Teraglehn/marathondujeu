@@ -1,6 +1,6 @@
 # Les gestes de l'application
 
-Dernière mise à jour : 2026-09-20 (L09). **Document de référence** (voir `docs/methode-de-travail.md`,
+Dernière mise à jour : 2026-09-20 (L20). **Document de référence** (voir `docs/methode-de-travail.md`,
 partie II) : il décrit ce que l'application permet de faire, page par page — la cible telle
 qu'elle est aujourd'hui dans le code livré.
 
@@ -179,3 +179,6 @@ Paramètres : **image de fond** (absente / présente) · **réglages enregistré
 Gestes **sans effet ou absents** aujourd'hui, à trancher lot par lot : EV-10, SE-7 *(GR-4, GR-6,
 GR-7 et TI-11 tranchés le 2026-09-20)*. Chaque geste a son test depuis L18 (2026-09-20) : le
 parcours joue les 76, sauf cinq dialogues du système et une animation, en recette.
+L'icône de l'application et les noms que Windows affiche pour le programme (L20) ne sont pas des
+gestes : ils se constatent à la recette, dans l'Explorateur et la barre des tâches.
+

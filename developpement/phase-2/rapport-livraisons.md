@@ -236,3 +236,15 @@ le temps *Créez l'événement* parle de l'aperçu des sessions et du fichier (B
 lui-même le fichier au choix du chemin (C9) ; le chemin s'enregistre sans *Enregistrer* (C10) ;
 les dialogues du système en recette ; « Dernière sauvegarde à » ne se rafraîchit pas éditeur
 ouvert ; chaque écriture réécrit tous les événements qui ont un fichier.
+
+## 2026-09-20 — L20
+
+**L20 — Icône de l'application.** Un dé à six faces (face 5, incliné) et un pion d'échecs, blancs
+à liseré sombre, sur un carré arrondi de la couleur du thème — dessinés en code
+(`tool/app_icon.dart`, `CustomPainter`), rendus par `flutter test tool/render_app_icon_test.dart`
+en PNG (`assets/icon/app_icon.png`, 1024 px) et en `.ico` (16 à 256 px, entrées PNG), sans
+dépendance. `Runner.rc` : « Marathon du Jeu » en nom du produit, description et nom interne,
+copyright 2026 ; titre natif de la fenêtre « Marathon du Jeu ». Pas de geste. *Écarts assumés* :
+`flutter_launcher_icons` écarté (C1) ; les icônes des autres cibles ne bougent pas. Au passage :
+le test du regroupement des écritures de L09, instable quand la suite tourne en parallèle, attend
+désormais l'écriture au lieu d'un délai fixe et compte par le service (`BackupService.writes`).
