@@ -33,8 +33,9 @@ const DrawSchema = CollectionSchema(
       type: IsarType.long,
     ),
     r'name': PropertySchema(id: 3, name: r'name', type: IsarType.string),
+    r'number': PropertySchema(id: 4, name: r'number', type: IsarType.long),
     r'winnerCount': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'winnerCount',
       type: IsarType.long,
     ),
@@ -131,7 +132,8 @@ void _drawSerialize(
   writer.writeLong(offsets[1], object.maxSessionNumber);
   writer.writeLong(offsets[2], object.minSessionNumber);
   writer.writeString(offsets[3], object.name);
-  writer.writeLong(offsets[4], object.winnerCount);
+  writer.writeLong(offsets[4], object.number);
+  writer.writeLong(offsets[5], object.winnerCount);
 }
 
 Draw _drawDeserialize(
@@ -146,7 +148,8 @@ Draw _drawDeserialize(
   object.maxSessionNumber = reader.readLong(offsets[1]);
   object.minSessionNumber = reader.readLong(offsets[2]);
   object.name = reader.readString(offsets[3]);
-  object.winnerCount = reader.readLong(offsets[4]);
+  object.number = reader.readLong(offsets[4]);
+  object.winnerCount = reader.readLong(offsets[5]);
   return object;
 }
 
@@ -166,6 +169,8 @@ P _drawDeserializeProp<P>(
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
+      return (reader.readLong(offset)) as P;
+    case 5:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -709,6 +714,63 @@ extension DrawQueryFilter on QueryBuilder<Draw, Draw, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'name', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> numberEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'number', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> numberGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'number',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> numberLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'number',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterFilterCondition> numberBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'number',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
       );
     });
   }
@@ -1301,6 +1363,18 @@ extension DrawQuerySortBy on QueryBuilder<Draw, Draw, QSortBy> {
     });
   }
 
+  QueryBuilder<Draw, Draw, QAfterSortBy> sortByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> sortByNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.desc);
+    });
+  }
+
   QueryBuilder<Draw, Draw, QAfterSortBy> sortByWinnerCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'winnerCount', Sort.asc);
@@ -1375,6 +1449,18 @@ extension DrawQuerySortThenBy on QueryBuilder<Draw, Draw, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Draw, Draw, QAfterSortBy> thenByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Draw, Draw, QAfterSortBy> thenByNumberDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'number', Sort.desc);
+    });
+  }
+
   QueryBuilder<Draw, Draw, QAfterSortBy> thenByWinnerCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'winnerCount', Sort.asc);
@@ -1415,6 +1501,12 @@ extension DrawQueryWhereDistinct on QueryBuilder<Draw, Draw, QDistinct> {
     });
   }
 
+  QueryBuilder<Draw, Draw, QDistinct> distinctByNumber() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'number');
+    });
+  }
+
   QueryBuilder<Draw, Draw, QDistinct> distinctByWinnerCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'winnerCount');
@@ -1450,6 +1542,12 @@ extension DrawQueryProperty on QueryBuilder<Draw, Draw, QQueryProperty> {
   QueryBuilder<Draw, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Draw, int, QQueryOperations> numberProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'number');
     });
   }
 

@@ -1003,6 +1003,54 @@ void main() {
       await app.see(s.backup_unreadable);
       await app.closeToast();
       expect(await tester.runAsync(() => isar.events.count()), 1);
+
+      // Les tirages revenus du fichier gardent leur numéro : la bille le montre, pas l'id.
+      app.g('TI-2');
+      await app.goTo(s.page_drawList_menuItem);
+      final firstDraw = find.widgetWithText(ListTile, 'Tirage N°1');
+      await app.waitFor(firstDraw, what: 'le tirage N°1');
+      expect(find.descendant(of: firstDraw, matching: find.widgetWithText(CircleAvatar, '1')), findsOneWidget);
+      final draws = await tester.runAsync(() => isar.draws.where().findAll());
+      expect(draws!.map((d) => d.number), [1]);
+
+      // Fermer l'événement : revenu du fichier, il n'a pas de fichier → la modale le dit.
+      app.g('EV-10');
+      final path2 = path;
+      await openEventA();
+      await app.tapText(s.event_close);
+      await app.see(s.event_close_unsaved_title);
+      await app.tapText(s.utils_button_cancel);
+      await app.waitGone(find.text(s.event_close_unsaved_title), what: 'la modale');
+      expect(await tester.runAsync(() => isar.events.count()), 1, reason: 'Annuler ne ferme rien');
+      await app.tapText(s.event_close);
+      await app.tapText(s.event_close_anyway);
+      await app.see(s.event_closed('Marathon A'));
+      await app.closeToast();
+      await app.see(s.page_eventList_empty_text);
+      for (final count in [isar.events.count, isar.players.count, isar.sessions.count, isar.playerGroups.count, isar.draws.count, isar.drawWinners.count]) {
+        expect(await tester.runAsync(count), 0, reason: 'tout part avec l\'événement');
+      }
+
+      // Avec un fichier : la modale courte, le fichier reste.
+      app.picker.openPath = path2;
+      await app.tapText(s.backup_open);
+      await app.see(s.backup_opened('Marathon A'));
+      await app.closeToast();
+      await openEventA();
+      app.picker.savePath = path2;
+      await app.tapText(s.backup_choose);
+      await app.see(path2);
+      await app.settle();
+      await app.tapText(s.utils_button_cancel);
+      await app.waitGone(inDrawer);
+      // Depuis la liste cette fois : l'icône au bout de la ligne.
+      await app.tap(find.descendant(of: find.widgetWithText(ListTile, 'Marathon A'), matching: find.byIcon(Icons.logout)), what: 'fermer depuis la liste');
+      await app.see(s.event_close_title('Marathon A'));
+      await app.tap(find.widgetWithText(FilledButton, s.event_close_confirm));
+      await app.see(s.event_closed_saved('Marathon A', path2));
+      await app.closeToast();
+      expect(await tester.runAsync(() => isar.events.count()), 0);
+      expect(await tester.runAsync(file.exists), isTrue, reason: 'le fichier de sauvegarde reste');
     });
 
     await app.finish();

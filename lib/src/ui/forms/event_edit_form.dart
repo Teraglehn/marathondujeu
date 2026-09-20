@@ -14,6 +14,7 @@ import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/services/services.dart';
 import 'package:marathondujeu/src/ui/forms/dirty_aware.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/datetime_form_field.dart';
+import 'package:marathondujeu/src/ui/widgets/close_event_dialog.dart';
 import 'package:marathondujeu/src/ui/widgets/toast.dart';
 import 'package:marathondujeu/src/ui/widgets/scanner_listener.dart';
 import 'package:uuid/uuid.dart';
@@ -22,12 +23,9 @@ class EventEditForm extends ConsumerStatefulWidget {
 
   final Event event;
 
-  final bool allowRemove;
-
   const EventEditForm(
     this.event, 
     {
-      this.allowRemove = true,
       super.key,
     });
 
@@ -89,10 +87,9 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
     _sessionIntervalMinuteController.text = widget.event.sessionIntervalMinutes.toString();
   }
 
-  void delete(){
-    ref.read(eventsProvider().notifier)
-      .delete(widget.event)
-      .then((_) => ref.read(editorPodProvider.notifier).close());
+  /// Ferme l'événement (L21) — le même dialogue que la liste ; fermé → l'éditeur aussi.
+  Future<void> close() async {
+    if (await closeEvent(context, ref, widget.event) && mounted) ref.read(editorPodProvider.notifier).close();
   }
 
   void cancel(){
@@ -456,13 +453,12 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (widget.allowRemove) FilledButton.icon(
-                  onPressed: delete,
-                  icon: const Icon(Icons.delete),
-                  label: Text(S.of(context).utils_button_delete),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                    foregroundColor: Theme.of(context).colorScheme.onError,
+                if (widget.event.exist) OutlinedButton.icon(
+                  onPressed: close,
+                  icon: const Icon(Icons.logout),
+                  label: Text(S.of(context).event_close),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.error,
                     minimumSize: const Size(0, 48),
                   ),
                 ),

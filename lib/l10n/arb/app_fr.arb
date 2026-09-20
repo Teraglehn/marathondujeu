@@ -278,7 +278,7 @@
     "help_eventList_1": "Cette page liste vos événements — un par édition du Marathon. Tout le reste de l'application travaille sur l'événement choisi en haut à droite.",
     "help_eventList_2": "Créez un événement avec ce bouton : son nom, ses dates, la durée et l'intervalle des sessions. Les sessions se génèrent d'elles-mêmes.",
     "help_eventList_3": "Retrouvez un événement par son nom.",
-    "help_eventList_4": "Cliquez un événement pour le modifier : dates, protection des cartes, suppression des joueurs.",
+    "help_eventList_4": "Cliquez un événement pour le modifier : dates, protection des cartes, suppression des joueurs, fichier de sauvegarde. La flèche au bout de la ligne le ferme — son fichier de sauvegarde reste.",
     "help_eventList_5": "Choisissez ici l'événement sur lequel vous travaillez : joueurs, sessions, tirages et cartes sont les siens.",
     "help_eventList_6": "Où que vous soyez, scanner une carte ouvre la fiche du joueur ; le résultat du dernier scan s'affiche ici.",
 
@@ -387,5 +387,20 @@
     "backup_exists_text": "« {name} » est déjà dans la liste. Le remplacer par le contenu du fichier ? Ce qui a été fait depuis dans l'application sera perdu.",
     "@backup_exists_text": { "placeholders": { "name": {} } },
     "backup_replace": "Remplacer",
-    "help_eventList_7": "Ouvrez un fichier de sauvegarde pour retrouver un événement — après un poste mort, ou venu d'un autre poste. Chaque événement choisit son fichier dans son éditeur."
+    "help_eventList_7": "Ouvrez un fichier de sauvegarde pour retrouver un événement — après un poste mort, ou venu d'un autre poste. Chaque événement choisit son fichier dans son éditeur.",
+
+    "event_close": "Fermer l'événement",
+    "event_close_title": "Fermer « {name} » ?",
+    "@event_close_title": { "placeholders": { "name": {} } },
+    "event_close_saved_text": "Son fichier de sauvegarde reste : {path}. « Ouvrir un fichier de sauvegarde » le ramènera.",
+    "@event_close_saved_text": { "placeholders": { "path": {} } },
+    "event_close_unsaved_title": "Cet événement n'est pas sauvegardé",
+    "event_close_unsaved_text": "« {name} » et toutes ses données — joueurs, badgeages, groupes, tirages — seront perdus. Choisissez d'abord un fichier de sauvegarde, ou fermez quand même.",
+    "@event_close_unsaved_text": { "placeholders": { "name": {} } },
+    "event_close_confirm": "Fermer",
+    "event_close_anyway": "Fermer quand même",
+    "event_closed": "Événement « {name} » fermé",
+    "@event_closed": { "placeholders": { "name": {} } },
+    "event_closed_saved": "Événement « {name} » fermé — son fichier de sauvegarde : {path}",
+    "@event_closed_saved": { "placeholders": { "name": {}, "path": {} } }
 }

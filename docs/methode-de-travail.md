@@ -1,6 +1,6 @@
 # Méthode de travail
 
-Dernière mise à jour : 2026-09-19.
+Dernière mise à jour : 2026-09-20.
 
 Comment on travaille ensemble — Bastien et Claude Code. **Ce document fait foi** : une règle de
 méthode s'écrit ici, dans le commit qui la justifie, et nulle part ailleurs à titre principal.
@@ -362,6 +362,7 @@ particulier, qui se justifie explicitement.
 ## Ce qui est gelé, nommément
 
 - `developpement/livraisons/phase-1/` — phase 1, close le 2026-09-19.
+- `developpement/livraisons/phase-2/` — phase 2, close le 2026-09-20 (version 2.0).
 
 Aucun arbitrage transversal daté.
 

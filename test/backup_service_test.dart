@@ -98,6 +98,18 @@ void main() {
       expect((json['players'] as List).length, 6);
       expect((json['sessions'] as List)[0]['players'], [1, 2]);
       expect((json['draws'] as List)[0]['winners'], hasLength(2));
+      expect((json['draws'] as List).map((d) => d['number']), [1, 2]);
+    });
+
+    test('un fichier d\'avant L21, sans numéro de tirage : le rang fait foi', () async {
+      final event = await fullEvent(isar);
+      final text = BackupFormat.encode(await BackupService.snapshot(isar, event));
+      final json = jsonDecode(text) as Map<String, dynamic>;
+      for (final d in json['draws'] as List) {
+        (d as Map).remove('number');
+      }
+      final backup = BackupFormat.decode(jsonEncode(json));
+      expect(backup.draws.map((d) => d.number), [1, 2]);
     });
   });
 
@@ -159,6 +171,8 @@ void main() {
       final copy = draws.firstWhere((d) => d.name != 'Tirage 1');
       expect(drawn.drawnAt, isNotNull);
       expect(drawn.winnerCount, 2);
+      expect(drawn.number, 1, reason: 'le numéro voyage');
+      expect(copy.number, 2);
       await Future.wait([drawn.requiredSessions.load(), drawn.excludedPlayers.load(), drawn.winners.load(), drawn.winnersGroup.load()]);
       expect(drawn.requiredSessions.map((s) => s.number), [1]);
       expect(drawn.excludedPlayers.map((p) => p.number), [6]);

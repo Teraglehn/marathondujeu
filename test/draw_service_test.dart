@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/src/data/data.dart';
+import 'package:marathondujeu/src/data/isar_client.dart';
 import 'package:marathondujeu/src/services/services.dart';
 
 import 'isar_test_support.dart';
@@ -20,6 +21,7 @@ class _FixedRandom implements Random {
 }
 
 void main() {
+  numbering();
   late Isar isar;
   late Event event;
   late Session s1, s2;
@@ -259,7 +261,8 @@ void main() {
       await service().save(copy);
 
       final reloaded = await isar.draws.get(copy.id);
-      expect(reloaded!.name, 'Tirage N°${draw.id + 1}');
+      expect(reloaded!.number, 1, reason: 'le premier tirage numéroté : la source, créée à la main, est sans numéro');
+      expect(reloaded.name, 'Tirage N°1');
       expect(reloaded.isDrawn, isFalse);
       expect(reloaded.minSessionNumber, 1);
       expect(reloaded.winnerCount, 2);
@@ -269,6 +272,75 @@ void main() {
       expect(reloaded.excludedSessions, {s2});
       expect(reloaded.event.value, event);
       expect(await service().getPlayerList(reloaded), isNot(contains(winners.first)));
+    });
+  });
+}
+
+/// L21 — le numéro d'un tirage : par événement, dans l'ordre de création, jamais l'`id`.
+void numbering() {
+  late Isar isar;
+
+  DrawService service() {
+    final client = TestIsarClient(isar);
+    return DrawService(DrawRepository(client), DrawWinnerRepository(client), PlayerGroupRepository(client));
+  }
+
+  setUpAll(() async {
+    isar = await openTestIsar();
+  });
+
+  tearDownAll(() => isar.close(deleteFromDisk: true));
+
+  setUp(() => isar.writeTxn(() => isar.clear()));
+
+  group('numéro de tirage', () {
+    test('1, 2, 3 dans chaque événement, quel que soit l\'id', () async {
+      final a = Event()..name = 'A';
+      final b = Event()..name = 'B';
+      await isar.writeTxn(() => isar.events.putAll([a, b]));
+      final a1 = await service().createDraw(a);
+      await service().save(a1);
+      final b1 = await service().createDraw(b);
+      await service().save(b1);
+      final a2 = await service().createDraw(a);
+      await service().save(a2);
+      expect([a1.number, a2.number], [1, 2]);
+      expect(b1.number, 1);
+      expect([a1.name, a2.name, b1.name], ['Tirage N°1', 'Tirage N°2', 'Tirage N°1']);
+      expect(a2.id, isNot(a2.number), reason: 'l\'id de base ne se voit nulle part');
+      final copy = await service().createDrawFromDraw(a2);
+      expect(copy.number, 3);
+      expect(copy.name, 'Tirage N°3');
+    });
+
+    test('migration : les tirages sans numéro en reçoivent un, par événement, dans l\'ordre de création', () async {
+      final a = Event()..name = 'A';
+      final b = Event()..name = 'B';
+      await isar.writeTxn(() => isar.events.putAll([a, b]));
+      final old = [
+        Draw.empty()..name = 'a-vieux'..event.value = a,
+        Draw.empty()..name = 'b-vieux'..event.value = b,
+        Draw.empty()..name = 'a-vieux-2'..event.value = a,
+      ];
+      await isar.writeTxn(() async {
+        await isar.draws.putAll(old);
+        for (final d in old) {
+          await d.event.save();
+        }
+      });
+      final numbered = await service().createDraw(a);
+      await service().save(numbered);
+      expect(numbered.number, 1, reason: 'avant migration, rien n\'est numéroté');
+
+      await IsarClient.migrateDrawNumbers(isar);
+
+      Future<int> numberOf(String name) async => (await isar.draws.filter().nameEqualTo(name).findFirst())!.number;
+      expect(await numberOf('a-vieux'), 2, reason: 'à la suite du numéro déjà posé');
+      expect(await numberOf('a-vieux-2'), 3);
+      expect(await numberOf('b-vieux'), 1);
+      expect(await numberOf(numbered.name), 1);
+      await IsarClient.migrateDrawNumbers(isar);
+      expect(await numberOf('a-vieux'), 2, reason: 'sans effet une seconde fois');
     });
   });
 }

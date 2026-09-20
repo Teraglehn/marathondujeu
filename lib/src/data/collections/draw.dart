@@ -9,6 +9,11 @@ part 'draw.g.dart';
 class Draw {
   Id id = Isar.autoIncrement;
   late String name;
+
+  /// Le rang du tirage dans son événement (L21) : 1, 2, 3… dans l'ordre de création, jamais
+  /// réattribué ; c'est lui que l'écran montre, pas `id`. 0 tant que non attribué (bases d'avant).
+  int number = 0;
+
   int minSessionNumber = 1;
   int maxSessionNumber = 0;
   int winnerCount = 1;

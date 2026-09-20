@@ -5,6 +5,7 @@ import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/data/isar_client.dart';
 import 'package:marathondujeu/src/services/backup/backup_format.dart';
+import 'package:marathondujeu/src/services/data/event_service.dart';
 
 /// Ce que l'ouverture d'un fichier a trouvé avant d'écrire : l'événement du fichier, et celui
 /// qui porte déjà le même `uid` en base, s'il y en a un (Q2 : *Remplacer* ou *Annuler*).
@@ -48,7 +49,10 @@ class BackupService {
   Timer? _timer;
   DateTime? _firstChangeAt;
   final List<StreamSubscription<void>> _subscriptions = [];
-  Future<void>? _writing;
+  // Les écritures se suivent, jamais en parallèle : deux sur le même fichier se marcheraient
+  // dessus (même `.tmp`).
+  Future<void> _chain = Future.value();
+  int _busy = 0;
 
   BackupService(this.isarClient, {this.delay = const Duration(seconds: 2), this.maxDelay = const Duration(seconds: 30)});
 
@@ -95,34 +99,42 @@ class BackupService {
   }
 
   /// Vrai tant qu'une écriture est en attente ou en cours.
-  bool get pending => _timer != null || _writing != null;
+  bool get pending => _timer != null || _busy > 0;
+
+  Future<T> _serialized<T>(Future<T> Function() job) {
+    _busy++;
+    final result = _chain.then((_) => job()).whenComplete(() => _busy--);
+    _chain = result.then((_) {}, onError: (_) {});
+    return result;
+  }
 
   /// Écrit maintenant ce qui est en attente ; attend la fin. À la fermeture de l'application.
-  Future<void> flush() async {
+  Future<void> flush() {
     _timer?.cancel();
     _timer = null;
     _firstChangeAt = null;
-    // Une écriture en cours finit d'abord : elle peut lire un état déjà dépassé.
-    await _writing;
-    _writing = _writeAll();
-    try {
-      await _writing;
-    } finally {
-      _writing = null;
-    }
+    return _serialized(() async {
+      final isar = await isarClient.db;
+      final events = await isar.events.filter().backupPathIsNotNull().findAll();
+      for (final event in events) {
+        await _write(isar, event);
+      }
+    });
   }
 
-  Future<void> _writeAll() async {
-    final isar = await isarClient.db;
-    final events = await isar.events.filter().backupPathIsNotNull().findAll();
-    for (final event in events) {
-      try {
-        await writeEvent(isar, event);
-        lastWrittenAt[event.id] = DateTime.now();
-        writes++;
-      } catch (e) {
-        onError?.call(BackupWriteError(event, e));
-      }
+  /// Écrit le fichier de [event] tout de suite, à la suite des écritures en cours ; vrai si
+  /// c'est fait — la fermeture d'un événement (L21) s'en sert pour dire « sauvegardé ».
+  Future<bool> writeNow(Event event) => _serialized(() async => _write(await isarClient.db, event));
+
+  Future<bool> _write(Isar isar, Event event) async {
+    try {
+      await writeEvent(isar, event);
+      lastWrittenAt[event.id] = DateTime.now();
+      writes++;
+      return true;
+    } catch (e) {
+      onError?.call(BackupWriteError(event, e));
+      return false;
     }
   }
 
@@ -136,8 +148,12 @@ class BackupService {
     await tmp.rename(path);
   }
 
-  /// Tout l'événement, liens chargés, prêt pour le format.
-  static Future<EventBackup> snapshot(Isar isar, Event event) async {
+  /// Tout l'événement, liens chargés, prêt pour le format — lu dans **une** transaction : un
+  /// cliché pris en plusieurs requêtes pourrait enjamber une fermeture ou un remplacement de
+  /// l'événement et écrire un fichier à moitié vide.
+  static Future<EventBackup> snapshot(Isar isar, Event event) => isar.txn(() => _snapshot(isar, event));
+
+  static Future<EventBackup> _snapshot(Isar isar, Event event) async {
     final players = await isar.players.filter().event((q) => q.idEqualTo(event.id)).sortByNumber().findAll();
     final sessions = await isar.sessions.filter().event((q) => q.idEqualTo(event.id)).sortByNumber().findAll();
     final groups = await isar.playerGroups.filter().event((q) => q.idEqualTo(event.id)).findAll();
@@ -182,7 +198,7 @@ class BackupService {
   Future<Event> import(EventBackup backup, {Event? replace}) async {
     final isar = await isarClient.db;
     await isar.writeTxn(() async {
-      if (replace != null) await _deleteEvent(isar, replace);
+      if (replace != null) await EventService.destroyEventIn(isar, replace);
       final event = backup.event;
       // Le fichier ne porte pas de chemin (Q4) ; un événement remplacé garde le sien.
       event.backupPath = replace?.backupPath;
@@ -216,19 +232,5 @@ class BackupService {
       }
     });
     return backup.event;
-  }
-
-  /// Supprime un événement et tout ce qui s'y rattache. Dans une transaction ouverte.
-  static Future<void> _deleteEvent(Isar isar, Event event) async {
-    final draws = await isar.draws.filter().event((q) => q.idEqualTo(event.id)).findAll();
-    for (final d in draws) {
-      await d.winners.load();
-      await isar.drawWinners.deleteAll(d.winners.map((w) => w.id).toList());
-    }
-    await isar.draws.deleteAll(draws.map((d) => d.id).toList());
-    await isar.playerGroups.filter().event((q) => q.idEqualTo(event.id)).deleteAll();
-    await isar.sessions.filter().event((q) => q.idEqualTo(event.id)).deleteAll();
-    await isar.players.filter().event((q) => q.idEqualTo(event.id)).deleteAll();
-    await isar.events.delete(event.id);
   }
 }

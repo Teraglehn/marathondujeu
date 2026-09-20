@@ -98,6 +98,7 @@ class BackupFormat {
       'draws': [
         for (final (i, d) in backup.draws.indexed)
           {
+            'number': d.number,
             'name': d.name,
             'minSessionNumber': d.minSessionNumber,
             'maxSessionNumber': d.maxSessionNumber,
@@ -209,8 +210,10 @@ class BackupFormat {
 
       final draws = <Draw>[];
       final winners = <List<DrawWinner>>[];
-      for (final d in _list(root, 'draws')) {
+      for (final (i, d) in _list(root, 'draws').indexed) {
+        // Un fichier d'avant L21 n'a pas de numéro : le rang fait foi.
         final draw = Draw()
+          ..number = (d['number'] as int?) ?? i + 1
           ..name = _string(d, 'name')
           ..minSessionNumber = _int(d, 'minSessionNumber')
           ..maxSessionNumber = _int(d, 'maxSessionNumber')

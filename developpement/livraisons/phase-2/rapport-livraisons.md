@@ -248,3 +248,21 @@ copyright 2026 ; titre natif de la fenêtre « Marathon du Jeu ». Pas de geste.
 `flutter_launcher_icons` écarté (C1) ; les icônes des autres cibles ne bougent pas. Au passage :
 le test du regroupement des écritures de L09, instable quand la suite tourne en parallèle, attend
 désormais l'écriture au lieu d'un délai fixe et compte par le service (`BackupService.writes`).
+
+## 2026-09-20 — L21
+
+**L21 — Corrections : numéro de tirage, fermer un événement.** `Draw.number` (champ ajouté) :
+le rang du tirage dans son événement, posé par le service à la création (`nextNumber`), repris
+par la bille de la liste et le nom par défaut « Tirage N°n » — jamais l'`id`, qui change à
+l'ouverture d'un fichier ; migration à l'ouverture de la base pour les tirages d'avant ; le numéro
+voyage dans le fichier de sauvegarde (un fichier ancien numérote par rang) ; liste triée par
+numéro. *Fermer l'événement* (icône au bout de sa ligne dans la liste, bouton en bas de son
+éditeur ; un seul dialogue) : le fichier est réécrit d'abord, puis **toujours une modale** (Q1 *b*)
+— courte si le fichier est à jour, explicite sinon (*Fermer quand même*) ; confirmé → la cascade
+`EventService.destroyEvent` (gagnants, tirages, groupes, sessions, joueurs, événement), plus
+d'événement sélectionné, toast avec le chemin du fichier, qui reste. Tests : numéros, migration,
+cascade, numéro dans le fichier, étape 11 du parcours ; 96 tests. `docs/gestes.md` : EV-10,
+EV-13, TI-1, TI-2, TI-9. **Deux défauts de L09 révélés par le parcours, corrigés** : le cliché du
+fichier n'était pas atomique (il se lit désormais dans une transaction) ; deux écritures pouvaient
+se chevaucher sur le même fichier (elles sont sérialisées, `writeNow`). *Écarts assumés* : les
+noms existants ne sont pas renommés ; `EventService.delete` (événement seul) disparaît.

@@ -109,7 +109,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                         key: firstDrawn ? _drawnKey : index == 0 ? _firstKey : null,
                         onTap: () => editor.editDraw(draw),
                         leading: CircleAvatar(
-                          child: Text(draw.id.toString())
+                          child: Text(draw.number.toString())
                         ),
                         title: Row(children: [
                           Text(draw.name),

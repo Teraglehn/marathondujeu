@@ -50,18 +50,23 @@ class DrawService {
   }
 
   /// Le nom par défaut d'un tirage : « Tirage N°n », n = plus grand identifiant + 1.
-  Future<String> nextName() async {
-    final draws = await _drawRepository.getAll();
-    final maxId = draws.fold(0, (m, d) => d.id > m ? d.id : m);
-    return 'Tirage N°${maxId + 1}';
+  /// Le numéro du prochain tirage de [event] : le plus grand des siens + 1 (L21). Jamais l'`id`,
+  /// qui change d'une base à l'autre.
+  Future<int> nextNumber(Event event) async {
+    final draws = await _drawRepository.getByEventId(event.id);
+    return draws.fold(0, (m, d) => d.number > m ? d.number : m) + 1;
   }
+
+  static String defaultName(int number) => 'Tirage N°$number';
 
   /// Un tirage neuf, en mémoire, avec ses défauts : nom, et la dernière session requise —
   /// celle qui vient de se jouer.
   Future<Draw> createDraw(Event event) async {
     await event.sessions.load();
+    final number = await nextNumber(event);
     final draw = Draw.empty()
-      ..name = await nextName()
+      ..number = number
+      ..name = defaultName(number)
       ..event.value = event;
     if (event.sessions.isNotEmpty) {
       draw.requiredSessions.add(event.sessions.reduce((a, b) => a.startTime.isAfter(b.startTime) ? a : b));
@@ -83,8 +88,10 @@ class DrawService {
       previousDraw.winnersGroup.load(),
     ]);
 
+    final number = await nextNumber(previousDraw.event.value!);
     final nextDraw = Draw.empty()
-      ..name = await nextName()
+      ..number = number
+      ..name = defaultName(number)
       ..minSessionNumber = previousDraw.minSessionNumber
       ..maxSessionNumber = previousDraw.maxSessionNumber
       ..winnerCount = previousDraw.winnerCount

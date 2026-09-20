@@ -20,7 +20,8 @@ class Events extends _$Events {
     return _service.save(item, regenerateSessions: regenerateSessions);
   }
 
-  Future<void> delete(Event item) {
-    return _service.delete(item);
+  /// Ferme l'événement : lui et toutes ses données (L21).
+  Future<void> destroy(Event item) {
+    return _service.destroyEvent(item);
   }
 }

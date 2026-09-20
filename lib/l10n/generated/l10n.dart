@@ -1407,7 +1407,7 @@ abstract class S {
   /// No description provided for @help_eventList_4.
   ///
   /// In en, this message translates to:
-  /// **'Click an event to edit it: dates, card protection, deleting players.'**
+  /// **'Click an event to edit it: dates, card protection, deleting players, backup file. The arrow at the end of the line closes it — its backup file remains.'**
   String get help_eventList_4;
 
   /// No description provided for @help_eventList_5.
@@ -1961,6 +1961,60 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Open a backup file to bring an event back — after a dead computer, or from another one. Each event chooses its file in its editor.'**
   String get help_eventList_7;
+
+  /// No description provided for @event_close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close the event'**
+  String get event_close;
+
+  /// No description provided for @event_close_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Close \"{name}\"?'**
+  String event_close_title(Object name);
+
+  /// No description provided for @event_close_saved_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Its backup file remains: {path}. \"Open a backup file\" will bring it back.'**
+  String event_close_saved_text(Object path);
+
+  /// No description provided for @event_close_unsaved_title.
+  ///
+  /// In en, this message translates to:
+  /// **'This event is not backed up'**
+  String get event_close_unsaved_title;
+
+  /// No description provided for @event_close_unsaved_text.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{name}\" and all its data — players, badges, groups, draws — will be lost. Choose a backup file first, or close anyway.'**
+  String event_close_unsaved_text(Object name);
+
+  /// No description provided for @event_close_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get event_close_confirm;
+
+  /// No description provided for @event_close_anyway.
+  ///
+  /// In en, this message translates to:
+  /// **'Close anyway'**
+  String get event_close_anyway;
+
+  /// No description provided for @event_closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Event \"{name}\" closed'**
+  String event_closed(Object name);
+
+  /// No description provided for @event_closed_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Event \"{name}\" closed — its backup file: {path}'**
+  String event_closed_saved(Object name, Object path);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

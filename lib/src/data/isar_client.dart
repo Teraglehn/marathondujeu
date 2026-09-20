@@ -34,6 +34,7 @@ class IsarClient {
       );
       await migratePlayerNumbers(isar);
       await migratePlayerGroupKinds(isar);
+      await migrateDrawNumbers(isar);
       return isar;
     }
     return Future.value(Isar.getInstance());
@@ -61,6 +62,22 @@ class IsarClient {
       groups.add(d.winnersGroup.value!..kind = PlayerGroupKind.winners);
     }
     await isar.writeTxn(() => isar.playerGroups.putAll(groups));
+  }
+
+  /// Numérote les tirages créés avant le champ `Draw.number` (L21) : par événement, dans l'ordre
+  /// de création (`id`), à la suite des numéros déjà posés. Sans effet une fois faits.
+  static Future<void> migrateDrawNumbers(Isar isar) async {
+    final unnumbered = (await isar.draws.filter().numberLessThan(1).findAll())..sort((a, b) => a.id.compareTo(b.id));
+    if (unnumbered.isEmpty) return;
+    final next = <int, int>{};
+    for (final d in unnumbered) {
+      await d.event.load();
+      final eventId = d.event.value?.id ?? 0;
+      next[eventId] ??= (await isar.draws.filter().event((q) => q.idEqualTo(eventId)).numberProperty().max() ?? 0) + 1;
+      d.number = next[eventId]!;
+      next[eventId] = d.number + 1;
+    }
+    await isar.writeTxn(() => isar.draws.putAll(unnumbered));
   }
 
   /// Reprend la base des versions précédentes, qui vivait dans le dossier cache

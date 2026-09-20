@@ -1,3 +1,4 @@
+import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/src/data/data.dart';
 
 class EventService {
@@ -43,8 +44,26 @@ class EventService {
     }
   }
 
-  Future<void> delete(Event event) async {
-    await _eventRepository.delete(event.id);
+  /// Ferme un événement (L21) : le supprime avec tout ce qui s'y rattache — gagnants, tirages,
+  /// groupes, sessions, joueurs —, en une transaction. Son fichier de sauvegarde n'est pas touché.
+  Future<void> destroyEvent(Event event) async {
+    final isar = await _eventRepository.isarClient.db;
+    await isar.writeTxn(() => destroyEventIn(isar, event));
+  }
+
+  /// La cascade elle-même, dans une transaction déjà ouverte (l'ouverture d'un fichier de
+  /// sauvegarde remplace un événement dans la sienne).
+  static Future<void> destroyEventIn(Isar isar, Event event) async {
+    final draws = await isar.draws.filter().event((q) => q.idEqualTo(event.id)).findAll();
+    for (final d in draws) {
+      await d.winners.load();
+      await isar.drawWinners.deleteAll(d.winners.map((w) => w.id).toList());
+    }
+    await isar.draws.deleteAll(draws.map((d) => d.id).toList());
+    await isar.playerGroups.filter().event((q) => q.idEqualTo(event.id)).deleteAll();
+    await isar.sessions.filter().event((q) => q.idEqualTo(event.id)).deleteAll();
+    await isar.players.filter().event((q) => q.idEqualTo(event.id)).deleteAll();
+    await isar.events.delete(event.id);
   }
 
   Future<void> generateSessions(Event event) async {

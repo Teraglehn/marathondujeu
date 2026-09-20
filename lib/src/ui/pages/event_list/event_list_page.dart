@@ -9,6 +9,7 @@ import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
+import 'package:marathondujeu/src/ui/widgets/close_event_dialog.dart';
 import 'package:marathondujeu/src/ui/widgets/toast.dart';
 import 'package:marathondujeu/services_injector.dart';
 import 'package:marathondujeu/src/services/services.dart';
@@ -183,6 +184,12 @@ class _EventListPageState extends ConsumerState<EventListPage> {
                     ),
                     title: Text(event.name),
                     onTap: () => editor.editEvent(event),
+                    trailing: IconButton(
+                      onPressed: () => closeEvent(context, ref, event),
+                      icon: const Icon(Icons.logout),
+                      color: Theme.of(context).colorScheme.error,
+                      tooltip: S.of(context).event_close,
+                    ),
                   );
                 },
               ),

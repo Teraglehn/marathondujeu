@@ -881,7 +881,7 @@ class SEn extends S {
 
   @override
   String get help_eventList_4 =>
-      'Click an event to edit it: dates, card protection, deleting players.';
+      'Click an event to edit it: dates, card protection, deleting players, backup file. The arrow at the end of the line closes it — its backup file remains.';
 
   @override
   String get help_eventList_5 =>
@@ -1232,4 +1232,41 @@ class SEn extends S {
   @override
   String get help_eventList_7 =>
       'Open a backup file to bring an event back — after a dead computer, or from another one. Each event chooses its file in its editor.';
+
+  @override
+  String get event_close => 'Close the event';
+
+  @override
+  String event_close_title(Object name) {
+    return 'Close \"$name\"?';
+  }
+
+  @override
+  String event_close_saved_text(Object path) {
+    return 'Its backup file remains: $path. \"Open a backup file\" will bring it back.';
+  }
+
+  @override
+  String get event_close_unsaved_title => 'This event is not backed up';
+
+  @override
+  String event_close_unsaved_text(Object name) {
+    return '\"$name\" and all its data — players, badges, groups, draws — will be lost. Choose a backup file first, or close anyway.';
+  }
+
+  @override
+  String get event_close_confirm => 'Close';
+
+  @override
+  String get event_close_anyway => 'Close anyway';
+
+  @override
+  String event_closed(Object name) {
+    return 'Event \"$name\" closed';
+  }
+
+  @override
+  String event_closed_saved(Object name, Object path) {
+    return 'Event \"$name\" closed — its backup file: $path';
+  }
 }

@@ -886,7 +886,7 @@ class SFr extends S {
 
   @override
   String get help_eventList_4 =>
-      'Cliquez un événement pour le modifier : dates, protection des cartes, suppression des joueurs.';
+      'Cliquez un événement pour le modifier : dates, protection des cartes, suppression des joueurs, fichier de sauvegarde. La flèche au bout de la ligne le ferme — son fichier de sauvegarde reste.';
 
   @override
   String get help_eventList_5 =>
@@ -1242,4 +1242,41 @@ class SFr extends S {
   @override
   String get help_eventList_7 =>
       'Ouvrez un fichier de sauvegarde pour retrouver un événement — après un poste mort, ou venu d\'un autre poste. Chaque événement choisit son fichier dans son éditeur.';
+
+  @override
+  String get event_close => 'Fermer l\'événement';
+
+  @override
+  String event_close_title(Object name) {
+    return 'Fermer « $name » ?';
+  }
+
+  @override
+  String event_close_saved_text(Object path) {
+    return 'Son fichier de sauvegarde reste : $path. « Ouvrir un fichier de sauvegarde » le ramènera.';
+  }
+
+  @override
+  String get event_close_unsaved_title => 'Cet événement n\'est pas sauvegardé';
+
+  @override
+  String event_close_unsaved_text(Object name) {
+    return '« $name » et toutes ses données — joueurs, badgeages, groupes, tirages — seront perdus. Choisissez d\'abord un fichier de sauvegarde, ou fermez quand même.';
+  }
+
+  @override
+  String get event_close_confirm => 'Fermer';
+
+  @override
+  String get event_close_anyway => 'Fermer quand même';
+
+  @override
+  String event_closed(Object name) {
+    return 'Événement « $name » fermé';
+  }
+
+  @override
+  String event_closed_saved(Object name, Object path) {
+    return 'Événement « $name » fermé — son fichier de sauvegarde : $path';
+  }
 }

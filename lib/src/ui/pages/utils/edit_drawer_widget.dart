@@ -30,7 +30,6 @@ class EditDrawerWidget extends ConsumerWidget {
     if(state.event != null){
       return EventEditForm(
         key: state.formKey,
-        allowRemove: false,
         state.event!,
       );
     }

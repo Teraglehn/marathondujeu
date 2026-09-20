@@ -38,7 +38,13 @@ class DrawRepository extends RepositoryBase<Draw> {
     return makeStream((collection) => collection
       .filter()
       .event((q) => q.idEqualTo(eventId))
+      .sortByNumber()
       .build()
     );
+  }
+
+  Future<List<Draw>> getByEventId(int eventId) async {
+    final collection = await getCollection();
+    return collection.filter().event((q) => q.idEqualTo(eventId)).sortByNumber().findAll();
   }
 }

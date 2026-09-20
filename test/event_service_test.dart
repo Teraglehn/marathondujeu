@@ -57,6 +57,42 @@ void main() {
     return player.sessions.map((s) => s.id).toSet();
   }
 
+  group('destroyEvent', () {
+    test('ferme un événement : lui et tout ce qui s\'y rattache, rien d\'autre', () async {
+      // Un second événement, avec les mêmes sortes de données, qui doit rester intact.
+      final other = Event()..name = 'Autre';
+      final os = Session()..number = 1..startTime = DateTime(2026, 10, 4, 10)..endTime = DateTime(2026, 10, 4, 11)..event.value = other;
+      final op = Player()..name = '9'..qrcode = '9'..number = 9..event.value = other;
+      final og = PlayerGroup()..name = 'og'..event.value = other;
+      final od = Draw.empty()..name = 'od'..event.value = other;
+      final ow = DrawWinner()..position = 1..draw.value = od..winner.value = op;
+      final g = PlayerGroup()..name = 'g'..event.value = event;
+      final d = Draw.empty()..name = 'd'..event.value = event;
+      final w = DrawWinner()..position = 1..draw.value = d..winner.value = p1;
+      await isar.writeTxn(() async {
+        await isar.events.put(other);
+        await isar.sessions.put(os);
+        await isar.players.put(op);
+        await isar.playerGroups.putAll([og, g]);
+        await isar.draws.putAll([od, d]);
+        await isar.drawWinners.putAll([ow, w]);
+        for (final l in [os.event, op.event, og.event, od.event, ow.draw, ow.winner, g.event, d.event, w.draw, w.winner]) {
+          await l.save();
+        }
+      });
+
+      await service().destroyEvent(event);
+
+      expect(await isar.events.count(), 1);
+      expect((await isar.events.where().findFirst())!.name, 'Autre');
+      expect(await isar.players.count(), 1);
+      expect(await isar.sessions.count(), 1);
+      expect(await isar.playerGroups.count(), 1);
+      expect(await isar.draws.count(), 1);
+      expect(await isar.drawWinners.count(), 1);
+    });
+  });
+
   group('sessionStarts', () {
     final start = DateTime(2026, 10, 3, 14);
 
@@ -271,7 +307,7 @@ void main() {
   group('generateMissingPlayers', () {
     Future<List<int>> numbers() async => (await isar.players.filter().event((q) => q.idEqualTo(event.id)).sortByNumber().numberProperty().findAll());
 
-    test('complète de n+1 à N, avec le code de l\x27événement', () async {
+    test('complète de n+1 à N, avec le code de l\'événement', () async {
       p1.number = 1;
       await isar.writeTxn(() => isar.players.put(p1));
       event.qrSalt = 'abcd1234';

@@ -10,16 +10,16 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Tous les lots de la phase sont livrés (L15, L19, L18, L12, L12b, L09 et L20 le 2026-09-20).
-**Aucun lot ouvert** : clore la phase 2, ou y rattacher la suite.
+La phase 2 est close le 2026-09-20 (version 2.0). Aucun lot ouvert, aucune phase ouverte : la
+suite commence par une revue d'ouverture de phase 3, quand il y aura un besoin.
 
 ## Phases
 
 **Phase 1 — remise en état du dépôt** : close le 2026-09-19, figée dans
 `developpement/livraisons/phase-1/`.
 
-**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : aucun lot ouvert ; L04, L05, L06, L10, L11 et L13
-livrés le 2026-09-19, L14, L17, L16, L15, L19, L18, L12, L12b, L09 et L20 le 2026-09-20. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
+**Phase 2 — besoins de l'édition à venir** : ouverte le 2026-09-19, close le 2026-09-20, figée dans
+`developpement/livraisons/phase-2/` (17 lots ; version 2.0).
 
 ## Lots ouverts
 
@@ -41,7 +41,7 @@ Constats à reprendre dans le rapport concerné, puis à effacer d'ici. Aucune.
   sélecteur de couleur rétrogradé). Une migration de l'application est à prévoir, dans un lot
   dédié ; d'ici là, garder les paquets d'interface sur `flutter/material`.
 
-- **Tests** : 92 tests après L09, sur une vraie base Isar temporaire, dont le parcours e2e (`test/e2e/`) ; chaque lot ajoute les
+- **Tests** : 96 tests après L21, sur une vraie base Isar temporaire, dont le parcours e2e (`test/e2e/`) ; chaque lot ajoute les
   tests de son périmètre. **Acté 2026-09-19** : les gestes de `docs/gestes.md` sont appairés à
   un tutoriel et à des tests. **Acté 2026-09-20** : les tests unitaires couvrent la logique,
   un parcours e2e (test de widget sur l'application entière) couvre les gestes réels — c'est
