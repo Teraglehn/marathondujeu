@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +9,7 @@ import 'package:isar_community/isar.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/marathon_app.dart';
 import 'package:marathondujeu/services_injector.dart';
+import 'package:marathondujeu/src/services/services.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/datetime_form_field.dart';
 import 'package:marathondujeu/src/ui/widgets/toast.dart';
 
@@ -21,6 +24,9 @@ import '../isar_test_support.dart';
 class App {
   final WidgetTester tester;
   final Isar isar;
+
+  /// Les dialogues de fichier du système, remplacés par des chemins que le test pose (L09).
+  final FakeBackupFilePicker picker = FakeBackupFilePicker();
 
   /// Les textes de l'application, en français : ce que l'organisateur lit.
   final S s = lookupS(const Locale('fr'));
@@ -61,7 +67,10 @@ class App {
     addTearDown(() => FlutterError.onError = onError);
     final app = App._(tester, isar);
     await tester.pumpWidget(ProviderScope(
-      overrides: [isarClientProvider.overrideWithValue(TestIsarClient(isar))],
+      overrides: [
+        isarClientProvider.overrideWithValue(TestIsarClient(isar)),
+        backupFilePickerProvider.overrideWithValue(app.picker),
+      ],
       child: const EagerInitialization(child: MarathonApp()),
     ));
     await app.settle();
@@ -283,4 +292,21 @@ extension AppDebug on App {
     .map((e) => (e.widget as Text).data ?? (e.widget as Text).textSpan?.toPlainText() ?? '')
     .where((t) => t.isNotEmpty)
     .join(' | ');
+}
+
+/// Les dialogues « où écrire » et « quel fichier ouvrir », sans le système : le test pose les
+/// chemins. Comme le vrai, « où écrire » écrit la première version.
+class FakeBackupFilePicker extends BackupFilePicker {
+  String? savePath;
+  String? openPath;
+
+  @override
+  Future<String?> chooseSavePath(String suggestedName, Uint8List bytes) async {
+    final path = savePath;
+    if (path != null) await File(path).writeAsBytes(bytes);
+    return path;
+  }
+
+  @override
+  Future<String?> chooseOpenPath() async => openPath;
 }

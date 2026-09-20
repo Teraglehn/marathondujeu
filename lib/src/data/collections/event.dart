@@ -8,6 +8,15 @@ class Event {
   Id id = Isar.autoIncrement;
   String name ="";
 
+  /// Identifiant stable, qui voyage dans le fichier de sauvegarde (L09) : les `id` Isar sont
+  /// propres à chaque base. Posé à la création ; vide pour les événements d'avant, jusqu'à
+  /// leur première écriture.
+  String uid = "";
+
+  /// Le chemin du fichier de sauvegarde sur ce poste (L09) ; null : pas de fichier. Ne voyage
+  /// pas dans le fichier.
+  String? backupPath;
+
   DateTime startDateTime = DateTime.now();
   DateTime endDateTime = DateTime.now().add(const Duration(days: 1));
 

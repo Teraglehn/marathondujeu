@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -928,6 +930,79 @@ void main() {
       await app.tap(find.byTooltip(s.help_button), what: 'le « i » de la page');
       await app.tapText(s.help_skip);
       await app.waitGone(find.text(s.help_session_1), what: 'le pas à pas (Passer)');
+    });
+
+    await app.run('11 — Fichier de sauvegarde', () async {
+      final dir = await tester.runAsync(() => Directory.systemTemp.createTemp('marathondujeu_e2e_'));
+      addTearDown(() => dir!.delete(recursive: true));
+      final path = '${dir!.path}${Platform.pathSeparator}A.marathon.json';
+      final file = File(path);
+      Future<Map<String, dynamic>> content() async => jsonDecode((await tester.runAsync(file.readAsString))!) as Map<String, dynamic>;
+
+      app.g('EV-12');
+      await openEventA();
+      await app.see(s.backup_none);
+      app.picker.savePath = path;
+      await app.tapText(s.backup_choose);
+      await app.see(path);
+      await app.waitFor(find.textContaining(s.backup_lastWritten('').trim()), what: 'l\'heure de la sauvegarde');
+      expect(await tester.runAsync(file.exists), isTrue, reason: 'Choisir… écrit la première version');
+      await app.tapText(s.backup_remove);
+      await app.see(s.backup_none);
+      await app.tapText(s.backup_choose);
+      await app.see(path);
+      await app.settle();
+      await app.tapText(s.utils_button_cancel);
+      await app.waitGone(inDrawer);
+      final event = await eventA();
+      expect(event.backupPath, path);
+      expect(event.uid, isNotEmpty);
+
+      // Un badgeage → le fichier suit, après le délai de regroupement.
+      app.g('SE-2');
+      await app.goTo(s.page_sessionList_menuItem);
+      await app.scan(event.qrCodeFor(4));
+      await app.seeScan(s.scan_badged(4, 3));
+      await app.wait(const Duration(seconds: 3));
+      List<dynamic> presentInFile(Map<String, dynamic> json) => (json['sessions'] as List).firstWhere((x) => x['number'] == 3)['players'];
+      await app.until(() async => presentInFile(jsonDecode(await file.readAsString())).contains(4), what: 'le fichier porte le badgeage');
+      final saved = await content();
+      expect(presentInFile(saved), [4]);
+      expect((saved['players'] as List).length, 20);
+
+      // Poste mort : base vide, on ouvre le fichier.
+      app.g('EV-13');
+      await tester.runAsync(() => isar.writeTxn(() => isar.clear()));
+      await app.goTo(s.page_eventList_menuItem);
+      await app.see(s.page_eventList_empty_text);
+      app.picker.openPath = path;
+      await app.tapText(s.backup_open);
+      await app.see(s.backup_opened('Marathon A'));
+      await app.closeToast();
+      await app.see('Marathon A');
+      final restored = await eventA();
+      expect(restored.uid, event.uid);
+      expect(restored.backupPath, isNull, reason: 'le chemin ne voyage pas');
+      expect(await tester.runAsync(() => isar.players.count()), 20);
+      expect(await present(3), {4});
+
+      // Le même fichier une seconde fois : déjà là, remplacé, toujours un seul événement.
+      await app.tapText(s.backup_open);
+      await app.see(s.backup_exists_title);
+      await app.tapText(s.backup_replace);
+      await app.see(s.backup_replaced('Marathon A'));
+      await app.closeToast();
+      expect(await tester.runAsync(() => isar.events.count()), 1);
+      expect(await tester.runAsync(() => isar.players.count()), 20);
+
+      // Un fichier illisible : un toast, rien d'écrit.
+      final bad = '${dir.path}${Platform.pathSeparator}bad.json';
+      await tester.runAsync(() => File(bad).writeAsString('pas du json'));
+      app.picker.openPath = bad;
+      await app.tapText(s.backup_open);
+      await app.see(s.backup_unreadable);
+      await app.closeToast();
+      expect(await tester.runAsync(() => isar.events.count()), 1);
     });
 
     await app.finish();

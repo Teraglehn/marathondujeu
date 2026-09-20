@@ -534,3 +534,90 @@ final class EventServiceProvider
 }
 
 String _$eventServiceHash() => r'af6b8154c39473601ad11b2f1d6fa8393097ee72';
+
+@ProviderFor(backupFilePicker)
+final backupFilePickerProvider = BackupFilePickerProvider._();
+
+final class BackupFilePickerProvider
+    extends
+        $FunctionalProvider<
+          BackupFilePicker,
+          BackupFilePicker,
+          BackupFilePicker
+        >
+    with $Provider<BackupFilePicker> {
+  BackupFilePickerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'backupFilePickerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$backupFilePickerHash();
+
+  @$internal
+  @override
+  $ProviderElement<BackupFilePicker> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  BackupFilePicker create(Ref ref) {
+    return backupFilePicker(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BackupFilePicker value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BackupFilePicker>(value),
+    );
+  }
+}
+
+String _$backupFilePickerHash() => r'dcd742baf82164e49fec77c2a3ded7d9d902745e';
+
+@ProviderFor(backupService)
+final backupServiceProvider = BackupServiceProvider._();
+
+final class BackupServiceProvider
+    extends $FunctionalProvider<BackupService, BackupService, BackupService>
+    with $Provider<BackupService> {
+  BackupServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'backupServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$backupServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<BackupService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  BackupService create(Ref ref) {
+    return backupService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BackupService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BackupService>(value),
+    );
+  }
+}
+
+String _$backupServiceHash() => r'b5bc2f062275e561aebd4c46870fdfe5eafcd775';

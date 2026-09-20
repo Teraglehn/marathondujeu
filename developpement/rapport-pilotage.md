@@ -10,9 +10,8 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Tous les lots de la phase sont livrés (L15, L19, L18, L12 et L12b le 2026-09-20). **Aucun lot
-ouvert dans la phase** : la clore, ou y rattacher la suite. L09 (sauvegarde) hors phase, rapport
-sur demande.
+Tous les lots de la phase sont livrés (L15, L19, L18, L12, L12b et L09 le 2026-09-20). **Aucun lot
+ouvert** : clore la phase 2, ou y rattacher la suite.
 
 ## Phases
 
@@ -20,9 +19,7 @@ sur demande.
 `developpement/livraisons/phase-1/`.
 
 **Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : aucun lot ouvert ; L04, L05, L06, L10, L11 et L13
-livrés le 2026-09-19, L14, L17, L16, L15, L19, L18, L12 et L12b le 2026-09-20. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
-
-L09 n'est rattaché à aucune phase : son rapport naîtra dans `lots/`.
+livrés le 2026-09-19, L14, L17, L16, L15, L19, L18, L12, L12b et L09 le 2026-09-20. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
 
 ## Lots ouverts
 
@@ -31,27 +28,10 @@ Les numéros ne sont **jamais réattribués**.
 
 | # | Lot | Phase | Statut | Rapport |
 |---|---|---|---|---|
-| L09 | Fichier de sauvegarde par événement : export automatique, import dans la liste | — | à faire | à rédiger |
 
 ### Notes pour la rédaction des rapports
 
-Constats à reprendre dans le rapport concerné, puis à effacer d'ici.
-
-**L09** — fichier de sauvegarde par événement (Bastien, 2026-09-19) :
-- **un fichier par événement**, à un emplacement **choisi par l'utilisateur** pour chaque
-  événement ;
-- **mis à jour automatiquement** : toute modification en base le réécrit, avec un *debounce*
-  (regrouper les écritures rapprochées) ;
-- il **contient tout l'événement** : ses données et tout ce qui s'y rattache (joueurs, sessions,
-  badgeages, groupes, tirages, gagnants) **et l'image de fond des cartes** ;
-- il doit pouvoir être **ouvert** : depuis un fichier, **ajouter l'événement à la liste** de la
-  base courante (import) — restauration ou transfert vers un autre poste.
-À trancher au rapport : format (JSON + image encodée, ou archive), comportement si l'événement
-existe déjà en base (remplacer / dupliquer / refuser), déclencheur du debounce (délai), et où
-mémoriser l'emplacement choisi (champ sur `Event` → schéma, partie I, § 12).
-Dans le code : `Debouncer` existe (`debouncer.service.dart`) ; les dépôts passent tous par
-`RepositoryBase.save/delete` — point d'accroche naturel pour « toute modification » ; `Event`
-porte déjà `playerCardBackgroundImage` (`List<byte>`).
+Constats à reprendre dans le rapport concerné, puis à effacer d'ici. Aucune.
 
 ## Questions transversales en attente
 
@@ -61,8 +41,8 @@ porte déjà `playerCardBackgroundImage` (`List<byte>`).
   sélecteur de couleur rétrogradé). Une migration de l'application est à prévoir, dans un lot
   dédié ; d'ici là, garder les paquets d'interface sur `flutter/material`.
 
-- **Tests** : 85 tests après L12b, sur une vraie base Isar temporaire, dont le parcours e2e (`test/e2e/`) ; chaque lot ajoute les
+- **Tests** : 92 tests après L09, sur une vraie base Isar temporaire, dont le parcours e2e (`test/e2e/`) ; chaque lot ajoute les
   tests de son périmètre. **Acté 2026-09-19** : les gestes de `docs/gestes.md` sont appairés à
   un tutoriel et à des tests. **Acté 2026-09-20** : les tests unitaires couvrent la logique,
   un parcours e2e (test de widget sur l'application entière) couvre les gestes réels — c'est
-  L18, livré : les 74 gestes ont leur test (`docs/gestes.md`, colonne *Test*).
+  L18, livré : les 76 gestes ont leur test (`docs/gestes.md`, colonne *Test*).

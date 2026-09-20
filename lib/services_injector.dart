@@ -1,6 +1,9 @@
 import 'package:marathondujeu/src/data/isar_client.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/services/services.dart';
+import 'package:marathondujeu/l10n/generated/l10n.dart';
+import 'package:marathondujeu/src/ui/widgets/toast.dart';
+import 'dart:ui' show AppExitResponse;
 import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,8 +30,25 @@ final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 @riverpod DrawService drawService(Ref ref) => DrawService(ref.watch(_drawRepositoryProvider), ref.watch(_drawWinnerRepositoryProvider), ref.watch(_playerGroupRepositoryProvider));
 @riverpod EventService eventService(Ref ref) => EventService(ref.watch(_sessionRepositoryProvider), ref.watch(_eventRepositoryProvider), ref.watch(_playerRepositoryProvider), ref.watch(_drawWinnerRepositoryProvider));
 
+// Le fichier de sauvegarde (L09) : un seul service, vivant tant que l'application tourne ; il
+// surveille la base dès que `EagerInitialization` le crée, et signale ses échecs en toast.
+@riverpod BackupFilePicker backupFilePicker(Ref ref) => const BackupFilePicker();
 
-class EagerInitialization extends ConsumerWidget {
+@Riverpod(keepAlive: true) BackupService backupService(Ref ref) {
+  final service = BackupService(ref.watch(isarClientProvider));
+  void toast(String Function(S s) text) {
+    final context = rootNavigatorKey.currentContext;
+    if (context != null && context.mounted) Toast.show(context, text(S.of(context)), error: true);
+  }
+  service.onError = (error) => toast((s) => s.backup_writeError(error.event.name));
+  service.onPathLost = (event) => toast((s) => s.backup_pathLost(event.name));
+  service.start();
+  ref.onDispose(service.dispose);
+  return service;
+}
+
+
+class EagerInitialization extends ConsumerStatefulWidget {
   const EagerInitialization({
     super.key, 
     required this.child,
@@ -37,8 +57,33 @@ class EagerInitialization extends ConsumerWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<EagerInitialization> createState() => _EagerInitializationState();
+}
+
+class _EagerInitializationState extends ConsumerState<EagerInitialization> {
+  // Fermer l'application attend l'écriture des fichiers de sauvegarde en attente (L09, C4).
+  late final AppLifecycleListener _lifecycle;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycle = AppLifecycleListener(onExitRequested: () async {
+      final backup = ref.read(backupServiceProvider);
+      if (backup.pending) await backup.flush();
+      return AppExitResponse.exit;
+    });
+  }
+
+  @override
+  void dispose() {
+    _lifecycle.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ref.watch(isarClientProvider);
-    return child;
+    ref.watch(backupServiceProvider);
+    return widget.child;
   }
 }

@@ -1122,7 +1122,7 @@ class SFr extends S {
 
   @override
   String get help_guide_step_1_text =>
-      'Nom, début, fin, durée et intervalle des sessions : les sessions se génèrent d\'elles-mêmes. Choisissez ensuite cet événement en haut à droite des autres pages.';
+      'Nom, début, fin, durée et intervalle des sessions : l\'aperçu montre les sessions qui seront créées, elles se génèrent d\'elles-mêmes. Choisissez-lui un fichier de sauvegarde : l\'application le réécrit à chaque modification, et « Ouvrir un fichier de sauvegarde » retrouve l\'événement entier sur un autre poste. Choisissez ensuite cet événement en haut à droite des autres pages.';
 
   @override
   String get help_guide_step_2_title => 'Générez les joueurs';
@@ -1169,4 +1169,77 @@ class SFr extends S {
 
   @override
   String get help_guide_sample_group => 'Les habitués';
+
+  @override
+  String get backup_title => 'Fichier de sauvegarde';
+
+  @override
+  String get backup_help =>
+      'L\'application réécrit ce fichier toute seule à chaque modification : joueurs, badgeages, groupes, tirages, image des cartes. Gardez-le dans un dossier synchronisé ou sur une clé : il permet de retrouver l\'événement sur un autre poste.';
+
+  @override
+  String get backup_none =>
+      'Aucun fichier : cet événement n\'est pas sauvegardé.';
+
+  @override
+  String get backup_choose => 'Choisir…';
+
+  @override
+  String get backup_remove => 'Retirer';
+
+  @override
+  String backup_lastWritten(Object time) {
+    return 'Dernière sauvegarde à $time';
+  }
+
+  @override
+  String get backup_notYetWritten =>
+      'Pas encore écrit — à la prochaine modification, ou à l\'enregistrement.';
+
+  @override
+  String backup_suggestedName(Object name) {
+    return '$name.marathon.json';
+  }
+
+  @override
+  String backup_writeError(Object name) {
+    return 'Sauvegarde impossible pour « $name » : vérifiez le dossier du fichier.';
+  }
+
+  @override
+  String backup_pathLost(Object name) {
+    return 'Le dossier du fichier de sauvegarde de « $name » n\'existe plus : choisissez-en un nouveau dans l\'événement.';
+  }
+
+  @override
+  String get backup_open => 'Ouvrir un fichier de sauvegarde';
+
+  @override
+  String backup_opened(Object name) {
+    return 'Événement « $name » ajouté';
+  }
+
+  @override
+  String backup_replaced(Object name) {
+    return 'Événement « $name » remplacé';
+  }
+
+  @override
+  String get backup_unreadable =>
+      'Ce fichier n\'est pas un fichier de sauvegarde lisible.';
+
+  @override
+  String get backup_exists_title => 'Cet événement est déjà là';
+
+  @override
+  String backup_exists_text(Object name) {
+    return '« $name » est déjà dans la liste. Le remplacer par le contenu du fichier ? Ce qui a été fait depuis dans l\'application sera perdu.';
+  }
+
+  @override
+  String get backup_replace => 'Remplacer';
+
+  @override
+  String get help_eventList_7 =>
+      'Ouvrez un fichier de sauvegarde pour retrouver un événement — après un poste mort, ou venu d\'un autre poste. Chaque événement choisit son fichier dans son éditeur.';
 }

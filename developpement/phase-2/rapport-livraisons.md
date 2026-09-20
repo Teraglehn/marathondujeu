@@ -214,3 +214,25 @@ exigeant une image. `docs/gestes.md` : TR-1 à sept entrées, TR-7 avec l'étape
 vide : le guide s'ouvre, seul *Ouvrir la page Événements* répond) ; 74 gestes, 85 tests. *Écarts
 assumés* : les composants extraits prennent des valeurs simples (`IsarLinks` refuse un objet non
 enregistré) ; pas de « i » sur le guide.
+
+## 2026-09-20 — L09
+
+**L09 — Fichier de sauvegarde par événement.** Chaque événement peut avoir un fichier
+(`Event.backupPath`, champ ajouté), choisi dans son éditeur (*Choisir…* écrit la première
+version, *Retirer*) ; l'application le réécrit toute seule à chaque modification en base — les six
+collections sont écoutées (`watchLazy`) —, 2 s après la dernière, 30 s au plus après la première,
+en écriture atomique ; la fermeture attend l'écriture. Le fichier est un JSON versionné
+(`BackupFormat`, `"format": 1`) qui porte tout l'événement — réglages, image de fond en base64,
+joueurs, sessions et badgeages, groupes, tirages et gagnants — sans aucun `id` Isar : joueurs et
+sessions par numéro, groupes par rang. *Ouvrir un fichier de sauvegarde* (liste des événements)
+ajoute l'événement, ou, s'il porte le même `uid` (`Event.uid`, champ ajouté, posé à la première
+écriture), propose de le **remplacer** en une transaction ; illisible → toast, rien d'écrit. Le
+chemin est propre au poste et ne voyage pas ; un dossier disparu au lancement le retire, avec un
+toast. Tests : format (refus, contenu), aller-retour vers une base vide champ par champ,
+remplacement, regroupement des écritures, `flush`, dossier disparu ; étape 11 du parcours ; 92
+tests. `docs/gestes.md` : EV-12, EV-13, TR-7 ; aide de la page des événements (7ᵉ pas) ; guide :
+le temps *Créez l'événement* parle de l'aperçu des sessions et du fichier (Bastien, 2026-09-20).
+*Écarts assumés* : C5 (écoute d'Isar plutôt qu'un appel des dépôts) ; `file_picker` 13 écrit
+lui-même le fichier au choix du chemin (C9) ; le chemin s'enregistre sans *Enregistrer* (C10) ;
+les dialogues du système en recette ; « Dernière sauvegarde à » ne se rafraîchit pas éditeur
+ouvert ; chaque écriture réécrit tous les événements qui ont un fichier.

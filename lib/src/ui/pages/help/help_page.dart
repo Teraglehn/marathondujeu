@@ -53,7 +53,11 @@ class HelpPage extends ConsumerWidget {
                   _whereRow(context, const Icon(Icons.info_outline), s.help_guide_where_tour),
                   const SizedBox(height: 16),
                   _step(context, 1, s.help_guide_step_1_title, s.help_guide_step_1_text, Routes.eventList, s.page_eventList_menuItem, false,
-                    _sampleTile(context, s.help_guide_sample_event)),
+                    Column(mainAxisSize: MainAxisSize.min, children: [
+                      _sampleTile(context, s.help_guide_sample_event),
+                      const SizedBox(height: 8),
+                      _sampleBackup(context, s.backup_suggestedName(s.help_guide_sample_event), s.backup_lastWritten('14:32:05')),
+                    ])),
                   _step(context, 2, s.help_guide_step_2_title, s.help_guide_step_2_text, Routes.playerList, s.page_playerList_menuItem, noEvent,
                     const PlayerListCard(number: 12, name: '12', sessions: 2, bonus: 1, tokens: 3)),
                   _step(context, 3, s.help_guide_step_3_title, s.help_guide_step_3_text, Routes.cardGenerator, s.page_cardGenerator_menuItem, noEvent,
@@ -151,6 +155,27 @@ class HelpPage extends ConsumerWidget {
         title: Text(name),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
       ),
+    );
+  }
+
+  // Le fichier de sauvegarde tel que l'éditeur le montre : son nom, l'heure de la dernière écriture.
+  Widget _sampleBackup(BuildContext context, String name, String written) {
+    final theme = Theme.of(context);
+    return Container(
+      width: 280,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: Row(children: [
+        const Icon(Icons.save_outlined),
+        const SizedBox(width: 12),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(name, style: theme.textTheme.bodyMedium, overflow: TextOverflow.ellipsis),
+          Text(written, style: theme.textTheme.bodySmall),
+        ])),
+      ]),
     );
   }
 

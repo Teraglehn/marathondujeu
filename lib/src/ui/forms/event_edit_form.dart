@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/src/data/data.dart';
@@ -220,6 +222,68 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
     );
   }
 
+  // Choisit le fichier de sauvegarde (L09) : le dialogue écrit la première version, le chemin
+  // est gardé sur l'événement — écrit tout de suite s'il existe en base, avec le reste sinon.
+  Future<void> chooseBackupFile() async {
+    final s = S.of(context);
+    final event = widget.event;
+    final snapshot = event.exist
+      ? await BackupService.snapshot(await ref.read(isarClientProvider).db, event)
+      : EventBackup(event: event, players: const [], sessions: const [], groups: const [], draws: const [], winners: const []);
+    final bytes = Uint8List.fromList(utf8.encode(BackupFormat.encode(snapshot)));
+    final name = _nameKey.currentState?.value?.trim();
+    final path = await ref.read(backupFilePickerProvider).chooseSavePath(s.backup_suggestedName(name == null || name.isEmpty ? s.data_event_objName(1) : name), bytes);
+    if (path == null || !mounted) return;
+    await setBackupPath(path);
+  }
+
+  Future<void> setBackupPath(String? path) async {
+    setState(() => widget.event.backupPath = path);
+    if (widget.event.exist) {
+      await ref.read(eventServiceProvider).save(widget.event);
+      if (path != null) await ref.read(backupServiceProvider).flush();
+      if (mounted) setState(() {});
+    }
+  }
+
+  /// Le bloc « Fichier de sauvegarde » (L09) : le chemin ou « Aucun », *Choisir…*, *Retirer*,
+  /// l'heure de la dernière écriture.
+  Widget backupBlock(BuildContext context) {
+    final s = S.of(context);
+    final theme = Theme.of(context);
+    final path = widget.event.backupPath;
+    final writtenAt = ref.watch(backupServiceProvider).lastWrittenAt[widget.event.id];
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            const Icon(Icons.save_outlined, size: 20),
+            const SizedBox(width: 8),
+            Text(s.backup_title, style: theme.textTheme.titleMedium),
+          ]),
+          const SizedBox(height: 4),
+          Text(s.backup_help, style: theme.textTheme.bodySmall),
+          const SizedBox(height: 8),
+          Text(path ?? s.backup_none, style: theme.textTheme.bodyMedium?.copyWith(fontStyle: path == null ? FontStyle.italic : null)),
+          if (path != null) Text(
+            writtenAt != null ? s.backup_lastWritten(DateFormat.Hms(s.localeName).format(writtenAt)) : s.backup_notYetWritten,
+            style: theme.textTheme.bodySmall,
+          ),
+          const SizedBox(height: 8),
+          Row(children: [
+            OutlinedButton.icon(onPressed: chooseBackupFile, icon: const Icon(Icons.folder_open), label: Text(s.backup_choose)),
+            if (path != null) ...[
+              const SizedBox(width: 8),
+              TextButton(onPressed: () => setBackupPath(null), child: Text(s.backup_remove)),
+            ],
+          ]),
+        ],
+      ),
+    );
+  }
+
   /// Le bloc « Protéger les cartes » : interrupteur, explication, récupération ; verrouillé dès
   /// que des joueurs existent.
   Widget protectionBlock(BuildContext context, int playerCount) {
@@ -382,6 +446,7 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
                   ),
                   sessionsPreview(context),
                   protectionBlock(context, playerCount),
+                  backupBlock(context),
                 ],
               ),
             ),

@@ -6,3 +6,6 @@ export 'data/draw_service.dart';
 export 'player_card.service.dart';
 export 'card_layout.dart';
 export 'image_service.dart';
+export 'backup/backup_format.dart';
+export 'backup/backup_service.dart';
+export 'backup/backup_file_picker.dart';

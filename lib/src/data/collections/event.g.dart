@@ -17,121 +17,127 @@ const EventSchema = CollectionSchema(
   name: r'Event',
   id: 2102939193127251002,
   properties: {
-    r'endDateTime': PropertySchema(
+    r'backupPath': PropertySchema(
       id: 0,
+      name: r'backupPath',
+      type: IsarType.string,
+    ),
+    r'endDateTime': PropertySchema(
+      id: 1,
       name: r'endDateTime',
       type: IsarType.dateTime,
     ),
     r'idBackgroundColor': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'idBackgroundColor',
       type: IsarType.long,
     ),
-    r'idColor': PropertySchema(id: 2, name: r'idColor', type: IsarType.long),
+    r'idColor': PropertySchema(id: 3, name: r'idColor', type: IsarType.long),
     r'idFontSize': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'idFontSize',
       type: IsarType.long,
     ),
     r'idPadding': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'idPadding',
       type: IsarType.double,
     ),
-    r'idPosX': PropertySchema(id: 5, name: r'idPosX', type: IsarType.double),
-    r'idPosY': PropertySchema(id: 6, name: r'idPosY', type: IsarType.double),
-    r'name': PropertySchema(id: 7, name: r'name', type: IsarType.string),
+    r'idPosX': PropertySchema(id: 6, name: r'idPosX', type: IsarType.double),
+    r'idPosY': PropertySchema(id: 7, name: r'idPosY', type: IsarType.double),
+    r'name': PropertySchema(id: 8, name: r'name', type: IsarType.string),
     r'pageBackgroundColor': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'pageBackgroundColor',
       type: IsarType.long,
     ),
     r'pageMargin': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'pageMargin',
       type: IsarType.double,
     ),
     r'playerCardBackgroundImage': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'playerCardBackgroundImage',
       type: IsarType.byteList,
     ),
     r'playerCardGapX': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'playerCardGapX',
       type: IsarType.double,
     ),
     r'playerCardGapY': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'playerCardGapY',
       type: IsarType.double,
     ),
     r'playerCardHeight': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'playerCardHeight',
       type: IsarType.long,
     ),
     r'playerCardLandscape': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'playerCardLandscape',
       type: IsarType.bool,
     ),
     r'playerCardRowsPerPage': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'playerCardRowsPerPage',
       type: IsarType.long,
     ),
     r'playerCardWidth': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'playerCardWidth',
       type: IsarType.double,
     ),
     r'playerCardsPerRow': PropertySchema(
-      id: 17,
+      id: 18,
       name: r'playerCardsPerRow',
       type: IsarType.long,
     ),
     r'qrCodeBackgroundColor': PropertySchema(
-      id: 18,
+      id: 19,
       name: r'qrCodeBackgroundColor',
       type: IsarType.long,
     ),
     r'qrCodePadding': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'qrCodePadding',
       type: IsarType.double,
     ),
     r'qrCodePosX': PropertySchema(
-      id: 20,
+      id: 21,
       name: r'qrCodePosX',
       type: IsarType.double,
     ),
     r'qrCodePosY': PropertySchema(
-      id: 21,
+      id: 22,
       name: r'qrCodePosY',
       type: IsarType.double,
     ),
     r'qrCodeSize': PropertySchema(
-      id: 22,
+      id: 23,
       name: r'qrCodeSize',
       type: IsarType.double,
     ),
-    r'qrSalt': PropertySchema(id: 23, name: r'qrSalt', type: IsarType.string),
+    r'qrSalt': PropertySchema(id: 24, name: r'qrSalt', type: IsarType.string),
     r'sessionIntervalMinutes': PropertySchema(
-      id: 24,
+      id: 25,
       name: r'sessionIntervalMinutes',
       type: IsarType.long,
     ),
     r'sessionTimeMinutes': PropertySchema(
-      id: 25,
+      id: 26,
       name: r'sessionTimeMinutes',
       type: IsarType.long,
     ),
     r'startDateTime': PropertySchema(
-      id: 26,
+      id: 27,
       name: r'startDateTime',
       type: IsarType.dateTime,
     ),
+    r'uid': PropertySchema(id: 28, name: r'uid', type: IsarType.string),
   },
 
   estimateSize: _eventEstimateSize,
@@ -170,6 +176,12 @@ int _eventEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.backupPath;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.name.length * 3;
   {
     final value = object.playerCardBackgroundImage;
@@ -178,6 +190,7 @@ int _eventEstimateSize(
     }
   }
   bytesCount += 3 + object.qrSalt.length * 3;
+  bytesCount += 3 + object.uid.length * 3;
   return bytesCount;
 }
 
@@ -187,33 +200,35 @@ void _eventSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.endDateTime);
-  writer.writeLong(offsets[1], object.idBackgroundColor);
-  writer.writeLong(offsets[2], object.idColor);
-  writer.writeLong(offsets[3], object.idFontSize);
-  writer.writeDouble(offsets[4], object.idPadding);
-  writer.writeDouble(offsets[5], object.idPosX);
-  writer.writeDouble(offsets[6], object.idPosY);
-  writer.writeString(offsets[7], object.name);
-  writer.writeLong(offsets[8], object.pageBackgroundColor);
-  writer.writeDouble(offsets[9], object.pageMargin);
-  writer.writeByteList(offsets[10], object.playerCardBackgroundImage);
-  writer.writeDouble(offsets[11], object.playerCardGapX);
-  writer.writeDouble(offsets[12], object.playerCardGapY);
-  writer.writeLong(offsets[13], object.playerCardHeight);
-  writer.writeBool(offsets[14], object.playerCardLandscape);
-  writer.writeLong(offsets[15], object.playerCardRowsPerPage);
-  writer.writeDouble(offsets[16], object.playerCardWidth);
-  writer.writeLong(offsets[17], object.playerCardsPerRow);
-  writer.writeLong(offsets[18], object.qrCodeBackgroundColor);
-  writer.writeDouble(offsets[19], object.qrCodePadding);
-  writer.writeDouble(offsets[20], object.qrCodePosX);
-  writer.writeDouble(offsets[21], object.qrCodePosY);
-  writer.writeDouble(offsets[22], object.qrCodeSize);
-  writer.writeString(offsets[23], object.qrSalt);
-  writer.writeLong(offsets[24], object.sessionIntervalMinutes);
-  writer.writeLong(offsets[25], object.sessionTimeMinutes);
-  writer.writeDateTime(offsets[26], object.startDateTime);
+  writer.writeString(offsets[0], object.backupPath);
+  writer.writeDateTime(offsets[1], object.endDateTime);
+  writer.writeLong(offsets[2], object.idBackgroundColor);
+  writer.writeLong(offsets[3], object.idColor);
+  writer.writeLong(offsets[4], object.idFontSize);
+  writer.writeDouble(offsets[5], object.idPadding);
+  writer.writeDouble(offsets[6], object.idPosX);
+  writer.writeDouble(offsets[7], object.idPosY);
+  writer.writeString(offsets[8], object.name);
+  writer.writeLong(offsets[9], object.pageBackgroundColor);
+  writer.writeDouble(offsets[10], object.pageMargin);
+  writer.writeByteList(offsets[11], object.playerCardBackgroundImage);
+  writer.writeDouble(offsets[12], object.playerCardGapX);
+  writer.writeDouble(offsets[13], object.playerCardGapY);
+  writer.writeLong(offsets[14], object.playerCardHeight);
+  writer.writeBool(offsets[15], object.playerCardLandscape);
+  writer.writeLong(offsets[16], object.playerCardRowsPerPage);
+  writer.writeDouble(offsets[17], object.playerCardWidth);
+  writer.writeLong(offsets[18], object.playerCardsPerRow);
+  writer.writeLong(offsets[19], object.qrCodeBackgroundColor);
+  writer.writeDouble(offsets[20], object.qrCodePadding);
+  writer.writeDouble(offsets[21], object.qrCodePosX);
+  writer.writeDouble(offsets[22], object.qrCodePosY);
+  writer.writeDouble(offsets[23], object.qrCodeSize);
+  writer.writeString(offsets[24], object.qrSalt);
+  writer.writeLong(offsets[25], object.sessionIntervalMinutes);
+  writer.writeLong(offsets[26], object.sessionTimeMinutes);
+  writer.writeDateTime(offsets[27], object.startDateTime);
+  writer.writeString(offsets[28], object.uid);
 }
 
 Event _eventDeserialize(
@@ -223,34 +238,36 @@ Event _eventDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Event();
-  object.endDateTime = reader.readDateTime(offsets[0]);
+  object.backupPath = reader.readStringOrNull(offsets[0]);
+  object.endDateTime = reader.readDateTime(offsets[1]);
   object.id = id;
-  object.idBackgroundColor = reader.readLongOrNull(offsets[1]);
-  object.idColor = reader.readLong(offsets[2]);
-  object.idFontSize = reader.readLong(offsets[3]);
-  object.idPadding = reader.readDouble(offsets[4]);
-  object.idPosX = reader.readDouble(offsets[5]);
-  object.idPosY = reader.readDouble(offsets[6]);
-  object.name = reader.readString(offsets[7]);
-  object.pageBackgroundColor = reader.readLong(offsets[8]);
-  object.pageMargin = reader.readDouble(offsets[9]);
-  object.playerCardBackgroundImage = reader.readByteList(offsets[10]);
-  object.playerCardGapX = reader.readDouble(offsets[11]);
-  object.playerCardGapY = reader.readDouble(offsets[12]);
-  object.playerCardHeight = reader.readLong(offsets[13]);
-  object.playerCardLandscape = reader.readBool(offsets[14]);
-  object.playerCardRowsPerPage = reader.readLong(offsets[15]);
-  object.playerCardWidth = reader.readDouble(offsets[16]);
-  object.playerCardsPerRow = reader.readLong(offsets[17]);
-  object.qrCodeBackgroundColor = reader.readLongOrNull(offsets[18]);
-  object.qrCodePadding = reader.readDouble(offsets[19]);
-  object.qrCodePosX = reader.readDouble(offsets[20]);
-  object.qrCodePosY = reader.readDouble(offsets[21]);
-  object.qrCodeSize = reader.readDouble(offsets[22]);
-  object.qrSalt = reader.readString(offsets[23]);
-  object.sessionIntervalMinutes = reader.readLong(offsets[24]);
-  object.sessionTimeMinutes = reader.readLong(offsets[25]);
-  object.startDateTime = reader.readDateTime(offsets[26]);
+  object.idBackgroundColor = reader.readLongOrNull(offsets[2]);
+  object.idColor = reader.readLong(offsets[3]);
+  object.idFontSize = reader.readLong(offsets[4]);
+  object.idPadding = reader.readDouble(offsets[5]);
+  object.idPosX = reader.readDouble(offsets[6]);
+  object.idPosY = reader.readDouble(offsets[7]);
+  object.name = reader.readString(offsets[8]);
+  object.pageBackgroundColor = reader.readLong(offsets[9]);
+  object.pageMargin = reader.readDouble(offsets[10]);
+  object.playerCardBackgroundImage = reader.readByteList(offsets[11]);
+  object.playerCardGapX = reader.readDouble(offsets[12]);
+  object.playerCardGapY = reader.readDouble(offsets[13]);
+  object.playerCardHeight = reader.readLong(offsets[14]);
+  object.playerCardLandscape = reader.readBool(offsets[15]);
+  object.playerCardRowsPerPage = reader.readLong(offsets[16]);
+  object.playerCardWidth = reader.readDouble(offsets[17]);
+  object.playerCardsPerRow = reader.readLong(offsets[18]);
+  object.qrCodeBackgroundColor = reader.readLongOrNull(offsets[19]);
+  object.qrCodePadding = reader.readDouble(offsets[20]);
+  object.qrCodePosX = reader.readDouble(offsets[21]);
+  object.qrCodePosY = reader.readDouble(offsets[22]);
+  object.qrCodeSize = reader.readDouble(offsets[23]);
+  object.qrSalt = reader.readString(offsets[24]);
+  object.sessionIntervalMinutes = reader.readLong(offsets[25]);
+  object.sessionTimeMinutes = reader.readLong(offsets[26]);
+  object.startDateTime = reader.readDateTime(offsets[27]);
+  object.uid = reader.readString(offsets[28]);
   return object;
 }
 
@@ -262,45 +279,45 @@ P _eventDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readLong(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
       return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 5:
       return (reader.readDouble(offset)) as P;
     case 6:
       return (reader.readDouble(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 8:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 9:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 10:
-      return (reader.readByteList(offset)) as P;
-    case 11:
       return (reader.readDouble(offset)) as P;
+    case 11:
+      return (reader.readByteList(offset)) as P;
     case 12:
       return (reader.readDouble(offset)) as P;
     case 13:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 14:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 15:
-      return (reader.readLong(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 16:
-      return (reader.readDouble(offset)) as P;
-    case 17:
       return (reader.readLong(offset)) as P;
-    case 18:
-      return (reader.readLongOrNull(offset)) as P;
-    case 19:
+    case 17:
       return (reader.readDouble(offset)) as P;
+    case 18:
+      return (reader.readLong(offset)) as P;
+    case 19:
+      return (reader.readLongOrNull(offset)) as P;
     case 20:
       return (reader.readDouble(offset)) as P;
     case 21:
@@ -308,13 +325,17 @@ P _eventDeserializeProp<P>(
     case 22:
       return (reader.readDouble(offset)) as P;
     case 23:
-      return (reader.readString(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 24:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 25:
       return (reader.readLong(offset)) as P;
     case 26:
+      return (reader.readLong(offset)) as P;
+    case 27:
       return (reader.readDateTime(offset)) as P;
+    case 28:
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -413,6 +434,168 @@ extension EventQueryWhere on QueryBuilder<Event, Event, QWhereClause> {
 }
 
 extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'backupPath'),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'backupPath'),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'backupPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'backupPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'backupPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'backupPath',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'backupPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'backupPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'backupPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'backupPath',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'backupPath', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> backupPathIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'backupPath', value: ''),
+      );
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterFilterCondition> endDateTimeEqualTo(
     DateTime value,
   ) {
@@ -2474,6 +2657,152 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
       );
     });
   }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'uid',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'uid',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'uid',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'uid',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'uid',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'uid',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'uid',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'uid',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'uid', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> uidIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'uid', value: ''),
+      );
+    });
+  }
 }
 
 extension EventQueryObject on QueryBuilder<Event, Event, QFilterCondition> {}
@@ -2607,6 +2936,18 @@ extension EventQueryLinks on QueryBuilder<Event, Event, QFilterCondition> {
 }
 
 extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
+  QueryBuilder<Event, Event, QAfterSortBy> sortByBackupPath() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'backupPath', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByBackupPathDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'backupPath', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> sortByEndDateTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'endDateTime', Sort.asc);
@@ -2918,9 +3259,33 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
       return query.addSortBy(r'startDateTime', Sort.desc);
     });
   }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByUid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uid', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByUidDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uid', Sort.desc);
+    });
+  }
 }
 
 extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
+  QueryBuilder<Event, Event, QAfterSortBy> thenByBackupPath() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'backupPath', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByBackupPathDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'backupPath', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> thenByEndDateTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'endDateTime', Sort.asc);
@@ -3244,9 +3609,29 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
       return query.addSortBy(r'startDateTime', Sort.desc);
     });
   }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByUid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uid', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByUidDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'uid', Sort.desc);
+    });
+  }
 }
 
 extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
+  QueryBuilder<Event, Event, QDistinct> distinctByBackupPath({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'backupPath', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Event, Event, QDistinct> distinctByEndDateTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'endDateTime');
@@ -3412,12 +3797,26 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
       return query.addDistinctBy(r'startDateTime');
     });
   }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByUid({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'uid', caseSensitive: caseSensitive);
+    });
+  }
 }
 
 extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
   QueryBuilder<Event, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Event, String?, QQueryOperations> backupPathProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'backupPath');
     });
   }
 
@@ -3581,6 +3980,12 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
   QueryBuilder<Event, DateTime, QQueryOperations> startDateTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'startDateTime');
+    });
+  }
+
+  QueryBuilder<Event, String, QQueryOperations> uidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'uid');
     });
   }
 }

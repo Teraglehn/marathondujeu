@@ -9,6 +9,9 @@ import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
+import 'package:marathondujeu/src/ui/widgets/toast.dart';
+import 'package:marathondujeu/services_injector.dart';
+import 'package:marathondujeu/src/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,6 +28,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
 
   // Les cibles de l'aide de la page (L12).
   final _emptyKey = GlobalKey();
+  final _openKey = GlobalKey();
   final _addKey = GlobalKey();
   final _searchKey = GlobalKey();
   final _firstKey = GlobalKey();
@@ -43,7 +47,44 @@ class _EventListPageState extends ConsumerState<EventListPage> {
       HelpStep(s.help_eventList_4, target: _firstKey),
       HelpStep(s.help_eventList_5, target: _selectorKey),
       HelpStep(s.help_eventList_6, target: _scanKey),
+      HelpStep(s.help_eventList_7, target: _openKey),
     ];
+  }
+
+  /// Ouvre un fichier de sauvegarde (L09) : ajoute son événement, ou remplace celui de même
+  /// `uid` après confirmation ; l'événement devient le sélectionné. Fichier illisible → toast.
+  Future<void> openBackup() async {
+    final s = S.of(context);
+    final path = await ref.read(backupFilePickerProvider).chooseOpenPath();
+    if (path == null || !mounted) return;
+    final backup = ref.read(backupServiceProvider);
+    final BackupOpening opening;
+    try {
+      opening = await backup.open(path);
+    } catch (e) {
+      if (mounted) Toast.show(context, s.backup_unreadable, error: true);
+      return;
+    }
+    if (!mounted) return;
+    final existing = opening.existing;
+    if (existing != null) {
+      final replace = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(s.backup_exists_title),
+          content: Text(s.backup_exists_text(existing.name)),
+          actions: [
+            TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(s.utils_button_cancel)),
+            FilledButton(onPressed: () => Navigator.of(context).pop(true), child: Text(s.backup_replace)),
+          ],
+        ),
+      );
+      if (replace != true) return;
+    }
+    final event = await backup.import(opening.backup, replace: existing);
+    if (!mounted) return;
+    ref.read(mainPodProvider.notifier).setEventId(event.id);
+    Toast.show(context, existing != null ? s.backup_replaced(event.name) : s.backup_opened(event.name));
   }
 
   @override
@@ -114,9 +155,16 @@ class _EventListPageState extends ConsumerState<EventListPage> {
             key: _searchKey,
             padding: const EdgeInsets.all(8.0),
             color: Theme.of(context).colorScheme.secondaryContainer,
-            child: SearchWidget(
-              onSearchCriteriaChanged: search,
-            ),
+            child: Row(children: [
+              Expanded(child: SearchWidget(onSearchCriteriaChanged: search)),
+              const SizedBox(width: 16),
+              OutlinedButton.icon(
+                key: _openKey,
+                onPressed: openBackup,
+                icon: const Icon(Icons.folder_open),
+                label: Text(S.of(context).backup_open),
+              ),
+            ]),
           ),
           Expanded(
             child: events.when(
