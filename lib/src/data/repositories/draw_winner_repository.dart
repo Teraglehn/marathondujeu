@@ -33,4 +33,11 @@ class DrawWinnerRepository extends RepositoryBase<DrawWinner> {
       .build()
     );
   }
+
+  /// Les gagnants qui sont l'un des joueurs [playerIds] : ils partent avec eux (EV-7).
+  Future<int> deleteByPlayers(Set<Id> playerIds) async {
+    final collection = await getCollection();
+    final ids = await collection.filter().winner((q) => q.anyOf(playerIds, (q, Id id) => q.idEqualTo(id))).idProperty().findAll();
+    return deleteAll(ids.toSet());
+  }
 }

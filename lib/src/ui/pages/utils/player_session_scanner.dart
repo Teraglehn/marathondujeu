@@ -1,4 +1,4 @@
-import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
+import 'package:marathondujeu/src/ui/widgets/scanner_listener.dart';
 import 'package:marathondujeu/services_injector.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +19,8 @@ enum ScanMode {
 }
 
 /// Écoute la douchette sur la page et pose le résultat dans `scanStatusPod` — le même retour,
-/// au même endroit, sur toutes les pages. `BarcodeKeyboardListener` garde le premier callback
-/// reçu : on lui donne un seul callback, stable, qui lit `widget` et les pods au moment du scan.
-/// Ainsi le widget survit aux rebuilds de la page, et le défilement avec lui.
+/// au même endroit, sur toutes les pages. Un seul callback, stable, qui lit `widget` et les pods
+/// au moment du scan : le widget survit aux rebuilds de la page, et le défilement avec lui.
 class PlayerSessionScanner extends ConsumerStatefulWidget {
   final Widget child;
   final ScanMode mode;
@@ -90,10 +89,9 @@ class _PlayerSessionScannerState extends ConsumerState<PlayerSessionScanner> {
 
   @override
   Widget build(BuildContext context) {
-    return BarcodeKeyboardListener(
-      useKeyDownEvent: true,
-      onBarcodeScanned: scanPlayer,
-      child: widget.child
+    return ScannerListener(
+      onScanned: scanPlayer,
+      child: widget.child,
     );
   }
 }

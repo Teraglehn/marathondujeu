@@ -27,6 +27,11 @@ class PlayerListPage extends ConsumerStatefulWidget       {
 
 class _PlayerListPageState extends ConsumerState<PlayerListPage> {
 
+  // La carte d'un joueur : la ligne du nom (dense, 48 px), trois lignes compactes (40 px), les
+  // marges de la Card.
+  static const double _cardWidth = 200;
+  static const double _cardHeight = 48 + 3 * 40 + 8;
+
   final TextEditingController _playerCountController = TextEditingController();
   // Le nombre de joueurs qui a rempli le champ : il se remplit à nouveau quand il change.
   int? _shownCount;
@@ -175,28 +180,37 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
             ),
             Expanded(
               child: players.when(
-                data: (data) => GridView.extent(
-                  maxCrossAxisExtent: 200.0,
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
-                  children: data.map((player) => Card(
+                // Des cartes de taille fixe, qui se rangent en lignes : une grille répartirait la
+                // largeur et, trop étroite, ferait déborder la ligne Bonus et ses boutons (L18).
+                data: (data) => SingleChildScrollView(
+                  padding: const EdgeInsets.all(8),
+                  child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: data.map((player) => SizedBox(
+                  width: _cardWidth,
+                  height: _cardHeight,
+                  child: Card(
                     clipBehavior: Clip.hardEdge,
                     elevation: 8,
                     child: InkWell(
                       onTap:() => editor.editPlayer(player),
                       child: Column(children: [
                         ListTile(
+                          // Sans jeton, le joueur n'est pas dans l'urne : sa bille est grise.
                           leading: CircleAvatar(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                            backgroundColor: player.getTokenCount() == 0 ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.primary,
+                            foregroundColor: player.getTokenCount() == 0 ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.onPrimary,
                             child: Text(player.number.toString())
                           ),
-                          title: Text(player.name)
+                          title: Text(player.name),
+                          dense: true
                         ),
                         ListTile(
                           leading: countAvatar(context, player.getSessionNumber()),
                           title: Text(S.of(context).data_session_objName(player.getSessionNumber()), style: Theme.of(context).textTheme.bodySmall),
-                          dense: true
+                          dense: true,
+                          visualDensity: VisualDensity.compact
                         ),
                         ListTile(
                           leading: countAvatar(context, player.bonusSession),
@@ -208,16 +222,19 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                               bonusButton(Icons.add, () => addBonus(player, 1)),
                             ],
                           ),
-                          dense: true
+                          dense: true,
+                          visualDensity: VisualDensity.compact
                         ),
                         ListTile(
                           leading: countAvatar(context, player.getTokenCount()),
                           title: Text(S.of(context).data_player_tokens(player.getTokenCount()), style: Theme.of(context).textTheme.bodySmall),
-                          dense: true
+                          dense: true,
+                          visualDensity: VisualDensity.compact
                         ),
                       ])
                     )
-                  )).toList()
+                  ))).toList()
+                  ),
                 ),
                 error: (_, e) => Center(child: Text(e.toString())),
                 loading: () => const SizedBox.shrink()

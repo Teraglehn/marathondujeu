@@ -9,25 +9,25 @@ part of 'services_injector.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(_isarClient)
-final _isarClientProvider = _IsarClientProvider._();
+@ProviderFor(isarClient)
+final isarClientProvider = IsarClientProvider._();
 
-final class _IsarClientProvider
+final class IsarClientProvider
     extends $FunctionalProvider<IsarClient, IsarClient, IsarClient>
     with $Provider<IsarClient> {
-  _IsarClientProvider._()
+  IsarClientProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'_isarClientProvider',
+        name: r'isarClientProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$_isarClientHash();
+  String debugGetCreateSourceHash() => _$isarClientHash();
 
   @$internal
   @override
@@ -36,7 +36,7 @@ final class _IsarClientProvider
 
   @override
   IsarClient create(Ref ref) {
-    return _isarClient(ref);
+    return isarClient(ref);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -48,7 +48,7 @@ final class _IsarClientProvider
   }
 }
 
-String _$_isarClientHash() => r'18ba66d41450215449f1c0fcb96ac17ba1994307';
+String _$isarClientHash() => r'7d9f70919e949aaeee5066db787ffc186f3a8589';
 
 @ProviderFor(_playerRepository)
 final _playerRepositoryProvider = _PlayerRepositoryProvider._();
@@ -94,7 +94,7 @@ final class _PlayerRepositoryProvider
   }
 }
 
-String _$_playerRepositoryHash() => r'41ba7377bf5591061177e693bc96d71906baa949';
+String _$_playerRepositoryHash() => r'7bf335b6d27e86768b41d011dac6d6dd437b9936';
 
 @ProviderFor(_playerGroupRepository)
 final _playerGroupRepositoryProvider = _PlayerGroupRepositoryProvider._();
@@ -142,7 +142,7 @@ final class _PlayerGroupRepositoryProvider
 }
 
 String _$_playerGroupRepositoryHash() =>
-    r'408104429558fb4433337bf6a19742319f0bda4a';
+    r'ef5f7a3da2684b0597a3e2cd909c2a734872ceef';
 
 @ProviderFor(_sessionRepository)
 final _sessionRepositoryProvider = _SessionRepositoryProvider._();
@@ -190,7 +190,7 @@ final class _SessionRepositoryProvider
 }
 
 String _$_sessionRepositoryHash() =>
-    r'257d94309d832412cda86b81fc9d1ddaefbba6d2';
+    r'c8fe1cc9880488f06a40dd2cd18c113514f33978';
 
 @ProviderFor(_eventRepository)
 final _eventRepositoryProvider = _EventRepositoryProvider._();
@@ -232,7 +232,7 @@ final class _EventRepositoryProvider
   }
 }
 
-String _$_eventRepositoryHash() => r'f237063097f2a01699cfd4e58ad80c9afe47cf57';
+String _$_eventRepositoryHash() => r'4f2f09640cd8ee7c93747c3f3c67096d7b43577d';
 
 @ProviderFor(_drawRepository)
 final _drawRepositoryProvider = _DrawRepositoryProvider._();
@@ -273,7 +273,7 @@ final class _DrawRepositoryProvider
   }
 }
 
-String _$_drawRepositoryHash() => r'110c74f4b64b7285add28cb69732972479552c52';
+String _$_drawRepositoryHash() => r'62b8fc5776c4d6057f5e5bc343c4d441ea78e27c';
 
 @ProviderFor(_drawWinnerRepository)
 final _drawWinnerRepositoryProvider = _DrawWinnerRepositoryProvider._();
@@ -321,7 +321,7 @@ final class _DrawWinnerRepositoryProvider
 }
 
 String _$_drawWinnerRepositoryHash() =>
-    r'35f90923222b7d22dfb30413f25c7d77ce1fe485';
+    r'5429f89fd0e8c352b2e24fde8ab68b10b94a098d';
 
 @ProviderFor(playerService)
 final playerServiceProvider = PlayerServiceProvider._();
@@ -533,4 +533,4 @@ final class EventServiceProvider
   }
 }
 
-String _$eventServiceHash() => r'afea9e59c23a4432b2151d32b0248e5ee69a3b00';
+String _$eventServiceHash() => r'af6b8154c39473601ad11b2f1d6fa8393097ee72';

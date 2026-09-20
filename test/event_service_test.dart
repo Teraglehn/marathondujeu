@@ -14,7 +14,7 @@ void main() {
 
   EventService service() {
     final client = TestIsarClient(isar);
-    return EventService(SessionRepository(client), EventRepository(client), PlayerRepository(client));
+    return EventService(SessionRepository(client), EventRepository(client), PlayerRepository(client), DrawWinnerRepository(client));
   }
 
   Session session(int number) => Session()
@@ -242,6 +242,51 @@ void main() {
       await service().removePlayerFromSession(session, p1);
 
       expect(await badgedSessions(), {s1.id});
+    });
+  });
+
+  /// L18 : la logique des gestes JO-1 et EV-7, sans écran.
+  group('generateMissingPlayers', () {
+    Future<List<int>> numbers() async => (await isar.players.filter().event((q) => q.idEqualTo(event.id)).sortByNumber().numberProperty().findAll());
+
+    test('complète de n+1 à N, avec le code de l\x27événement', () async {
+      p1.number = 1;
+      await isar.writeTxn(() => isar.players.put(p1));
+      event.qrSalt = 'abcd1234';
+
+      await service().generateMissingPlayers(event, 3);
+
+      expect(await numbers(), [1, 2, 3]);
+      expect((await isar.players.filter().numberEqualTo(3).findFirst())!.qrcode, 'abcd1234-3');
+    });
+
+    test('un nombre inférieur ou égal aux existants ne crée rien', () async {
+      await service().generateMissingPlayers(event, 1);
+      await service().generateMissingPlayers(event, 0);
+
+      expect(await isar.players.count(), 1);
+    });
+  });
+
+  group('destroyPlayers', () {
+    test('supprime les joueurs, leurs badgeages et leurs places de gagnants', () async {
+      final draw = Draw.empty()..name = 'T'..event.value = event;
+      final winner = DrawWinner.fromDraw(draw, p1, 1);
+      await isar.writeTxn(() async {
+        await isar.draws.put(draw);
+        await draw.event.save();
+        await isar.drawWinners.put(winner);
+        await winner.draw.save();
+        await winner.winner.save();
+      });
+
+      await service().destroyPlayers(event);
+
+      expect(await isar.players.count(), 0);
+      expect(await isar.drawWinners.count(), 0);
+      final session = (await isar.sessions.get(s1.id))!;
+      await session.players.load();
+      expect(session.players, isEmpty);
     });
   });
 }

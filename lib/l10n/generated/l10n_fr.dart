@@ -165,7 +165,7 @@ class SFr extends S {
   String get data_playerGroup_name => 'Nom';
 
   @override
-  String get data_playerGroup_error_name_required => 'Nom is required';
+  String get data_playerGroup_error_name_required => 'Le nom est requis';
 
   @override
   String get data_playerGroup_kind_winners => 'Groupe de gagnants';
@@ -237,7 +237,7 @@ class SFr extends S {
   }
 
   @override
-  String get data_draw_error_name_required => 'Nom est requis';
+  String get data_draw_error_name_required => 'Le nom est requis';
 
   @override
   String data_draw_tokenCount(num count) {

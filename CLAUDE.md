@@ -50,7 +50,7 @@ requis / exclus), `DrawWinner`.
 | Données | Isar 3 via le fork `isar_community` 3.3 — base locale, un fichier par machine, dans `%APPDATA%\com.saroc\marathondujeu` |
 | Modèles immuables | `freezed` |
 | Localisation | `flutter_localizations`, ARB fr/en, générée par `flutter: generate: true` |
-| Cartes / impression | `pdf`, `printing`, `pretty_qr_code`, `flutter_barcode_listener` |
+| Cartes / impression / douchette | `pdf`, `printing`, `pretty_qr_code` ; la douchette est lue par `ScannerListener` (maison, `HardwareKeyboard`) |
 
 ### Arborescence `lib/`
 

@@ -153,3 +153,25 @@ changés avec badgeages → modale « Recréer les sessions ? » : *Recréer les
 perdus) ou *Annuler les modifications*, qui remet les quatre champs et laisse l'éditeur ouvert.
 Tests : `save` (neuf, inchangé, recréé). `docs/gestes.md` : EV-8 réécrit, EV-9, EV-11. L18 ajusté
 (dépend de L19, étapes 1 et 8). *Écarts assumés* : aucun.
+
+## 2026-09-20 — L18
+
+**L18 — Couverture des gestes par les tests.** Un harnais (`test/e2e/app_test_support.dart`,
+`App`) monte l'application entière sur une base Isar temporaire et joue les gestes d'un
+organisateur — clics, frappes, scans par touches Windows — en attendant la base hors horloge
+factice ; un échec nomme l'étape et le geste et imprime l'écran. Le **parcours**
+(`test/e2e/parcours_test.dart`) rejoue une édition en neuf étapes et deux événements, avec
+cycles : les 72 gestes de `docs/gestes.md`, en 17 s ; la colonne *Test* cite pour chacun le test
+unitaire et l'étape (quatre en « recette » : image et impression du système, rendu PDF, dialogues
+date / heure de Flutter). Tests unitaires ajoutés : `destroyPlayers`, `generateMissingPlayers`,
+`Session.isOpenAt` ; 82 tests. **Q4** : sous Windows, `flutter_barcode_listener` lisait le code de
+touche (`a` → `A`, `-` → `½`) — une carte protégée n'était pas reconnue ; remplacé par
+`ScannerListener` (maison, `HardwareKeyboard`, le caractère tapé), le paquet sort. **Défauts
+révélés par le parcours et corrigés** : la carte de joueur ne comptait pas les badgeages manuels
+après *Enregistrer* (ordre des écritures) ; les sélecteurs de l'éditeur de tirage lisaient un pod
+détruit pendant son chargement ; *Supprimer les joueurs* laissait des gagnants sans joueur (ils
+partent avec). **Recette** (Bastien) : carte de joueur de taille fixe (200 × 176) rangée en
+`Wrap`, bille du numéro grise sans jeton ; « Le nom est requis » (groupe, tirage, fr). *Écarts
+assumés* : les débordements de mise en page sont ignorés en test (police de test plus grande que
+Roboto) — carte de session et ligne du générateur à regarder sur le poste ; `google_fonts`
+imprime quatre erreurs par lancement, sans effet.

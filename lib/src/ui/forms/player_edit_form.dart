@@ -78,9 +78,11 @@ class _AccountEditFormState extends ConsumerState<PlayerEditForm> implements Dir
 
     _formKey.currentState!.save();
 
-    ref.read(playersProvider().notifier)
-      .save(widget.player)
-      .then((_) => ref.read(eventServiceProvider).setPlayerSessions(widget.player, added: _sessionsToAdd, removed: _sessionsToRemove))
+    // Les badgeages d'abord : c'est l'écriture du joueur qui rafraîchit la liste, elle doit
+    // venir en dernier pour que les cartes comptent les nouvelles sessions (L18).
+    ref.read(eventServiceProvider)
+      .setPlayerSessions(widget.player, added: _sessionsToAdd, removed: _sessionsToRemove)
+      .then((_) => ref.read(playersProvider().notifier).save(widget.player))
       .then((_) => ref.read(editorPodProvider.notifier).close());
   }
 

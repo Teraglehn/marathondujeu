@@ -4,8 +4,9 @@ class EventService {
   final SessionRepository _sessionRepository;
   final EventRepository _eventRepository;
   final PlayerRepository _playerRepository;
+  final DrawWinnerRepository _drawWinnerRepository;
 
-  EventService(this._sessionRepository, this._eventRepository, this._playerRepository);
+  EventService(this._sessionRepository, this._eventRepository, this._playerRepository, this._drawWinnerRepository);
 
   Future<Event?> getById(int id) async {
     return await _eventRepository.getById(id);
@@ -158,8 +159,12 @@ class EventService {
     await _playerRepository.saveAll(players);
   }
 
+  /// Supprime les joueurs de l'événement ; leurs badgeages (des liens) et leurs places de
+  /// gagnants partent avec eux — un gagnant sans joueur n'a plus de sens (L18).
   Future<void> destroyPlayers(Event event) async {
     await event.players.load();
-    await _playerRepository.deleteAll(event.players.map((e)=> e.id).toSet());
+    final ids = event.players.map((e)=> e.id).toSet();
+    await _drawWinnerRepository.deleteByPlayers(ids);
+    await _playerRepository.deleteAll(ids);
   }
 }

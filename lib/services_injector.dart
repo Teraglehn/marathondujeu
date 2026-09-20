@@ -11,20 +11,21 @@ part 'services_injector.g.dart';
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 
-@Riverpod(keepAlive: true) IsarClient _isarClient(Ref ref) => IsarClient(isWeb: kIsWeb, isTesting: kDebugMode);
+// Public : les tests de bout en bout le remplacent par une base temporaire (L18).
+@Riverpod(keepAlive: true) IsarClient isarClient(Ref ref) => IsarClient(isWeb: kIsWeb, isTesting: kDebugMode);
 
-@riverpod PlayerRepository _playerRepository(Ref ref) => PlayerRepository(ref.watch(_isarClientProvider));
-@riverpod PlayerGroupRepository _playerGroupRepository(Ref ref) => PlayerGroupRepository(ref.watch(_isarClientProvider));
-@riverpod SessionRepository _sessionRepository(Ref ref) => SessionRepository(ref.watch(_isarClientProvider));
-@riverpod EventRepository _eventRepository(Ref ref) => EventRepository(ref.watch(_isarClientProvider));
-@riverpod DrawRepository _drawRepository(Ref ref) => DrawRepository(ref.watch(_isarClientProvider));
-@riverpod DrawWinnerRepository _drawWinnerRepository(Ref ref) => DrawWinnerRepository(ref.watch(_isarClientProvider));
+@riverpod PlayerRepository _playerRepository(Ref ref) => PlayerRepository(ref.watch(isarClientProvider));
+@riverpod PlayerGroupRepository _playerGroupRepository(Ref ref) => PlayerGroupRepository(ref.watch(isarClientProvider));
+@riverpod SessionRepository _sessionRepository(Ref ref) => SessionRepository(ref.watch(isarClientProvider));
+@riverpod EventRepository _eventRepository(Ref ref) => EventRepository(ref.watch(isarClientProvider));
+@riverpod DrawRepository _drawRepository(Ref ref) => DrawRepository(ref.watch(isarClientProvider));
+@riverpod DrawWinnerRepository _drawWinnerRepository(Ref ref) => DrawWinnerRepository(ref.watch(isarClientProvider));
 
 @riverpod PlayerService playerService(Ref ref) => PlayerService(ref.watch(_playerRepositoryProvider));
 @riverpod PlayerGroupService playerGroupService(Ref ref) => PlayerGroupService(ref.watch(_playerGroupRepositoryProvider));
 @riverpod SessionService sessionService(Ref ref) => SessionService(ref.watch(_sessionRepositoryProvider));
 @riverpod DrawService drawService(Ref ref) => DrawService(ref.watch(_drawRepositoryProvider), ref.watch(_drawWinnerRepositoryProvider), ref.watch(_playerGroupRepositoryProvider));
-@riverpod EventService eventService(Ref ref) => EventService(ref.watch(_sessionRepositoryProvider), ref.watch(_eventRepositoryProvider), ref.watch(_playerRepositoryProvider));
+@riverpod EventService eventService(Ref ref) => EventService(ref.watch(_sessionRepositoryProvider), ref.watch(_eventRepositoryProvider), ref.watch(_playerRepositoryProvider), ref.watch(_drawWinnerRepositoryProvider));
 
 
 class EagerInitialization extends ConsumerWidget {
@@ -37,7 +38,7 @@ class EagerInitialization extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(_isarClientProvider);
+    ref.watch(isarClientProvider);
     return child;
   }
 }

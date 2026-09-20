@@ -11,7 +11,7 @@ import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/ui/forms/dirty_aware.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/datetime_form_field.dart';
 import 'package:marathondujeu/src/ui/widgets/toast.dart';
-import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
+import 'package:marathondujeu/src/ui/widgets/scanner_listener.dart';
 import 'package:uuid/uuid.dart';
 
 class EventEditForm extends ConsumerStatefulWidget {
@@ -113,9 +113,8 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
   Future<void> recoverSalt() async {
     final salt = await showDialog<String>(
       context: context,
-      builder: (context) => BarcodeKeyboardListener(
-        useKeyDownEvent: true,
-        onBarcodeScanned: (code) => Navigator.of(context).pop(Event.saltFromCode(code.trim())),
+      builder: (context) => ScannerListener(
+        onScanned: (code) => Navigator.of(context).pop(Event.saltFromCode(code.trim())),
         child: AlertDialog(
           title: Text(S.of(context).data_event_recoverSalt),
           content: Row(

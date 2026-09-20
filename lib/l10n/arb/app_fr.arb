@@ -50,7 +50,7 @@
     "data_playerGroup_objName": "{count, plural, one {Groupe} other {Groupes}}",
     "data_playerGroup_name": "Nom",
 
-    "data_playerGroup_error_name_required": "Nom is required",
+    "data_playerGroup_error_name_required": "Le nom est requis",
     "data_playerGroup_kind_winners": "Groupe de gagnants",
     "data_playerGroup_winners_help": "Groupe de gagnants d'un tirage : il porte le nom du tirage et ne se supprime pas.",
     "data_playerGroup_usedByDraws": "{count, plural, one {Utilisé par un tirage : il ne peut pas être supprimé.} other {Utilisé par {count} tirages : il ne peut pas être supprimé.}}",
@@ -74,7 +74,7 @@
         }
     },
 
-    "data_draw_error_name_required": "Nom est requis",
+    "data_draw_error_name_required": "Le nom est requis",
     "data_draw_tokenCount": "{count, plural, =0 {Aucun jeton dans l'urne} one {1 jeton dans l'urne} other {{count} jetons dans l'urne}}",
     "@data_draw_tokenCount": { "placeholders": { "count": {} } },
     "data_draw_eligibility_help": "Seuls les joueurs qui ont au moins un jeton comptent. Chaque jeton est une chance au tirage.",

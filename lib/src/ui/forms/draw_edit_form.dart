@@ -4,6 +4,8 @@ import 'package:marathondujeu/l10n/generated/l10n.dart';
 import 'package:marathondujeu/services_injector.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
+import 'package:marathondujeu/src/pods/player_groups.dart';
+import 'package:marathondujeu/src/pods/sessions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
@@ -200,6 +202,11 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> implements DirtyAwa
   Widget build(BuildContext context) {
     final draw = widget.draw;
     final event = draw.event.value!;
+    // Groupes et sessions lus ici, dans `build` : les sélecteurs les recevraient sinon d'un pod
+    // à disposition automatique que personne ne regarde sur cette page — détruit pendant son
+    // chargement, il ne répond jamais (L18).
+    final groups = ref.watch(playerGroupsProvider(eventId: event.id)).value;
+    final sessions = ref.watch(sessionsProvider(eventId: event.id)).value;
     if (!loaded) return const Center(child: CircularProgressIndicator());
 
     return Form(
@@ -253,6 +260,7 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> implements DirtyAwa
                       child: PlayerGroupSelector(
                       label: S.of(context).data_draw_excludedPlayers,
                       event: event,
+                      groups: groups,
                       readOnly: readOnly,
                       initialValue: excludedGroups,
                       onChanged: (pg) {
@@ -266,6 +274,7 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> implements DirtyAwa
                       child: PlayerGroupSelector(
                       label: S.of(context).data_draw_requiredPlayers,
                       event: event,
+                      groups: groups,
                       readOnly: readOnly,
                       initialValue: requiredGroups,
                       onChanged: (pg) {
@@ -283,6 +292,7 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> implements DirtyAwa
                       child: SessionMultiSelector(
                       label: S.of(context).data_draw_excludedSessions,
                       event: event,
+                      sessions: sessions,
                       readOnly: readOnly,
                       initialValue: excludedSessions.toSet(),
                       onChanged: (sessions) {
@@ -298,6 +308,7 @@ class _DrawEditFormState extends ConsumerState<DrawEditForm> implements DirtyAwa
                       child: SessionMultiSelector(
                       label: S.of(context).data_draw_requiredSessions,
                       event: event,
+                      sessions: sessions,
                       readOnly: readOnly,
                       initialValue: requiredSessions.toSet(),
                       onChanged: (sessions) {
