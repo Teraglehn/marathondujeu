@@ -57,6 +57,28 @@ void main() {
     return player.sessions.map((s) => s.id).toSet();
   }
 
+  group('sessionStarts', () {
+    final start = DateTime(2026, 10, 3, 14);
+
+    test('toutes les [intervalle] minutes, tant qu\'on est avant la fin', () {
+      final starts = EventService.sessionStarts(start, DateTime(2026, 10, 3, 17), 15);
+      expect(starts.length, 12);
+      expect(starts.first, start);
+      expect(starts[1], DateTime(2026, 10, 3, 14, 15));
+      expect(starts.last, DateTime(2026, 10, 3, 16, 45));
+    });
+
+    test('la fin exclue : une session qui commencerait à la fin n\'existe pas', () {
+      expect(EventService.sessionStarts(start, DateTime(2026, 10, 3, 14, 30), 15).length, 2);
+      expect(EventService.sessionStarts(start, DateTime(2026, 10, 3, 14, 31), 15).length, 3);
+    });
+
+    test('fin avant le début, ou intervalle nul → aucune', () {
+      expect(EventService.sessionStarts(start, DateTime(2026, 10, 3, 13), 15), isEmpty);
+      expect(EventService.sessionStarts(start, DateTime(2026, 10, 3, 17), 0), isEmpty);
+    });
+  });
+
   group('migratePlayerNumbers', () {
     test('un joueur sans numéro le reçoit de son nom, sinon de son code', () async {
       final byName = Player()..name = '42'..qrcode = 'abcd-42'..event.value = event;

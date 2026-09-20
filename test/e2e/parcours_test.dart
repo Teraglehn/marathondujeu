@@ -1,7 +1,7 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:isar_community/isar.dart';
@@ -52,6 +52,15 @@ void main() {
       await app.pickDateTime(s.data_event_datetime_end, endA);
       await app.type(s.data_event_session_duration_minute, '15');
       await app.type(s.data_event_session_interval_minute, '15');
+      // L'aperçu suit la saisie : 3 h toutes les 15 min, douze sessions, la première et la dernière.
+      final startEnd = DateFormat.E('fr').add_Hm();
+      await app.see([
+        s.editor_event_sessions_count(12),
+        s.editor_event_sessions_line(1, startEnd.format(startA), startEnd.format(startA.add(const Duration(minutes: 15)))),
+        s.editor_event_sessions_line(2, startEnd.format(startA.add(const Duration(minutes: 15))), startEnd.format(startA.add(const Duration(minutes: 30)))),
+        '…',
+        s.editor_event_sessions_line(12, startEnd.format(endA.subtract(const Duration(minutes: 15))), startEnd.format(endA)),
+      ].join('\n'));
 
       app.g('EV-4');
       await app.toggleTile(s.data_event_protectCards);
@@ -877,6 +886,38 @@ void main() {
       await app.see(s.page_session_zone_present(1));
       await app.until(() async => (await presentIn(3)).length == 1, what: 'un seul présent');
       expect(await present(3), {5});
+    });
+
+    await app.run('10 — Aide de la page', () async {
+      // Sur la page de la session 3, mode suppression allumé (étape 9).
+      final event = await eventA();
+
+      app.g('TR-6');
+      await app.tap(find.byTooltip(s.help_button), what: 'le « i » de la page');
+      final steps = [s.help_session_1, s.help_session_2, s.help_session_3, s.help_session_4, s.help_session_5, s.help_session_6, s.help_session_7, s.help_session_8, s.help_session_9];
+      for (final (i, text) in steps.indexed) {
+        await app.see(text);
+        await app.see(s.help_counter(i + 1, steps.length));
+        if (i < steps.length - 1) await app.tapText(s.help_next);
+      }
+      // Pendant le pas à pas, la douchette ne fait rien.
+      await app.scan(event.qrCodeFor(5));
+      expect(await present(3), {5});
+      await app.tapText(s.help_finish);
+      await app.waitGone(find.text(s.help_session_9), what: 'le pas à pas');
+      // Après, elle reprend : le scan retire le joueur 5 (mode suppression).
+      await app.scan(event.qrCodeFor(5));
+      await app.seeScan(s.scan_removedFromSession(5, 3));
+      await app.until(() async => (await presentIn(3)).isEmpty, what: 'plus aucun présent');
+
+      // Échap ferme le pas à pas ; *Passer* aussi.
+      await app.tap(find.byTooltip(s.help_button), what: 'le « i » de la page');
+      await app.see(s.help_session_1);
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape, platform: 'windows');
+      await app.waitGone(find.text(s.help_session_1), what: 'le pas à pas (Échap)');
+      await app.tap(find.byTooltip(s.help_button), what: 'le « i » de la page');
+      await app.tapText(s.help_skip);
+      await app.waitGone(find.text(s.help_session_1), what: 'le pas à pas (Passer)');
     });
 
     await app.finish();

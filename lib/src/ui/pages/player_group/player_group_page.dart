@@ -13,6 +13,7 @@ import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
+import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/player_bubble.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/toast.dart';
@@ -35,6 +36,25 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
   int? _alreadyMemberNumber;
   // Deux secondes sans saisie : le champ rend le focus à la douchette (comme la page d'une session).
   Timer? _numberIdleTimer;
+
+  // Les cibles de l'aide de la page (L12).
+  final _scanKey = GlobalKey();
+  final _numberKey = GlobalKey();
+  final _removeKey = GlobalKey();
+  final _membersKey = GlobalKey();
+  final _editKey = GlobalKey();
+
+  List<HelpStep> helpSteps() {
+    final s = S.of(context);
+    return [
+      HelpStep(s.help_playerGroup_1),
+      HelpStep(s.help_playerGroup_2, target: _scanKey),
+      HelpStep(s.help_playerGroup_3, target: _numberKey),
+      HelpStep(s.help_playerGroup_4, target: _removeKey),
+      HelpStep(s.help_playerGroup_5, target: _membersKey),
+      HelpStep(s.help_playerGroup_6, target: _editKey),
+    ];
+  }
 
   @override
   void dispose() {
@@ -119,12 +139,14 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
         ),
         title: Text("${S.of(context).page_playerGroup_title} : ${group?.name ?? ''}"),
         actions: [
-          ScanStatus(mode: ScanMode.addToGroup, remove: removeMode),
+          ScanStatus(key: _scanKey, mode: ScanMode.addToGroup, remove: removeMode),
           if (group != null) IconButton(
+            key: _editKey,
             onPressed: () => ref.read(editorPodProvider.notifier).editPlayerGroup(group),
             icon: const Icon(Icons.edit),
             tooltip: S.of(context).utils_button_edit,
           ),
+          HelpButton(steps: helpSteps),
         ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
@@ -154,6 +176,7 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Row(
+                key: _numberKey,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
@@ -175,9 +198,11 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
                     onPressed: () => submitNumber(group, players),
                     child: Text(s.utils_button_add),
                   ),
+                  HelpHint(s.help_hint_groupNumber),
                 ],
               ),
               Row(
+                key: _removeKey,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(s.page_session_removeMode, style: removeMode ? TextStyle(color: error, fontWeight: FontWeight.bold) : null),
@@ -187,6 +212,7 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
                     activeTrackColor: error.withValues(alpha: 0.4),
                     onChanged: (value) => setState(() => removeMode = value),
                   ),
+                  HelpHint(s.help_hint_removeMode),
                 ],
               ),
               if (unknown != null) Text(s.page_session_number_unknown(unknown), style: TextStyle(color: error)),
@@ -200,15 +226,21 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(s.page_playerGroup_members(members.length), style: Theme.of(context).textTheme.titleMedium),
-                ),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: members.map((player) => bubble(context, group, player)).toList(),
+                Column(
+                  key: _membersKey,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(s.page_playerGroup_members(members.length), style: Theme.of(context).textTheme.titleMedium),
+                    ),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: members.map((player) => bubble(context, group, player)).toList(),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16),

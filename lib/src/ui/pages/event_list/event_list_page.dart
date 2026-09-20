@@ -6,6 +6,7 @@ import 'package:marathondujeu/src/pods/main_pod.dart';
 import 'package:marathondujeu/src/pods/selected_event.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
+import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,29 @@ class EventListPage extends ConsumerStatefulWidget       {
 class _EventListPageState extends ConsumerState<EventListPage> {
 
   late SearchCriteria criteria;
+
+  // Les cibles de l'aide de la page (L12).
+  final _emptyKey = GlobalKey();
+  final _addKey = GlobalKey();
+  final _searchKey = GlobalKey();
+  final _firstKey = GlobalKey();
+  final _selectorKey = GlobalKey();
+  final _scanKey = GlobalKey();
+
+  // Le pas à pas : le bloc « Créer » ou le « + » selon que la liste est vide ; la première
+  // ligne quand il y en a une (les cibles absentes sont sautées).
+  List<HelpStep> helpSteps() {
+    final s = S.of(context);
+    final empty = (ref.read(eventsProvider(criteria: criteria)).value?.isEmpty ?? true) && criteria.keyword.isEmpty;
+    return [
+      HelpStep(s.help_eventList_1),
+      HelpStep(s.help_eventList_2, target: empty ? _emptyKey : _addKey),
+      HelpStep(s.help_eventList_3, target: _searchKey),
+      HelpStep(s.help_eventList_4, target: _firstKey),
+      HelpStep(s.help_eventList_5, target: _selectorKey),
+      HelpStep(s.help_eventList_6, target: _scanKey),
+    ];
+  }
 
   @override
   void initState() {
@@ -49,6 +73,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
           Text(S.of(context).page_eventList_empty_text, style: theme.textTheme.bodyLarge),
           const SizedBox(height: 24),
           FilledButton.icon(
+            key: _emptyKey,
             onPressed: () => editor.editEvent(null),
             icon: const Icon(Icons.add),
             label: Text(S.of(context).page_eventList_empty_title),
@@ -68,8 +93,9 @@ class _EventListPageState extends ConsumerState<EventListPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_eventList_title),
         actions: [
-          const ScanStatus(),
+          ScanStatus(key: _scanKey),
           Container(
+            key: _selectorKey,
             width: 350,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
@@ -78,12 +104,14 @@ class _EventListPageState extends ConsumerState<EventListPage> {
               initialValue: selectedEvent.value,
               onChanged: (event) => mainNotifier.setEventId(event?.id),
             ),
-          )
+          ),
+          HelpButton(steps: helpSteps),
         ],
       ),
       body: PlayerSessionScanner(child: Column(
         children: [
           Container(
+            key: _searchKey,
             padding: const EdgeInsets.all(8.0),
             color: Theme.of(context).colorScheme.secondaryContainer,
             child: SearchWidget(
@@ -101,6 +129,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
                 itemBuilder: (context, index) {
                   Event event = data.elementAt(index);
                   return ListTile(
+                    key: index == 0 ? _firstKey : null,
                     leading: CircleAvatar(
                       child: Text(event.name.toUpperCase().split(" ").take(2).map((s) => s.substring(0,1)).join(""))
                     ),
@@ -108,7 +137,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
                     onTap: () => editor.editEvent(event),
                   );
                 },
-              ), 
+              ),
               error: (_, e) => Center(child: Text(e.toString())),
               loading: () => const SizedBox.shrink()
             ),
@@ -116,6 +145,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
         ],
       )),
       floatingActionButton: FloatingActionButton(
+        key: _addKey,
         onPressed: () => editor.editEvent(null),
         child: const Icon(Icons.add),
       )

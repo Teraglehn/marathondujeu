@@ -175,3 +175,27 @@ partent avec). **Recette** (Bastien) : carte de joueur de taille fixe (200 × 17
 assumés* : les débordements de mise en page sont ignorés en test (police de test plus grande que
 Roboto) — carte de session et ligne du générateur à regarder sur le poste ; `google_fonts`
 imprime quatre erreurs par lancement, sans effet.
+
+## 2026-09-20 — L12
+
+**L12 — Aide et tutoriels.** Un « i » en dernier dans la barre des huit pages (`HelpButton`) lance
+un **pas à pas sur le vrai écran** (`HelpTour`, route transparente sur le navigateur racine, sans
+dépendance tierce) : voile sur toute la fenêtre, trou autour de l'élément visé (clé de widget,
+amené à l'écran puis mesuré), bulle, compteur, *Suivant* / *Terminer*, *Passer*, croix, Échap. Les
+pas se construisent à l'ouverture avec les données de la page : liste vide → où les choses
+apparaîtront ; session ouverte → sa carte ; tirage effectué → le cadenas ; cible absente → pas
+sauté. De 5 à 9 pas par page, 60 textes fr/en (`help_<page>_n`), rédigés par Claude, corrigés à
+la recette. Petits « i » à infobulle (`HelpHint`) sur *Nombre de joueurs*, *Badgeage manuel*,
+*Numéro*, *Mode suppression*, *Ajouter par numéro* ; légende de la liste des joueurs (jetons, bille
+grise). La douchette est muette pendant le pas à pas et reprend après — le garde-fou vaut aussi
+pour les boîtes de dialogue, qui vivent sur le même navigateur (ce que TR-4 décrivait sans que le
+test `isCurrent` le fasse). `docs/gestes.md` : TR-6, étape 10 du parcours (neuf pas, scan pendant
+et après, Échap, *Passer*) ; 73 gestes, 85 tests. *Écarts assumés* : C2 (trois parties → l'ordre
+des pas) et C5 (une étape e2e pour TR-6) amendés ; les cibles des sections du générateur sont
+leurs titres. **Q2** tranchée *(b)* : le guide global du parcours d'une édition est **L12b**.
+
+**Retouche hors lot, même commit (Bastien, 2026-09-20)** — éditeur d'événement : *Début* et *Fin*
+sur une ligne, *Durée* et *Intervalle* sur la suivante ; dessous, l'**aperçu des sessions** que
+ces valeurs donneront, refait à chaque saisie — nombre, première, deuxième, « … », dernière (jour
+et heure). Le calcul est celui de la génération, extrait en `EventService.sessionStarts`
+(fonction pure testée) ; l'aperçu ne peut pas mentir. `docs/gestes.md` : EV-3.

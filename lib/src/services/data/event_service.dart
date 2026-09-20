@@ -48,17 +48,21 @@ class EventService {
   }
 
   Future<void> generateSessions(Event event) async {
-    DateTime sessionStart = event.startDateTime;
-    final DateTime end = event.endDateTime;
-    List<Session> sessions = [];
-    int number = 1;
-
-    while (sessionStart.isBefore(end)) {
-      sessions.add(Session.fromEvent(sessionStart, number++, event));
-      sessionStart = sessionStart.add(Duration(minutes: event.sessionIntervalMinutes));
-    }
-    
+    final starts = sessionStarts(event.startDateTime, event.endDateTime, event.sessionIntervalMinutes);
+    final sessions = [for (final (i, start) in starts.indexed) Session.fromEvent(start, i + 1, event)];
     await _sessionRepository.saveAll(sessions);
+  }
+
+  /// Les débuts des sessions d'un événement : de [start], toutes les [intervalMinutes], tant
+  /// qu'on est avant [end]. Le même calcul sert à l'aperçu de l'éditeur d'événement. Rien
+  /// pour un intervalle nul ou négatif.
+  static List<DateTime> sessionStarts(DateTime start, DateTime end, int intervalMinutes) {
+    if (intervalMinutes <= 0) return const [];
+    final starts = <DateTime>[];
+    for (var s = start; s.isBefore(end); s = s.add(Duration(minutes: intervalMinutes))) {
+      starts.add(s);
+    }
+    return starts;
   }
 
   /// Le nombre de badgeages de l'événement : ce que regénérer les sessions perd.

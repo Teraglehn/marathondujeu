@@ -1,6 +1,6 @@
 # Les gestes de l'application
 
-Dernière mise à jour : 2026-09-20. **Document de référence** (voir `docs/methode-de-travail.md`,
+Dernière mise à jour : 2026-09-20 (L12). **Document de référence** (voir `docs/methode-de-travail.md`,
 partie II) : il décrit ce que l'application permet de faire, page par page — la cible telle
 qu'elle est aujourd'hui dans le code livré.
 
@@ -32,6 +32,7 @@ Paramètres : **événement sélectionné** (oui / non) · **éditeur latéral o
 | **TR-3** Fermer l'éditeur latéral : *Annuler* / *Fermer*, la croix du titre, Échap, un clic hors du tiroir | modifié ou non | rien n'est enregistré. Non modifié → le tiroir se ferme. Modifié (une valeur différente de l'ouverture, ou un badgeage manuel en attente ; une valeur remise ne compte pas) → modale « Modification en cours » : *Revenir* garde l'éditeur et la saisie, *Quitter* ferme ; Échap dans la modale = *Revenir* (`EditorPod.requestClose`, `DirtyAware`) | `forms_dirty_test.dart` ; `parcours_test.dart` (étape 2) |
 | **TR-4** Scanner une carte (douchette) sur n'importe quelle page | carte connue / inconnue ; événement sélectionné ou non ; boîte de dialogue ouverte | **le retour est le même partout** : dans la barre du haut, une icône de douchette et le message du dernier scan — vert (fait), rouge (erreur) ; tant que rien n'a été scanné, il dit **ce qu'un scan fait sur cette page** (« Scanner une carte pour ouvrir la fiche joueur », « … pour badger cette session »…) ; il reste jusqu'au scan suivant, d'une page à l'autre, et s'efface quand ce qu'un scan fait change (mode suppression, SE-6 / GR-6) (`ScanStatus`, `scanStatusPod`). Ce que le scan **fait** dépend de la page : par défaut il **ouvre la fiche du joueur** (événements, joueurs, groupes, tirages, générateur) ; la page d'un groupe ajoute au groupe (GR-5), les pages de sessions badgent (SE-2, SE-4). Carte inconnue → **« Carte invalide »** ; sans événement → « Aucun événement sélectionné » ; code vide (frappe parasite) → rien ; boîte de dialogue ouverte → rien (elle a son propre écouteur, ou n'attend pas de carte) | `event_service_test.dart` (`getPlayerByQrCode`) ; `parcours_test.dart` (étapes 2, 4, 5, 7) |
 | **TR-5** Recevoir une notification (réglages enregistrés, carte sans protection…) | information / erreur | un **toast en haut au centre** de la fenêtre, 2 s (3 s pour une erreur), une croix pour fermer ; jamais en bas (`Toast`) | `parcours_test.dart` (étapes 3, 4) |
+| **TR-6** Ouvrir l'aide de la page : le « i » en haut à droite de la barre (huit pages, toujours en dernier) | données de la page (liste vide, session ouverte, tirage effectué…) | un **pas à pas** sur le vrai écran : voile sombre, trou autour de l'élément visé, bulle avec une ou deux phrases, compteur « n / total », *Suivant* (*Terminer* au dernier), *Passer*, croix, Échap. Les pas suivent les données : une liste vide dit où les choses apparaîtront ; une cible absente est sautée. Pendant le pas à pas, **la douchette ne fait rien** ; elle reprend à la fermeture (`HelpButton`, `HelpTour`). Les petits « i » à infobulle (`HelpHint`) et les légendes dans l'écran complètent, sans geste | `parcours_test.dart` (étape 10) |
 
 ---
 
@@ -44,7 +45,7 @@ des cartes** (allumée / éteinte) · **sessions existantes** (oui / non).
 |---|---|---|---|
 | **EV-1** Créer un événement (bouton « + », ou le bloc central « Créer un événement » quand la liste est vide sans recherche) | liste vide / non | l'éditeur s'ouvre, titre *Créer un événement*, champs vides, dates par défaut (maintenant, +1 jour). Liste vide sans mot-clé → le bloc central remplace la liste | `parcours_test.dart` (étapes 1, 6) |
 | **EV-2** Ouvrir un événement (clic sur sa ligne) | — | l'éditeur s'ouvre, titre *Modifier un événement*, champs remplis | `parcours_test.dart` (étape 3) |
-| **EV-3** Renseigner nom, début, fin, durée de session (min), intervalle de session (min) | champ vide → message « … est requis » à l'enregistrement | — | `parcours_test.dart` (étape 1) — les dialogues date / heure de Flutter en recette (L18, C8) |
+| **EV-3** Renseigner nom, début, fin, durée de session (min), intervalle de session (min) | champ vide → message « … est requis » à l'enregistrement ; fin avant début ou intervalle nul → « Aucune session » | début et fin sur une ligne, durée et intervalle sur la suivante ; dessous, l'**aperçu des sessions** que ces valeurs donneront, refait à chaque saisie : leur nombre, la première, la deuxième, « … », la dernière (jour et heure) — le même calcul que la génération (`EventService.sessionStarts`) | `event_service_test.dart` (`sessionStarts`) ; `parcours_test.dart` (étape 1) — les dialogues date / heure de Flutter en recette (L18, C8) |
 | **EV-4** Allumer *Protéger les cartes contre la copie et la réutilisation* | des joueurs existent → interrupteur **grisé**, texte « Des joueurs existent déjà… » | un code secret (8 caractères) est tiré ; les cartes et joueurs générés ensuite portent `sel-numéro` (`Event.qrCodeFor`) | service (`qrCodeFor`, `saltFromCode`) ; `parcours_test.dart` (étapes 1, 3) |
 | **EV-5** Éteindre la protection | idem grisé si joueurs | le sel est vidé ; les codes redeviennent le numéro seul | `parcours_test.dart` (étape 3) |
 | **EV-6** *Récupérer la protection depuis une carte imprimée* | visible seulement **sans joueur** ; carte protégée / non protégée | boîte « Scannez une carte… » ; carte protégée → interrupteur allumé avec son sel ; non protégée → message « Cette carte n'a pas de protection » | service (`saltFromCode`) ; `parcours_test.dart` (étape 3) |
@@ -68,7 +69,7 @@ même joueur** (oui / non) · **protection** (allumée / éteinte).
 | **JO-3** « − » sur la ligne *Bonus* | bonus 0 → bouton **désactivé** | bonus −1, jetons −1 | `parcours_test.dart` (étape 2) |
 | **JO-4** Ouvrir la fiche d'un joueur (clic sur la carte, hors boutons) | — | tiroir *Modifier un joueur* : image du code, numéro, nom, bonus, sessions | `parcours_test.dart` (étape 2) |
 | **JO-5** Scanner une carte | connue / inconnue | connue → la fiche du joueur s'ouvre, **sans badger**, barre « Joueur n : fiche ouverte » ; inconnue → TR-4 | `parcours_test.dart` (étape 2) |
-| **JO-6** Lire une carte : bille du **numéro**, billes *sessions*, *bonus*, *jetons* | valeur 0 → bille **grisée** ; sans jeton, la bille du numéro aussi | jetons = sessions badgées + bonus ; cartes de taille fixe (200 × 176) rangées en lignes | `parcours_test.dart` (étape 2) |
+| **JO-6** Lire une carte : bille du **numéro**, billes *sessions*, *bonus*, *jetons* | valeur 0 → bille **grisée** ; sans jeton, la bille du numéro aussi | jetons = sessions badgées + bonus ; cartes de taille fixe (200 × 176) rangées en lignes ; une **légende** en bas de page dit ce que sont les jetons et la bille grise | `parcours_test.dart` (étape 2) |
 
 ### Fiche joueur (éditeur latéral)
 
@@ -174,4 +175,4 @@ Paramètres : **image de fond** (absente / présente) · **réglages enregistré
 
 Gestes **sans effet ou absents** aujourd'hui, à trancher lot par lot : EV-10, SE-7 *(GR-4, GR-6,
 GR-7 et TI-11 tranchés le 2026-09-20)*. Chaque geste a son test depuis L18 (2026-09-20) : le
-parcours joue les 72, sauf trois dialogues du système et une animation, en recette.
+parcours joue les 73, sauf trois dialogues du système et une animation, en recette.

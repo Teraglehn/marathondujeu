@@ -15,6 +15,7 @@ import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/color_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/image_form_field.dart';
+import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/toast.dart';
 import 'package:pdf/pdf.dart';
@@ -44,6 +45,29 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
   // L'aperçu rapide (Flutter) suit chaque modification ; le PDF, plus lent, ne se rend que sur demande.
   bool _showPdf = false;
   CardLayout? _previewLayout;
+
+  // Les cibles de l'aide de la page (L12).
+  final _imageKey = GlobalKey();
+  final _sheetKey = GlobalKey();
+  final _qrKey = GlobalKey();
+  final _numberKey = GlobalKey();
+  final _rangeKey = GlobalKey();
+  final _previewKey = GlobalKey();
+  final _saveKey = GlobalKey();
+
+  List<HelpStep> helpSteps() {
+    final s = S.of(context);
+    return [
+      HelpStep(s.help_cardGenerator_1),
+      HelpStep(s.help_cardGenerator_2, target: _imageKey),
+      HelpStep(s.help_cardGenerator_3, target: _sheetKey),
+      HelpStep(s.help_cardGenerator_4, target: _qrKey),
+      HelpStep(s.help_cardGenerator_5, target: _numberKey),
+      HelpStep(s.help_cardGenerator_6, target: _rangeKey),
+      HelpStep(s.help_cardGenerator_7, target: _previewKey),
+      HelpStep(s.help_cardGenerator_8, target: _saveKey),
+    ];
+  }
 
   Future<void> _loadFrom(Event event) async {
     final image = event.playerCardBackgroundImage != null ? Uint8List.fromList(event.playerCardBackgroundImage!) : null;
@@ -184,7 +208,8 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
     );
   }
 
-  Widget _section(String title) => Padding(
+  Widget _section(String title, {Key? key}) => Padding(
+    key: key,
     padding: const EdgeInsets.only(top: 16, bottom: 4),
     child: Text(title, style: Theme.of(context).textTheme.titleMedium),
   );
@@ -214,6 +239,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(
+                  key: _imageKey,
                   height: 140,
                   child: ImageFormField(
                     key: ValueKey('image-$_loadGeneration'),
@@ -223,7 +249,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
                   ),
                 ),
 
-                _section(t.page_cardGenerator_section_sheet),
+                _section(t.page_cardGenerator_section_sheet, key: _sheetKey),
                 SegmentedButton<bool>(
                   segments: [
                     ButtonSegment(value: false, label: Text(t.page_cardGenerator_portrait), icon: const Icon(Icons.crop_portrait)),
@@ -241,7 +267,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
                 _mmField('gapY', t.page_cardGenerator_gapY, s.gapY, (v) => _update((s) => s.copyWith(gapY: v))),
                 _colorField('pageBackground', t.page_cardGenerator_pageBackgroundColor, s.pageBackgroundColor, (v) => _update((s) => s.copyWith(pageBackgroundColor: v))),
 
-                _section(t.page_cardGenerator_section_qrCode),
+                _section(t.page_cardGenerator_section_qrCode, key: _qrKey),
                 _help(t.page_cardGenerator_help_positions),
                 _mmField('qrSize', t.page_cardGenerator_size, s.qrCodeSize, (v) => _update((s) => s.copyWith(qrCodeSize: v)), min: 1),
                 _mmField('qrX', t.page_cardGenerator_posX, s.qrCodePosX, (v) => _update((s) => s.copyWith(qrCodePosX: v))),
@@ -249,7 +275,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
                 _optionalBackground('qrBackground', s.qrCodeBackgroundColor, (v) => _update((s) => s.copyWith(qrCodeBackgroundColor: v))),
                 _mmField('qrPadding', t.page_cardGenerator_padding, s.qrCodePadding, (v) => _update((s) => s.copyWith(qrCodePadding: v))),
 
-                _section(t.page_cardGenerator_section_number),
+                _section(t.page_cardGenerator_section_number, key: _numberKey),
                 _mmField('idX', t.page_cardGenerator_posX, s.idPosX, (v) => _update((s) => s.copyWith(idPosX: v))),
                 _mmField('idY', t.page_cardGenerator_posY, s.idPosY, (v) => _update((s) => s.copyWith(idPosY: v))),
                 _intField('idFontSize', t.page_cardGenerator_fontSize, s.idFontSize, (v) => _update((s) => s.copyWith(idFontSize: v)), min: 1),
@@ -259,6 +285,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
 
                 _section(t.page_cardGenerator_section_range),
                 Row(
+                  key: _rangeKey,
                   children: [
                     Expanded(child: _intField('start', t.page_cardGenerator_from, _start, (v) => _updateRange(start: v), min: 1)),
                     const SizedBox(width: 8),
@@ -287,6 +314,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FilledButton(
+                key: _saveKey,
                 onPressed: _save,
                 style: FilledButton.styleFrom(minimumSize: const Size(0, 48)),
                 child: Text(t.utils_button_save),
@@ -307,6 +335,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
     return Column(
       children: [
         Padding(
+          key: _previewKey,
           padding: const EdgeInsets.all(8.0),
           child: SegmentedButton<bool>(
             segments: [
@@ -357,7 +386,8 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
               initialValue: selectedEvent.value,
               onChanged: (event) => mainNotifier.setEventId(event?.id),
             ),
-          )
+          ),
+          HelpButton(steps: helpSteps),
         ],
       ),
       body: EventSelectedGuard(builder: (event) {

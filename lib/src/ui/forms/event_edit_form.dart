@@ -7,7 +7,9 @@ import 'package:marathondujeu/src/pods/players.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
+import 'package:marathondujeu/src/services/services.dart';
 import 'package:marathondujeu/src/ui/forms/dirty_aware.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/datetime_form_field.dart';
 import 'package:marathondujeu/src/ui/widgets/toast.dart';
@@ -181,6 +183,43 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
     await ref.read(eventServiceProvider).destroyPlayers(widget.event);
   }
 
+  /// L'aperçu des sessions que les quatre champs donneront : leur nombre, la première, la
+  /// deuxième et la dernière (jour et heure : un marathon passe minuit). Le même calcul que
+  /// le service. Champs incomplets, fin avant début, intervalle nul → « Aucune session ».
+  Widget sessionsPreview(BuildContext context) {
+    final s = S.of(context);
+    final start = _startKey.currentState?.value ?? widget.event.startDateTime;
+    final end = _endKey.currentState?.value ?? widget.event.endDateTime;
+    final duration = int.tryParse(_sessionTimeMinuteController.text) ?? 0;
+    final interval = int.tryParse(_sessionIntervalMinuteController.text) ?? 0;
+    final starts = duration > 0 ? EventService.sessionStarts(start, end, interval) : const <DateTime>[];
+
+    final format = DateFormat.E(s.localeName).add_Hm();
+    String line(int index) {
+      final sessionStart = starts[index];
+      return s.editor_event_sessions_line(index + 1, format.format(sessionStart), format.format(sessionStart.add(Duration(minutes: duration))));
+    }
+    final lines = [
+      s.editor_event_sessions_count(starts.length),
+      if (starts.isNotEmpty) line(0),
+      if (starts.length > 1) line(1),
+      if (starts.length > 3) '…',
+      if (starts.length > 2) line(starts.length - 1),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(padding: EdgeInsets.only(top: 2), child: Icon(Icons.punch_clock, size: 16)),
+          const SizedBox(width: 8),
+          Expanded(child: Text(lines.join('\n'), style: Theme.of(context).textTheme.bodySmall)),
+        ],
+      ),
+    );
+  }
+
   /// Le bloc « Protéger les cartes » : interrupteur, explication, récupération ; verrouillé dès
   /// que des joueurs existent.
   Widget protectionBlock(BuildContext context, int playerCount) {
@@ -225,6 +264,8 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
 
     return Form(
       key: _formKey,
+      // Chaque saisie refait l'aperçu des sessions.
+      onChanged: () => setState(() {}),
       child: Column(
         children: [
           Expanded(
@@ -251,76 +292,95 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DateTimeFormField(
-                      key: _startKey,
-                      initialValue: widget.event.startDateTime,
-                      label: S.of(context).data_event_datetime_start,
-                      validator: (value) {
-                        if (value == null) {
-                          return S.of(context).data_event_error_datetime_start_required;
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        widget.event.startDateTime = value!;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DateTimeFormField(
-                      key: _endKey,
-                      initialValue: widget.event.endDateTime,
-                      label: S.of(context).data_event_datetime_end,
-                      validator: (value) {
-                        if (value == null) {
-                          return S.of(context).data_event_error_datetime_end_required;
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        widget.event.endDateTime = value!;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: _sessionTimeMinuteController,
-                      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-                      inputFormatters: <TextInputFormatter>[FormattersService.integer],
-                      decoration: InputDecoration(
-                        labelText: S.of(context).data_event_session_duration_minute,
-                        border: const OutlineInputBorder(),
+                  // Début et fin côte à côte, durée et intervalle de même : les quatre
+                  // valeurs qui font les sessions se lisent d'un coup, l'aperçu juste dessous.
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DateTimeFormField(
+                            key: _startKey,
+                            initialValue: widget.event.startDateTime,
+                            label: S.of(context).data_event_datetime_start,
+                            validator: (value) {
+                              if (value == null) {
+                                return S.of(context).data_event_error_datetime_start_required;
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              widget.event.startDateTime = value!;
+                            },
+                          ),
+                        ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).data_event_error_session_duration_minute_required;
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: _sessionIntervalMinuteController,
-                      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-                      inputFormatters: <TextInputFormatter>[FormattersService.integer],
-                      decoration: InputDecoration(
-                        labelText: S.of(context).data_event_session_interval_minute,
-                        border: const OutlineInputBorder(),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DateTimeFormField(
+                            key: _endKey,
+                            initialValue: widget.event.endDateTime,
+                            label: S.of(context).data_event_datetime_end,
+                            validator: (value) {
+                              if (value == null) {
+                                return S.of(context).data_event_error_datetime_end_required;
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              widget.event.endDateTime = value!;
+                            },
+                          ),
+                        ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).data_event_error_session_interval_minute_required;
-                        }
-                        return null;
-                      },
-                    ),
+                    ],
                   ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _sessionTimeMinuteController,
+                            keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                            inputFormatters: <TextInputFormatter>[FormattersService.integer],
+                            decoration: InputDecoration(
+                              labelText: S.of(context).data_event_session_duration_minute,
+                              border: const OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return S.of(context).data_event_error_session_duration_minute_required;
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _sessionIntervalMinuteController,
+                            keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                            inputFormatters: <TextInputFormatter>[FormattersService.integer],
+                            decoration: InputDecoration(
+                              labelText: S.of(context).data_event_session_interval_minute,
+                              border: const OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return S.of(context).data_event_error_session_interval_minute_required;
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  sessionsPreview(context),
                   protectionBlock(context, playerCount),
                 ],
               ),

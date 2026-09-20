@@ -46,9 +46,11 @@ class PlayerSessionScanner extends ConsumerStatefulWidget {
 class _PlayerSessionScannerState extends ConsumerState<PlayerSessionScanner> {
 
   void scanPlayer(String qrCode) async {
-    // Une frappe parasite (code vide) ne dit rien ; une boîte de dialogue ouverte a son propre
-    // écouteur, ou n'attend pas de carte.
+    // Une frappe parasite (code vide) ne dit rien ; une boîte de dialogue ou le pas à pas de
+    // l'aide, poussés sur le navigateur racine, ont leur propre écouteur ou n'attendent pas de
+    // carte.
     if (qrCode.trim().isEmpty || ModalRoute.of(context)?.isCurrent == false) return;
+    if (rootNavigatorKey.currentState?.canPop() == true) return;
 
     final result = await scan(qrCode);
     if (result != null) ref.read(scanStatusPodProvider.notifier).set(result);

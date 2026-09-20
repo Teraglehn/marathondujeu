@@ -10,17 +10,17 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Tous les lots de la phase ont leur rapport. L15, L19 et L18 livrés le 2026-09-20. Reste **L12**
-(aide et tutoriels), en dernier, après tout le retravail (Bastien, 2026-09-19).
-Question ouverte : L12 Q2 — défaut proposé. L09 (sauvegarde) hors phase, rapport sur demande.
+Tous les lots de la phase ont leur rapport. L15, L19, L18 et L12 livrés le 2026-09-20. Reste
+**L12b** (guide global dans le rail), en cours ; ses questions sont tranchées. L09 (sauvegarde)
+hors phase, rapport sur demande.
 
 ## Phases
 
 **Phase 1 — remise en état du dépôt** : close le 2026-09-19, figée dans
 `developpement/livraisons/phase-1/`.
 
-**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L12 ; L04, L05, L06, L10, L11 et L13
-livrés le 2026-09-19, L14, L17, L16, L15, L19 et L18 le 2026-09-20. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
+**Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L12b ; L04, L05, L06, L10, L11 et L13
+livrés le 2026-09-19, L14, L17, L16, L15, L19, L18 et L12 le 2026-09-20. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
 
 L09 n'est rattaché à aucune phase : son rapport naîtra dans `lots/`.
 
@@ -32,7 +32,7 @@ Les numéros ne sont **jamais réattribués**.
 | # | Lot | Phase | Statut | Rapport |
 |---|---|---|---|---|
 | L09 | Fichier de sauvegarde par événement : export automatique, import dans la liste | — | à faire | à rédiger |
-| L12 | Aide et tutoriels : bouton « i » en haut à droite de chaque page, explications dans les écrans | 2 | à faire | `phase-2/L12-aide-et-tutoriels.md` |
+| L12b | Page d'aide globale : le parcours d'une édition, septième entrée du rail, illustrée | 2 | en cours | `phase-2/L12b-page-d-aide-globale.md` |
 
 ### Notes pour la rédaction des rapports
 
@@ -62,8 +62,8 @@ porte déjà `playerCardBackgroundImage` (`List<byte>`).
   sélecteur de couleur rétrogradé). Une migration de l'application est à prévoir, dans un lot
   dédié ; d'ici là, garder les paquets d'interface sur `flutter/material`.
 
-- **Tests** : 82 tests après L18, sur une vraie base Isar temporaire, dont le parcours e2e (`test/e2e/`) ; chaque lot ajoute les
+- **Tests** : 85 tests après L12, sur une vraie base Isar temporaire, dont le parcours e2e (`test/e2e/`) ; chaque lot ajoute les
   tests de son périmètre. **Acté 2026-09-19** : les gestes de `docs/gestes.md` sont appairés à
   un tutoriel et à des tests. **Acté 2026-09-20** : les tests unitaires couvrent la logique,
   un parcours e2e (test de widget sur l'application entière) couvre les gestes réels — c'est
-  L18, livré : les 72 gestes ont leur test (`docs/gestes.md`, colonne *Test*).
+  L18, livré : les 73 gestes ont leur test (`docs/gestes.md`, colonne *Test*).

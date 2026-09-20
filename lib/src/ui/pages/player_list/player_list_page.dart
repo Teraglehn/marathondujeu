@@ -14,6 +14,7 @@ import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
+import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,6 +27,29 @@ class PlayerListPage extends ConsumerStatefulWidget       {
 }
 
 class _PlayerListPageState extends ConsumerState<PlayerListPage> {
+
+  // Les cibles de l'aide de la page (L12).
+  final _countKey = GlobalKey();
+  final _firstKey = GlobalKey();
+  final _legendKey = GlobalKey();
+  final _scanKey = GlobalKey();
+
+  // Le pas à pas : la première carte quand il y en a une, sinon un pas qui dit où elles viendront.
+  List<HelpStep> helpSteps() {
+    final s = S.of(context);
+    final empty = _shownCount == 0;
+    return [
+      HelpStep(s.help_playerList_1),
+      HelpStep(s.help_playerList_2, target: _countKey),
+      if (empty) HelpStep(s.help_playerList_3_empty),
+      if (!empty) ...[
+        HelpStep(s.help_playerList_3, target: _firstKey),
+        HelpStep(s.help_playerList_4, target: _firstKey),
+      ],
+      HelpStep(s.help_playerList_5, target: _legendKey),
+      HelpStep(s.help_playerList_6, target: _scanKey),
+    ];
+  }
 
   // La carte d'un joueur : la ligne du nom (dense, 48 px), trois lignes compactes (40 px), les
   // marges de la Card.
@@ -122,7 +146,7 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_playerList_title),
         actions: [
-          const ScanStatus(),
+          ScanStatus(key: _scanKey),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -132,13 +156,15 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
               initialValue: selectedEvent.value,
               onChanged: (event) => mainNotifier.setEventId(event?.id),
             ),
-          )
+          ),
+          HelpButton(steps: helpSteps),
         ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
         child: Column(
           children: [
             Container(
+              key: _countKey,
               padding: const EdgeInsets.all(8.0),
               color: Theme.of(context).colorScheme.secondaryContainer,
               child: Row(children: [
@@ -175,6 +201,7 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                   onPressed: canGenerate(existing) ? () => eventService.generateMissingPlayers(selectedEvent, int.parse(_playerCountController.text)) : null,
                   child: Text(S.of(context).page_playerList_generateMissingPlayers),
                 ),
+                HelpHint(S.of(context).help_hint_playerCount),
                 //ElevatedButton(onPressed: () => eventService.destroyPlayers(selectedEvent), child: Text(S.of(context).page_playerList_deletePlayers))
               ])
             ),
@@ -188,6 +215,7 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                   spacing: 8,
                   runSpacing: 8,
                   children: data.map((player) => SizedBox(
+                  key: player == data.first ? _firstKey : null,
                   width: _cardWidth,
                   height: _cardHeight,
                   child: Card(
@@ -239,6 +267,20 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                 error: (_, e) => Center(child: Text(e.toString())),
                 loading: () => const SizedBox.shrink()
               )
+            ),
+            Container(
+              key: _legendKey,
+              width: double.infinity,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(border: Border(top: BorderSide(color: Theme.of(context).colorScheme.outlineVariant))),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  countAvatar(context, 0),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(S.of(context).page_playerList_legend, style: Theme.of(context).textTheme.bodySmall)),
+                ],
+              ),
             ),
           ],
         )

@@ -12,6 +12,7 @@ import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/ui/widgets/delete_player_group_dialog.dart';
+import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 
@@ -25,6 +26,25 @@ class PlayerGroupListPage extends ConsumerStatefulWidget       {
 class _PlayerGroupListPageState extends ConsumerState<PlayerGroupListPage> {
 
   late SearchCriteria criteria;
+
+  // Les cibles de l'aide de la page (L12).
+  final _addKey = GlobalKey();
+  final _firstKey = GlobalKey();
+  final _winnersKey = GlobalKey();
+  final _scanKey = GlobalKey();
+
+  // Le pas à pas : la première ligne quand il y en a une, sinon un pas qui dit où elles viendront.
+  List<HelpStep> helpSteps() {
+    final s = S.of(context);
+    return [
+      HelpStep(s.help_playerGroupList_1),
+      HelpStep(s.help_playerGroupList_2, target: _addKey),
+      if (_firstKey.currentContext == null) HelpStep(s.help_playerGroupList_3_empty),
+      HelpStep(s.help_playerGroupList_3, target: _firstKey),
+      HelpStep(s.help_playerGroupList_4, target: _winnersKey),
+      HelpStep(s.help_playerGroupList_5, target: _scanKey),
+    ];
+  }
 
   @override
   void initState() {
@@ -58,7 +78,7 @@ class _PlayerGroupListPageState extends ConsumerState<PlayerGroupListPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_playerGroupsList_title),
         actions: [
-          const ScanStatus(),
+          ScanStatus(key: _scanKey),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -68,7 +88,8 @@ class _PlayerGroupListPageState extends ConsumerState<PlayerGroupListPage> {
               initialValue: selectedEvent.value,
               onChanged: (event) => mainNotifier.setEventId(event?.id),
             ),
-          )
+          ),
+          HelpButton(steps: helpSteps),
         ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
@@ -91,6 +112,7 @@ class _PlayerGroupListPageState extends ConsumerState<PlayerGroupListPage> {
               )
             ),
             Padding(
+              key: _winnersKey,
               padding: const EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,6 +127,7 @@ class _PlayerGroupListPageState extends ConsumerState<PlayerGroupListPage> {
         )
       )),
       floatingActionButton: selectedEvent.value == null ? null : FloatingActionButton(
+        key: _addKey,
         onPressed: () => editor.newPlayerGroup(selectedEvent.value!),
         child: const Icon(Icons.add),
       )
@@ -121,6 +144,7 @@ class _PlayerGroupListPageState extends ConsumerState<PlayerGroupListPage> {
       itemBuilder: (context, index) {
         final group = groups[index];
         return ListTile(
+          key: index == 0 ? _firstKey : null,
           leading: CircleAvatar(
             child: Text(group.name.toUpperCase().split(" ").take(2).map((s) => s.substring(0,1)).join(""))
           ),

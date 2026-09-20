@@ -96,6 +96,23 @@ class SFr extends S {
   String get editor_dirty_leave => 'Quitter';
 
   @override
+  String editor_event_sessions_count(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sessions',
+      one: '1 session',
+      zero: 'Aucune session',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String editor_event_sessions_line(Object number, Object start, Object end) {
+    return '$number : $start – $end';
+  }
+
+  @override
   String get utils_button_reset => 'Réinitialiser';
 
   @override
@@ -814,4 +831,264 @@ class SFr extends S {
 
   @override
   String get scan_noEvent => 'Aucun événement sélectionné';
+
+  @override
+  String get help_button => 'Aide de la page';
+
+  @override
+  String get help_next => 'Suivant';
+
+  @override
+  String get help_finish => 'Terminer';
+
+  @override
+  String get help_skip => 'Passer';
+
+  @override
+  String help_counter(Object index, Object count) {
+    return '$index / $count';
+  }
+
+  @override
+  String get help_hint_playerCount =>
+      'Le nombre total de cartes de l\'événement. Augmentez-le pour créer les joueurs qui manquent ; on ne retire pas de joueur ici.';
+
+  @override
+  String get help_hint_manualBadge =>
+      'Allumé, la douchette et le champ Numéro badgent cette session même hors de son horaire.';
+
+  @override
+  String get help_hint_removeMode =>
+      'Allumé, un scan ou un numéro retire le joueur au lieu de l\'ajouter.';
+
+  @override
+  String get help_hint_sessionNumber =>
+      'Sans carte sous la main : tapez le numéro du joueur, puis Entrée.';
+
+  @override
+  String get help_hint_groupNumber =>
+      'Tapez le numéro d\'un joueur, puis Entrée, pour l\'ajouter sans sa carte.';
+
+  @override
+  String get page_playerList_legend =>
+      'Jetons = sessions badgées + bonus : les chances du joueur au tirage. Une bille grise n\'a aucun jeton — le joueur n\'est pas dans l\'urne.';
+
+  @override
+  String get help_eventList_1 =>
+      'Cette page liste vos événements — un par édition du Marathon. Tout le reste de l\'application travaille sur l\'événement choisi en haut à droite.';
+
+  @override
+  String get help_eventList_2 =>
+      'Créez un événement avec ce bouton : son nom, ses dates, la durée et l\'intervalle des sessions. Les sessions se génèrent d\'elles-mêmes.';
+
+  @override
+  String get help_eventList_3 => 'Retrouvez un événement par son nom.';
+
+  @override
+  String get help_eventList_4 =>
+      'Cliquez un événement pour le modifier : dates, protection des cartes, suppression des joueurs.';
+
+  @override
+  String get help_eventList_5 =>
+      'Choisissez ici l\'événement sur lequel vous travaillez : joueurs, sessions, tirages et cartes sont les siens.';
+
+  @override
+  String get help_eventList_6 =>
+      'Où que vous soyez, scanner une carte ouvre la fiche du joueur ; le résultat du dernier scan s\'affiche ici.';
+
+  @override
+  String get help_playerList_1 =>
+      'Les joueurs sont anonymes : chacun est un numéro de carte. Cette page les crée et suit leurs jetons.';
+
+  @override
+  String get help_playerList_2 =>
+      'Indiquez combien de cartes vous imprimez, puis « Générer les joueurs manquants » : les numéros absents sont créés.';
+
+  @override
+  String get help_playerList_3 =>
+      'Une carte par joueur : son numéro, ses sessions badgées, son bonus, ses jetons. Cliquez-la pour ouvrir sa fiche.';
+
+  @override
+  String get help_playerList_3_empty =>
+      'Les joueurs apparaîtront ici, une carte chacun, dès que vous les aurez générés.';
+
+  @override
+  String get help_playerList_4 =>
+      '« + » et « − » sur la ligne Bonus offrent ou retirent des sessions : un jeton de plus ou de moins au tirage.';
+
+  @override
+  String get help_playerList_5 =>
+      'Jetons = sessions + bonus : les chances du joueur au tirage. Une bille grise n\'a aucun jeton.';
+
+  @override
+  String get help_playerList_6 =>
+      'Scanner une carte ouvre la fiche de ce joueur.';
+
+  @override
+  String get help_playerGroupList_1 =>
+      'Un groupe rassemble des joueurs pour les tirages, et rien d\'autre : un tirage peut exiger ou exclure ses membres.';
+
+  @override
+  String get help_playerGroupList_2 =>
+      'Créez un groupe : un nom suffit. Les joueurs s\'ajoutent ensuite sur sa page.';
+
+  @override
+  String get help_playerGroupList_3 =>
+      'Cliquez un groupe pour ouvrir sa page ; le crayon le renomme, la poubelle le supprime (ses joueurs restent).';
+
+  @override
+  String get help_playerGroupList_3_empty => 'Vos groupes apparaîtront ici.';
+
+  @override
+  String get help_playerGroupList_4 =>
+      'Les groupes de gagnants ne sont pas listés : ils vivent dans le tirage qui les a créés.';
+
+  @override
+  String get help_playerGroupList_5 =>
+      'Ici, scanner une carte ouvre la fiche du joueur. Sur la page d\'un groupe, elle l\'y ajoute.';
+
+  @override
+  String get help_playerGroup_1 =>
+      'La page d\'un groupe : ses membres, et comment en ajouter ou en retirer.';
+
+  @override
+  String get help_playerGroup_2 =>
+      'Scannez la carte d\'un joueur : il rejoint le groupe. Déjà membre, rien ne change.';
+
+  @override
+  String get help_playerGroup_3 =>
+      'Sans carte : tapez son numéro, puis Entrée ou « Ajouter ».';
+
+  @override
+  String get help_playerGroup_4 =>
+      'Mode suppression : un scan ou un numéro retire le joueur, et chaque bille reçoit un bouton « Retirer ».';
+
+  @override
+  String get help_playerGroup_5 => 'Les membres du groupe, par numéro.';
+
+  @override
+  String get help_playerGroup_6 =>
+      'Le crayon renomme le groupe, ou le supprime.';
+
+  @override
+  String get help_sessionList_1 =>
+      'Une session est un créneau de badgeage. Les joueurs présents scannent leur carte : chaque session badgée vaut un jeton au tirage.';
+
+  @override
+  String get help_sessionList_2 =>
+      'L\'heure de l\'application : c\'est elle qui décide quelle session est ouverte.';
+
+  @override
+  String get help_sessionList_3_open =>
+      'La session ouverte est en couleur : c\'est là que la douchette badge maintenant. Cliquez une carte pour ouvrir sa session.';
+
+  @override
+  String get help_sessionList_3_closed =>
+      'Aucune session n\'est ouverte à cette heure : la douchette ne badge pas. Cliquez une carte pour ouvrir une session et badger à la main.';
+
+  @override
+  String get help_sessionList_3_empty =>
+      'Les sessions se génèrent depuis l\'événement : ses dates, la durée et l\'intervalle des sessions.';
+
+  @override
+  String get help_sessionList_4 =>
+      'Depuis cette page, scanner une carte badge la session ouverte, sans l\'ouvrir.';
+
+  @override
+  String get help_sessionList_5 =>
+      'Les couleurs : ouverte, passée, à venir. « n présents » compte les joueurs badgés.';
+
+  @override
+  String get help_session_1 =>
+      'La page d\'une session : qui est là, qui manque, et les moyens de badger.';
+
+  @override
+  String get help_session_2 =>
+      'Le créneau, son état (ouverte, passée) et l\'heure.';
+
+  @override
+  String get help_session_3 =>
+      'Scannez une carte : le joueur passe dans Présents. Hors de l\'horaire, le scan est refusé — sauf en badgeage manuel.';
+
+  @override
+  String get help_session_4 =>
+      'Badgeage manuel : pour badger hors de l\'horaire — un retardataire, une session passée.';
+
+  @override
+  String get help_session_5 =>
+      'Sans carte : le numéro du joueur, puis Entrée ou « Ajouter ».';
+
+  @override
+  String get help_session_6 =>
+      'Mode suppression : un scan, un numéro ou le bouton « Retirer » d\'une bille enlève le joueur de la session.';
+
+  @override
+  String get help_session_7 =>
+      'Présents : les joueurs badgés sur cette session.';
+
+  @override
+  String get help_session_8 =>
+      'Absents : ceux qui ont badgé une autre session, mais pas celle-ci. Un joueur jamais badgé n\'apparaît pas.';
+
+  @override
+  String get help_session_9 => 'Retour à la liste des sessions.';
+
+  @override
+  String get help_drawList_1 =>
+      'Un tirage tire au sort des gagnants parmi les joueurs : plus un joueur a de jetons, plus il a de chances.';
+
+  @override
+  String get help_drawList_2 =>
+      'Créez un tirage : nombre de gagnants, sessions et groupes requis ou exclus, puis « Tirer au sort ».';
+
+  @override
+  String get help_drawList_3 =>
+      'Cliquez un tirage pour le consulter ou le modifier.';
+
+  @override
+  String get help_drawList_3_empty =>
+      'Vos tirages apparaîtront ici, avec leurs gagnants.';
+
+  @override
+  String get help_drawList_3_drawn =>
+      'Un cadenas : le tirage est fait, il ne se modifie plus. Ses gagnants sont affichés ; cliquez-en un pour ouvrir sa fiche.';
+
+  @override
+  String get help_drawList_4 =>
+      'Copier reprend les réglages d\'un tirage dans un nouveau — pour retirer avec les mêmes règles.';
+
+  @override
+  String get help_drawList_5 => 'Scanner une carte ouvre la fiche du joueur.';
+
+  @override
+  String get help_cardGenerator_1 =>
+      'Cette page prépare les cartes à imprimer : une image de fond, le code de chaque joueur, son numéro.';
+
+  @override
+  String get help_cardGenerator_2 =>
+      'Choisissez l\'image de fond en cliquant le cadre. La hauteur des cartes suit ses proportions.';
+
+  @override
+  String get help_cardGenerator_3 =>
+      'La planche : combien de cartes par ligne et par page, leur largeur, les marges.';
+
+  @override
+  String get help_cardGenerator_4 =>
+      'Le code de la carte : sa taille et sa position, en millimètres depuis le coin haut gauche.';
+
+  @override
+  String get help_cardGenerator_5 =>
+      'Le numéro : même chose, plus la police et la couleur.';
+
+  @override
+  String get help_cardGenerator_6 =>
+      'Du numéro… au numéro… : les cartes à imprimer. Au-delà des joueurs existants, un bouton les crée.';
+
+  @override
+  String get help_cardGenerator_7 =>
+      'L\'aperçu rapide suit vos réglages ; l\'aperçu PDF est ce qui s\'imprime, avec son bouton d\'impression.';
+
+  @override
+  String get help_cardGenerator_8 =>
+      'Enregistrez : les réglages sont gardés avec l\'événement.';
 }

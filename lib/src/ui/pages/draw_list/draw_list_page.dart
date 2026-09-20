@@ -9,6 +9,7 @@ import 'package:marathondujeu/src/pods/selected_event.dart';
 import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
+import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +22,27 @@ class DrawListPage extends ConsumerStatefulWidget       {
 }
 
 class _DrawListPageState extends ConsumerState<DrawListPage> {
+
+  // Les cibles de l'aide de la page (L12) : la première ligne, le premier tirage effectué
+  // (cadenas) et son bouton *Copier*.
+  final _addKey = GlobalKey();
+  final _firstKey = GlobalKey();
+  final _drawnKey = GlobalKey();
+  final _copyKey = GlobalKey();
+  final _scanKey = GlobalKey();
+
+  List<HelpStep> helpSteps() {
+    final s = S.of(context);
+    return [
+      HelpStep(s.help_drawList_1),
+      HelpStep(s.help_drawList_2, target: _addKey),
+      if (_firstKey.currentContext == null && _drawnKey.currentContext == null) HelpStep(s.help_drawList_3_empty),
+      HelpStep(s.help_drawList_3, target: _firstKey),
+      HelpStep(s.help_drawList_3_drawn, target: _drawnKey),
+      HelpStep(s.help_drawList_4, target: _copyKey),
+      HelpStep(s.help_drawList_5, target: _scanKey),
+    ];
+  }
 
   /// Ouvre l'éditeur sur une copie, non enregistrée.
   Future<void> copyDraw(Draw draw) async {
@@ -53,7 +75,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_drawList_title),
         actions: [
-          const ScanStatus(),
+          ScanStatus(key: _scanKey),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -63,7 +85,8 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
               initialValue: selectedEvent.value,
               onChanged: (event) => mainNotifier.setEventId(event?.id),
             ),
-          )
+          ),
+          HelpButton(steps: helpSteps),
         ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(child: Column(
@@ -78,9 +101,11 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                 ),
                 itemBuilder: (context, index) {
                   Draw draw = data.elementAt(index);
+                  final firstDrawn = draw.isDrawn && draw == data.firstWhere((d) => d.isDrawn);
                   return Column(
                     children: [
                       ListTile(
+                        key: firstDrawn ? _drawnKey : index == 0 ? _firstKey : null,
                         onTap: () => editor.editDraw(draw),
                         leading: CircleAvatar(
                           child: Text(draw.id.toString())
@@ -112,7 +137,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
                             )
                           )).toList()
                         ),
-                        trailing: IconButton(onPressed: () => copyDraw(draw), icon: const Icon(Icons.copy), tooltip: S.of(context).data_draw_copy_help),
+                        trailing: IconButton(key: index == 0 ? _copyKey : null, onPressed: () => copyDraw(draw), icon: const Icon(Icons.copy), tooltip: S.of(context).data_draw_copy_help),
                       ),
                       
                     ],
@@ -126,6 +151,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
         ],
       ))),
       floatingActionButton: selectedEvent.value == null ? null : FloatingActionButton(
+        key: _addKey,
         onPressed: () async => editor.editDraw(await ref.read(drawServiceProvider).createDraw(selectedEvent.value!)),
         child: const Icon(Icons.add),
       )

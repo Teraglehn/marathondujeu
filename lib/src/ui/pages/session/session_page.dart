@@ -15,6 +15,7 @@ import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
+import 'package:marathondujeu/src/ui/widgets/help/help.dart';
 import 'package:marathondujeu/src/ui/widgets/player_bubble.dart';
 import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/toast.dart';
@@ -47,6 +48,31 @@ class _SessionPageState extends ConsumerState<SessionPage> {
   int? _shownSessionId;
   Set<int> _shownPresent = {};
   Set<int> _shownAbsent = {};
+
+  // Les cibles de l'aide de la page (L12).
+  final _backKey = GlobalKey();
+  final _scanKey = GlobalKey();
+  final _headerKey = GlobalKey();
+  final _manualKey = GlobalKey();
+  final _numberKey = GlobalKey();
+  final _removeKey = GlobalKey();
+  final _presentKey = GlobalKey();
+  final _absentKey = GlobalKey();
+
+  List<HelpStep> helpSteps() {
+    final s = S.of(context);
+    return [
+      HelpStep(s.help_session_1),
+      HelpStep(s.help_session_2, target: _headerKey),
+      HelpStep(s.help_session_3, target: _scanKey),
+      HelpStep(s.help_session_4, target: _manualKey),
+      HelpStep(s.help_session_5, target: _numberKey),
+      HelpStep(s.help_session_6, target: _removeKey),
+      HelpStep(s.help_session_7, target: _presentKey),
+      HelpStep(s.help_session_8, target: _absentKey),
+      HelpStep(s.help_session_9, target: _backKey),
+    ];
+  }
 
   @override
   void dispose() {
@@ -161,6 +187,7 @@ class _SessionPageState extends ConsumerState<SessionPage> {
 
   Widget zone(BuildContext context, String title, List<Player> players, {required bool present}) {
     return Column(
+      key: present ? _presentKey : _absentKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -211,11 +238,15 @@ class _SessionPageState extends ConsumerState<SessionPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
+          key: _backKey,
           onPressed: () => GoRouter.of(context).goNamed(Routes.sessionList),
           icon: const Icon(Icons.arrow_back)
         ),
         title: Text(S.of(context).page_session_title),
-        actions: [ScanStatus(mode: ScanMode.badgeThisSession, remove: removeMode)],
+        actions: [
+          ScanStatus(key: _scanKey, mode: ScanMode.badgeThisSession, remove: removeMode),
+          HelpButton(steps: helpSteps),
+        ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
         mode: ScanMode.badgeThisSession,
@@ -266,7 +297,7 @@ class _SessionPageState extends ConsumerState<SessionPage> {
           color: Theme.of(context).colorScheme.secondaryContainer,
           child: Row(
             children: [
-              Text(header, style: Theme.of(context).textTheme.titleMedium),
+              Text(header, key: _headerKey, style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(width: 24),
               Expanded(
                 child: Wrap(
@@ -275,13 +306,16 @@ class _SessionPageState extends ConsumerState<SessionPage> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Row(
+                      key: _manualKey,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(s.page_session_manualAdd),
                         Switch(value: manualMode, onChanged: (_) => switchManualMode()),
+                        HelpHint(s.help_hint_manualBadge),
                       ],
                     ),
                     Row(
+                      key: _numberKey,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
@@ -310,9 +344,11 @@ class _SessionPageState extends ConsumerState<SessionPage> {
                           onPressed: canSubmit ? submit : null,
                           child: Text(s.utils_button_add),
                         ),
+                        HelpHint(s.help_hint_sessionNumber),
                       ],
                     ),
                     Row(
+                      key: _removeKey,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(s.page_session_removeMode, style: removeMode ? TextStyle(color: error, fontWeight: FontWeight.bold) : null),
@@ -322,6 +358,7 @@ class _SessionPageState extends ConsumerState<SessionPage> {
                           activeTrackColor: error.withValues(alpha: 0.4),
                           onChanged: (value) => setState(() => removeMode = value),
                         ),
+                        HelpHint(s.help_hint_removeMode),
                       ],
                     ),
                     if (unknown != null) Text(s.page_session_number_unknown(unknown), style: TextStyle(color: Theme.of(context).colorScheme.error)),
