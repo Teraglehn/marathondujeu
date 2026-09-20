@@ -10,7 +10,7 @@ Ce fichier n'est **pas** une source de vérité. La méthode de travail se lit d
 
 ## Prochain geste
 
-Tous les lots de la phase ont leur rapport. L15 livré le 2026-09-20. Ordre : **L18**
+Tous les lots de la phase ont leur rapport. L15 et L19 livrés le 2026-09-20. Ordre : **L18**
 (couverture des gestes), puis **L12** en dernier, après tout le retravail (Bastien, 2026-09-19).
 Question ouverte : L12 Q2 — défaut proposé. L09 (sauvegarde) hors phase, rapport sur demande.
 
@@ -20,7 +20,7 @@ Question ouverte : L12 Q2 — défaut proposé. L09 (sauvegarde) hors phase, rap
 `developpement/livraisons/phase-1/`.
 
 **Phase 2 — besoins de l'édition à venir**, ouverte le 2026-09-19 : L12, L18 ; L04, L05, L06, L10, L11 et L13
-livrés le 2026-09-19, L14, L17, L16 et L15 le 2026-09-20. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
+livrés le 2026-09-19, L14, L17, L16, L15 et L19 le 2026-09-20. Objet et critère d'appartenance dans `developpement/phase-2/README.md`.
 
 L09 n'est rattaché à aucune phase : son rapport naîtra dans `lots/`.
 

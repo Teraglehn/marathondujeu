@@ -39,7 +39,6 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
   final _endKey = GlobalKey<FormFieldState<DateTime>>();
   final _sessionTimeMinuteController = TextEditingController();
   final _sessionIntervalMinuteController = TextEditingController();
-  bool generateSessions = false;
 
   // La protection des cartes : un sel propre à l'événement dans le QR code. Jamais saisi.
   late String _qrSalt;
@@ -56,17 +55,34 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    if (generateSessions && !await confirmGenerateSessions()) return;
+    // Les paramètres de session ont changé → les sessions sont recréées ; avec des badgeages,
+    // on demande d'abord (L19). Un événement neuf reçoit ses sessions du service.
+    final regenerateSessions = widget.event.exist && eventSessionsChanged(widget.event,
+      start: _startKey.currentState?.value,
+      end: _endKey.currentState?.value,
+      sessionTime: int.tryParse(_sessionTimeMinuteController.text),
+      sessionInterval: int.tryParse(_sessionIntervalMinuteController.text),
+    );
+    if (regenerateSessions && !await confirmRegenerateSessions()) return;
 
     widget.event.sessionTimeMinutes = int.parse(_sessionTimeMinuteController.text);
     widget.event.sessionIntervalMinutes = int.parse(_sessionIntervalMinuteController.text);
     widget.event.qrSalt = _qrSalt;
 
     _formKey.currentState!.save();
-    
+
     ref.read(eventsProvider().notifier)
-      .save(widget.event, generateSessions: generateSessions)
+      .save(widget.event, regenerateSessions: regenerateSessions)
       .then((_) => ref.read(editorPodProvider.notifier).close());
+  }
+
+  /// Remet début, fin, durée et intervalle à leur valeur enregistrée ; le reste de l'éditeur
+  /// garde ses modifications.
+  void resetSessionParams() {
+    _startKey.currentState?.reset();
+    _endKey.currentState?.reset();
+    _sessionTimeMinuteController.text = widget.event.sessionTimeMinutes.toString();
+    _sessionIntervalMinuteController.text = widget.event.sessionIntervalMinutes.toString();
   }
 
   void delete(){
@@ -87,7 +103,6 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
     sessionTime: int.tryParse(_sessionTimeMinuteController.text),
     sessionInterval: int.tryParse(_sessionIntervalMinuteController.text),
     qrSalt: _qrSalt,
-    generateSessions: generateSessions,
   );
 
   void setProtected(bool protected) {
@@ -125,22 +140,25 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
     setState(() => _qrSalt = salt);
   }
 
-  /// Regénérer les sessions perd leurs badgeages : s'il y en a, on le dit et on demande.
-  Future<bool> confirmGenerateSessions() async {
+  /// Recréer les sessions perd leurs badgeages : s'il y en a, on le dit et on demande.
+  /// Refusé → les paramètres de session reprennent leur valeur enregistrée, l'éditeur reste ouvert.
+  Future<bool> confirmRegenerateSessions() async {
     final badges = await ref.read(eventServiceProvider).countBadges(widget.event);
     if (badges == 0 || !mounted) return true;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(S.of(context).page_eventList_generateSessions),
-        content: Text(S.of(context).data_event_generateSessions_confirm(badges)),
+        title: Text(S.of(context).data_event_regenerateSessions_title),
+        content: Text(S.of(context).data_event_regenerateSessions_confirm(badges)),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(S.of(context).utils_button_cancel)),
-          FilledButton(onPressed: () => Navigator.of(context).pop(true), child: Text(S.of(context).utils_button_save)),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(S.of(context).data_event_regenerateSessions_revert)),
+          FilledButton(onPressed: () => Navigator.of(context).pop(true), child: Text(S.of(context).data_event_regenerateSessions_recreate)),
         ],
       ),
     );
-    return confirmed == true;
+    if (confirmed == true) return true;
+    if (mounted) resetSessionParams();
+    return false;
   }
 
   /// Supprime tous les joueurs de l'événement, après confirmation : c'est ce qui débloque la protection.
@@ -305,18 +323,6 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
                     ),
                   ),
                   protectionBlock(context, playerCount),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CheckboxListTile(
-                      title: Text(S.of(context).page_eventList_generateSessions),
-                      value: generateSessions,
-                      onChanged:(bool? value) {
-                        setState(() {
-                          generateSessions = !generateSessions;
-                        });
-                      },
-                    ),
-                  ),
                 ],
               ),
             ),

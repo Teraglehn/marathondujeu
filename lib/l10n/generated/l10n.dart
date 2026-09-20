@@ -811,12 +811,6 @@ abstract class S {
   /// **'Events'**
   String get page_eventList_menuItem;
 
-  /// No description provided for @page_eventList_generateSessions.
-  ///
-  /// In en, this message translates to:
-  /// **'Generate sessions (deletes existing sessions)'**
-  String get page_eventList_generateSessions;
-
   /// No description provided for @page_eventList_empty_title.
   ///
   /// In en, this message translates to:
@@ -1092,11 +1086,29 @@ abstract class S {
   /// **'Delete the {count} players of this event? Their badges and the draw winners will be lost. Printed cards will not be recognised until the players are generated again.'**
   String data_event_deletePlayers_confirm(Object count);
 
-  /// No description provided for @data_event_generateSessions_confirm.
+  /// No description provided for @data_event_regenerateSessions_title.
   ///
   /// In en, this message translates to:
-  /// **'The sessions will be recreated and {count, plural, one {1 badge} other {{count} badges}} lost.'**
-  String data_event_generateSessions_confirm(num count);
+  /// **'Recreate the sessions?'**
+  String get data_event_regenerateSessions_title;
+
+  /// No description provided for @data_event_regenerateSessions_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'The schedule changed: the sessions will be recreated and {count, plural, one {1 badge} other {{count} badges}} lost.'**
+  String data_event_regenerateSessions_confirm(num count);
+
+  /// No description provided for @data_event_regenerateSessions_revert.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo the changes'**
+  String get data_event_regenerateSessions_revert;
+
+  /// No description provided for @data_event_regenerateSessions_recreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Recreate the sessions'**
+  String get data_event_regenerateSessions_recreate;
 
   /// No description provided for @page_drawList_title.
   ///

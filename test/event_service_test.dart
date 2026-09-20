@@ -173,6 +173,50 @@ void main() {
     });
   });
 
+  /// L19 : les sessions suivent les paramètres de l'événement, sans coche.
+  group('save', () {
+    Future<List<Session>> sessionsOf(Event e) => isar.sessions.filter().event((q) => q.idEqualTo(e.id)).sortByNumber().findAll();
+
+    test('un événement neuf reçoit ses sessions : une par intervalle, de début à fin', () async {
+      final neuf = Event()
+        ..name = 'Neuf'
+        ..startDateTime = DateTime(2026, 10, 3, 10)
+        ..endDateTime = DateTime(2026, 10, 3, 12)
+        ..sessionTimeMinutes = 15
+        ..sessionIntervalMinutes = 30;
+
+      await service().save(neuf);
+
+      final sessions = await sessionsOf(neuf);
+      expect(sessions.map((s) => s.number), [1, 2, 3, 4]);
+      expect(sessions.first.startTime, DateTime(2026, 10, 3, 10));
+      expect(sessions.first.endTime, DateTime(2026, 10, 3, 10, 15));
+      expect(sessions.last.startTime, DateTime(2026, 10, 3, 11, 30));
+    });
+
+    test('un existant enregistré sans regénération garde ses sessions et leurs badgeages', () async {
+      event.name = 'Renommé';
+      await service().save(event);
+
+      expect((await sessionsOf(event)).map((s) => s.id), [s1.id, s2.id]);
+      expect(await badgedSessions(), {s1.id});
+    });
+
+    test('regénérer recrée les sessions ; les badgeages sont perdus', () async {
+      event
+        ..startDateTime = DateTime(2026, 10, 3, 10)
+        ..endDateTime = DateTime(2026, 10, 3, 11)
+        ..sessionIntervalMinutes = 30;
+      await service().save(event, regenerateSessions: true);
+
+      final sessions = await sessionsOf(event);
+      expect(sessions.map((s) => s.number), [1, 2]);
+      expect(sessions.map((s) => s.id), isNot(contains(s1.id)));
+      expect(await badgedSessions(), isEmpty);
+      expect(await service().countBadges(event), 0);
+    });
+  });
+
   group('countBadges', () {
     test('compte les badgeages de toutes les sessions', () async {
       expect(await service().countBadges(event), 1);

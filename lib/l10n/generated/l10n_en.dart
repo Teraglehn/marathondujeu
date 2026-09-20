@@ -498,10 +498,6 @@ class SEn extends S {
   String get page_eventList_menuItem => 'Events';
 
   @override
-  String get page_eventList_generateSessions =>
-      'Generate sessions (deletes existing sessions)';
-
-  @override
   String get page_eventList_empty_title => 'Create an event';
 
   @override
@@ -673,15 +669,24 @@ class SEn extends S {
   }
 
   @override
-  String data_event_generateSessions_confirm(num count) {
+  String get data_event_regenerateSessions_title => 'Recreate the sessions?';
+
+  @override
+  String data_event_regenerateSessions_confirm(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
       other: '$count badges',
       one: '1 badge',
     );
-    return 'The sessions will be recreated and $_temp0 lost.';
+    return 'The schedule changed: the sessions will be recreated and $_temp0 lost.';
   }
+
+  @override
+  String get data_event_regenerateSessions_revert => 'Undo the changes';
+
+  @override
+  String get data_event_regenerateSessions_recreate => 'Recreate the sessions';
 
   @override
   String get page_drawList_title => 'Draws';

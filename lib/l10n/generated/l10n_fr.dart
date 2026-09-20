@@ -498,10 +498,6 @@ class SFr extends S {
   String get page_eventList_menuItem => 'Evénements';
 
   @override
-  String get page_eventList_generateSessions =>
-      'Générer les sessions (supprime les sessions existantes)';
-
-  @override
   String get page_eventList_empty_title => 'Créer un événement';
 
   @override
@@ -675,15 +671,25 @@ class SFr extends S {
   }
 
   @override
-  String data_event_generateSessions_confirm(num count) {
+  String get data_event_regenerateSessions_title => 'Recréer les sessions ?';
+
+  @override
+  String data_event_regenerateSessions_confirm(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
       other: '$count badgeages',
       one: '1 badgeage',
     );
-    return 'Les sessions seront recréées et $_temp0 perdus.';
+    return 'Les horaires ont changé : les sessions seront recréées et $_temp0 perdus.';
   }
+
+  @override
+  String get data_event_regenerateSessions_revert =>
+      'Annuler les modifications';
+
+  @override
+  String get data_event_regenerateSessions_recreate => 'Recréer les sessions';
 
   @override
   String get page_drawList_title => 'Tirages';

@@ -142,3 +142,14 @@ page (C10) ; en mode suppression tous les messages sont en `onErrorContainer` ; 
 retenue) : aucun écart relevé à la recette, sans constat explicite ; deux constats hors périmètre notés au
 rapport (clé de message erronée sur le champ *Nombre de joueurs* vide ; un scan qui ouvre une
 fiche remplace un éditeur modifié sans « Quitter / Revenir »).
+
+## 2026-09-20 — L19
+
+**L19 — Sessions générées d'office.** La coche *Générer les sessions* disparaît. Un événement
+neuf reçoit ses sessions à l'enregistrement, par le service (`save`, quel que soit l'appelant).
+Un existant les garde tant que début, fin, durée et intervalle ne changent pas
+(`eventSessionsChanged`, fonction pure testée) ; changés sans badgeage → recréées sans demander ;
+changés avec badgeages → modale « Recréer les sessions ? » : *Recréer les sessions* (badgeages
+perdus) ou *Annuler les modifications*, qui remet les quatre champs et laisse l'éditeur ouvert.
+Tests : `save` (neuf, inchangé, recréé). `docs/gestes.md` : EV-8 réécrit, EV-9, EV-11. L18 ajusté
+(dépend de L19, étapes 1 et 8). *Écarts assumés* : aucun.

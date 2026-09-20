@@ -18,15 +18,23 @@ bool eventFormIsDirty(Event event, {
   required int? sessionTime,
   required int? sessionInterval,
   required String qrSalt,
-  required bool generateSessions,
 }) =>
   name != event.name
-  || start != event.startDateTime
+  || qrSalt != event.qrSalt
+  || eventSessionsChanged(event, start: start, end: end, sessionTime: sessionTime, sessionInterval: sessionInterval);
+
+/// Les paramètres qui font les sessions — début, fin, durée, intervalle — contre l'objet ouvert.
+/// Changés à l'enregistrement, les sessions sont recréées (L19).
+bool eventSessionsChanged(Event event, {
+  required DateTime? start,
+  required DateTime? end,
+  required int? sessionTime,
+  required int? sessionInterval,
+}) =>
+  start != event.startDateTime
   || end != event.endDateTime
   || sessionTime != event.sessionTimeMinutes
-  || sessionInterval != event.sessionIntervalMinutes
-  || qrSalt != event.qrSalt
-  || generateSessions;
+  || sessionInterval != event.sessionIntervalMinutes;
 
 /// Les badgeages manuels en attente comptent comme une modification.
 bool playerFormIsDirty(Player player, {

@@ -14,7 +14,7 @@ void main() {
       ..sessionIntervalMinutes = 60
       ..qrSalt = '';
 
-    bool dirty({String? name, DateTime? start, DateTime? end, int? sessionTime = 15, int? sessionInterval = 60, String? qrSalt, bool generateSessions = false}) =>
+    bool dirty({String? name, DateTime? start, DateTime? end, int? sessionTime = 15, int? sessionInterval = 60, String? qrSalt}) =>
       eventFormIsDirty(event,
         name: name ?? event.name,
         start: start ?? event.startDateTime,
@@ -22,7 +22,6 @@ void main() {
         sessionTime: sessionTime,
         sessionInterval: sessionInterval,
         qrSalt: qrSalt ?? event.qrSalt,
-        generateSessions: generateSessions,
       );
 
     test('rien ne change → non modifié', () => expect(dirty(), isFalse));
@@ -33,12 +32,34 @@ void main() {
       expect(dirty(sessionInterval: 30), isTrue);
     });
     test('un champ numérique vidé → modifié', () => expect(dirty(sessionTime: null), isTrue));
-    test('protection allumée, génération cochée → modifié', () {
+    test('protection allumée → modifié', () {
       expect(dirty(qrSalt: 'abcd1234'), isTrue);
-      expect(dirty(generateSessions: true), isTrue);
     });
     test('une valeur remise à l\'identique → non modifié', () {
       expect(dirty(start: DateTime(2026, 9, 19, 10)), isFalse);
+    });
+
+    // L19 : seuls début, fin, durée et intervalle font recréer les sessions.
+    group('eventSessionsChanged', () {
+      bool changed({DateTime? start, DateTime? end, int? sessionTime = 15, int? sessionInterval = 60}) =>
+        eventSessionsChanged(event,
+          start: start ?? event.startDateTime,
+          end: end ?? event.endDateTime,
+          sessionTime: sessionTime,
+          sessionInterval: sessionInterval,
+        );
+
+      test('rien ne change → non', () => expect(changed(), isFalse));
+      test('une date, la durée, l\'intervalle → oui', () {
+        expect(changed(start: DateTime(2026, 9, 19, 11)), isTrue);
+        expect(changed(end: DateTime(2026, 9, 21, 10)), isTrue);
+        expect(changed(sessionTime: 20), isTrue);
+        expect(changed(sessionInterval: 30), isTrue);
+      });
+      test('le nom ou la protection ne comptent pas', () {
+        expect(dirty(name: 'Autre'), isTrue);
+        expect(changed(), isFalse);
+      });
     });
   });
 

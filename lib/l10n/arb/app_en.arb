@@ -198,7 +198,6 @@
 
     "page_eventList_title": "Events",
     "page_eventList_menuItem": "Events",
-    "page_eventList_generateSessions": "Generate sessions (deletes existing sessions)",
     "page_eventList_empty_title": "Create an event",
     "page_eventList_empty_text": "Everything starts with an event: its dates, its sessions, its players.",
 
@@ -249,8 +248,11 @@
     "data_event_recoverSalt_none": "This card has no protection.",
     "data_event_deletePlayers_confirm": "Delete the {count} players of this event? Their badges and the draw winners will be lost. Printed cards will not be recognised until the players are generated again.",
     "@data_event_deletePlayers_confirm": { "placeholders": { "count": {} } },
-    "data_event_generateSessions_confirm": "The sessions will be recreated and {count, plural, one {1 badge} other {{count} badges}} lost.",
-    "@data_event_generateSessions_confirm": { "placeholders": { "count": {} } },
+    "data_event_regenerateSessions_title": "Recreate the sessions?",
+    "data_event_regenerateSessions_confirm": "The schedule changed: the sessions will be recreated and {count, plural, one {1 badge} other {{count} badges}} lost.",
+    "@data_event_regenerateSessions_confirm": { "placeholders": { "count": {} } },
+    "data_event_regenerateSessions_revert": "Undo the changes",
+    "data_event_regenerateSessions_recreate": "Recreate the sessions",
 
     "page_drawList_title": "Draws",
     "page_drawList_menuItem": "Draws",

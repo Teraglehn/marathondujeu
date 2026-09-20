@@ -153,7 +153,6 @@
 
     "page_eventList_title": "Evénements",
     "page_eventList_menuItem": "Evénements",
-    "page_eventList_generateSessions": "Générer les sessions (supprime les sessions existantes)",
     "page_eventList_empty_title": "Créer un événement",
     "page_eventList_empty_text": "Tout commence par un événement : ses dates, ses sessions, ses joueurs.",
 
@@ -203,7 +202,11 @@
     "data_event_recoverSalt_none": "Cette carte n'a pas de protection.",
     "data_event_deletePlayers_confirm": "Supprimer les {count} joueurs de cet événement ? Leurs badgeages et les gagnants des tirages seront perdus. Les cartes imprimées ne seront plus reconnues tant que les joueurs ne sont pas regénérés.",
     "@data_event_deletePlayers_confirm": { "placeholders": { "count": {} } },
-    "data_event_generateSessions_confirm": "Les sessions seront recréées et {count, plural, one {1 badgeage} other {{count} badgeages}} perdus.",
+    "data_event_regenerateSessions_title": "Recréer les sessions ?",
+    "data_event_regenerateSessions_confirm": "Les horaires ont changé : les sessions seront recréées et {count, plural, one {1 badgeage} other {{count} badgeages}} perdus.",
+    "@data_event_regenerateSessions_confirm": { "placeholders": { "count": {} } },
+    "data_event_regenerateSessions_revert": "Annuler les modifications",
+    "data_event_regenerateSessions_recreate": "Recréer les sessions",
 
     "page_drawList_title": "Tirages",
     "page_drawList_menuItem": "Tirages",

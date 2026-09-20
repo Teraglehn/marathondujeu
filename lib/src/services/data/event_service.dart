@@ -31,11 +31,14 @@ class EventService {
     return await _eventRepository.searchStream(searchCriteria, offset: offset, limit: limit);
   }
 
-  Future<void> save(Event event, {bool generateSessions = false}) async {
+  /// Un événement neuf reçoit toujours ses sessions ; un existant les recrée sur
+  /// [regenerateSessions] (paramètres de session changés) — ses badgeages sont perdus.
+  Future<void> save(Event event, {bool regenerateSessions = false}) async {
+    final isNew = !event.exist;
     await _eventRepository.save(event);
-    if(generateSessions){
+    if(isNew || regenerateSessions){
       await destroySessions(event);
-      await this.generateSessions(event);
+      await generateSessions(event);
     }
   }
 
