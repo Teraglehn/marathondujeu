@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui' show AppExitResponse;
 
 import 'package:flutter/services.dart';
 import 'package:marathondujeu/l10n/generated/l10n.dart';
@@ -13,6 +14,7 @@ import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
+import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,19 +28,25 @@ class PlayerListPage extends ConsumerStatefulWidget       {
 class _PlayerListPageState extends ConsumerState<PlayerListPage> {
 
   final TextEditingController _playerCountController = TextEditingController();
+  // Le nombre de joueurs qui a rempli le champ : il se remplit à nouveau quand il change.
+  int? _shownCount;
 
   // Chaque sauvegarde fait recharger toute la liste : les clics sur « + » / « − » sont
   // regroupés, la carte réagit tout de suite (setState) et la base suit après une pause.
   final Map<int, Player> _pendingBonus = {};
   final Debouncer _bonusDebouncer = Debouncer(milliseconds: 400);
+  // Fermer l'application pendant la pause retient la fermeture le temps d'écrire.
+  late final AppLifecycleListener _lifecycle;
 
   @override
   void initState() {
     super.initState();
+    _lifecycle = AppLifecycleListener(onExitRequested: _onExitRequested);
   }
 
   @override
   void dispose() {
+    _lifecycle.dispose();
     _bonusDebouncer.dispose();
     _flushBonus();
     super.dispose();
@@ -51,11 +59,23 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
     _bonusDebouncer.run(_flushBonus);
   }
 
-  void _flushBonus(){
-    if (_pendingBonus.isEmpty) return;
+  Future<void> _flushBonus(){
+    if (_pendingBonus.isEmpty) return Future.value();
     final players = _pendingBonus.values.toList();
     _pendingBonus.clear();
-    ref.read(playerServiceProvider).saveAll(players);
+    return ref.read(playerServiceProvider).saveAll(players);
+  }
+
+  Future<AppExitResponse> _onExitRequested() async {
+    _bonusDebouncer.dispose();
+    await _flushBonus();
+    return AppExitResponse.exit;
+  }
+
+  // Le nombre saisi n'ajoute des joueurs que s'il dépasse les existants.
+  bool canGenerate(int existing) {
+    final requested = int.tryParse(_playerCountController.text);
+    return requested != null && requested > existing;
   }
 
   Widget bonusButton(IconData icon, VoidCallback? onPressed) => IconButton.filledTonal(
@@ -87,12 +107,17 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
     final mainNotifier = ref.watch(mainPodProvider.notifier);
     final eventService = ref.watch(eventServiceProvider);
 
-    _playerCountController.text = players.asData?.value.length.toString() ?? "100";
-    
+    final existing = players.asData?.value.length ?? 0;
+    if (existing != _shownCount) {
+      _shownCount = existing;
+      _playerCountController.text = existing.toString();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).page_playerList_title),
         actions: [
+          const ScanStatus(),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -106,7 +131,6 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
         ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
-        onScanned: (player) => editor.editPlayer(player),
         child: Column(
           children: [
             Container(
@@ -117,7 +141,10 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                   width: 250,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
+                    // La clé remet le champ à neuf quand le nombre de joueurs change : pas
+                    // d'erreur affichée tant qu'on n'a rien saisi.
                     child: TextFormField(
+                      key: ValueKey(existing),
                       controller: _playerCountController,
                       keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
                       inputFormatters: <TextInputFormatter>[FormattersService.integer],
@@ -125,16 +152,24 @@ class _PlayerListPageState extends ConsumerState<PlayerListPage> {
                         labelText: S.of(context).page_playerList_playerCount,
                         border: const OutlineInputBorder(),
                       ),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (_) => setState(() {}),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return S.of(context).data_event_error_session_duration_minute_required;
+                        }
+                        if (!canGenerate(existing)) {
+                          return S.of(context).page_playerList_alreadyExisting(existing);
                         }
                         return null;
                       },
                     ),
                   ),
                 ),
-                ElevatedButton(onPressed: () => eventService.generateMissingPlayers(selectedEvent, int.parse(_playerCountController.text)), child: Text(S.of(context).page_playerList_generateMissingPlayers)),
+                ElevatedButton(
+                  onPressed: canGenerate(existing) ? () => eventService.generateMissingPlayers(selectedEvent, int.parse(_playerCountController.text)) : null,
+                  child: Text(S.of(context).page_playerList_generateMissingPlayers),
+                ),
                 //ElevatedButton(onPressed: () => eventService.destroyPlayers(selectedEvent), child: Text(S.of(context).page_playerList_deletePlayers))
               ])
             ),

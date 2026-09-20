@@ -5,14 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/services_injector.dart';
 import 'package:marathondujeu/src/data/data.dart';
 import 'package:marathondujeu/src/pods/main_pod.dart';
+import 'package:marathondujeu/src/pods/players.dart';
 import 'package:marathondujeu/src/pods/selected_event.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/services/services.dart';
 import 'package:marathondujeu/src/ui/pages/card_generator/card_sheet_preview.dart';
 import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
+import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/color_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/image_form_field.dart';
+import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
+import 'package:marathondujeu/src/ui/widgets/toast.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 
@@ -104,7 +108,14 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
     }
     await ref.read(eventServiceProvider).save(event);
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).page_cardGenerator_saved), duration: const Duration(seconds: 2), showCloseIcon: true));
+    Toast.show(context, S.of(context).page_cardGenerator_saved);
+  }
+
+  /// Crée les joueurs jusqu'au dernier numéro de la plage : leurs cartes sont déjà à l'aperçu.
+  Future<void> _generateExtraPlayers() async {
+    final event = _event;
+    if (event == null) return;
+    await ref.read(eventServiceProvider).generateMissingPlayers(event, _end);
   }
 
   Future<Uint8List> _buildDocument(PdfPageFormat _) {
@@ -190,7 +201,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
     ),
   );
 
-  Widget _settingsPanel(BuildContext context) {
+  Widget _settingsPanel(BuildContext context, int playerCount) {
     final s = _settings;
     final t = S.of(context);
     final layout = _previewLayout;
@@ -252,6 +263,17 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
                     Expanded(child: _intField('start', t.page_cardGenerator_from, _start, (v) => _updateRange(start: v), min: 1)),
                     const SizedBox(width: 8),
                     Expanded(child: _intField('end', t.page_cardGenerator_to, _end, (v) => _updateRange(end: v), min: 1)),
+                  ],
+                ),
+                // Des cartes au-delà des joueurs existants : proposer de créer ces joueurs.
+                Row(
+                  children: [
+                    Expanded(child: _help(t.page_cardGenerator_playerCount(playerCount))),
+                    if (_end > playerCount) TextButton.icon(
+                      onPressed: _generateExtraPlayers,
+                      icon: const Icon(Icons.person_add),
+                      label: Text(t.page_cardGenerator_generateExtraPlayers),
+                    ),
                   ],
                 ),
                 if (layout != null) _help(t.page_cardGenerator_summary(layout.cardCount, layout.startId, layout.endId, layout.pageCount)),
@@ -325,6 +347,7 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_cardGenerator_title),
         actions: [
+          const ScanStatus(),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -342,13 +365,14 @@ class _CardGeneratorPageState extends ConsumerState<CardGeneratorPage> {
           _requestedEventId = event.id;
           _loadFrom(event);
         }
-        return Row(
+        final playerCount = ref.watch(playersProvider(eventId: event.id)).value?.length ?? 0;
+        return PlayerSessionScanner(child: Row(
           children: [
-            SizedBox(width: 420, child: _settingsPanel(context)),
+            SizedBox(width: 420, child: _settingsPanel(context, playerCount)),
             const VerticalDivider(width: 1),
             Expanded(child: _previewPane(context)),
           ],
-        );
+        ));
       }),
     );
   }

@@ -112,6 +112,7 @@
     "page_playerList_playerCount": "Nombre de joueurs",
     "page_playerList_generateMissingPlayers": "Générer les joueurs manquants",
     "page_playerList_deletePlayers": "Supprimer les joueurs",
+    "page_playerList_alreadyExisting": "Déjà {count} joueurs existants",
 
     "page_playerGroupsList_title": "Groupes",
     "page_playerGroupsList_menuItem": "Groupes",
@@ -127,8 +128,6 @@
 
     "page_sessionList_title": "Sessions",
     "page_sessionList_menuItem": "Sessions",
-    "page_sessionList_generateSessions": "Générer les sessions",
-    "page_sessionList_deleteSessions": "Supprimer les sessions",
 
     "page_session_title": "Session",
     "page_session_manualAdd": "Badgeage manuel",
@@ -190,6 +189,8 @@
     "page_cardGenerator_to": "Au numéro",
     "page_cardGenerator_summary": "{count} cartes, du numéro {start} au numéro {end}, sur {pages, plural, one {1 page} other {{pages} pages}}. La dernière feuille est toujours complète.",
     "@page_cardGenerator_summary": { "placeholders": { "count": {}, "start": {}, "end": {}, "pages": {} } },
+    "page_cardGenerator_playerCount": "{count, plural, =0 {Aucun joueur} one {1 joueur} other {{count} joueurs}}",
+    "page_cardGenerator_generateExtraPlayers": "Générer les joueurs supplémentaires",
     "page_cardGenerator_saved": "Réglages enregistrés",
     "page_cardGenerator_quickPreview": "Aperçu rapide",
     "page_cardGenerator_pdfPreview": "Aperçu PDF",
@@ -202,6 +203,7 @@
     "data_event_recoverSalt_none": "Cette carte n'a pas de protection.",
     "data_event_deletePlayers_confirm": "Supprimer les {count} joueurs de cet événement ? Leurs badgeages et les gagnants des tirages seront perdus. Les cartes imprimées ne seront plus reconnues tant que les joueurs ne sont pas regénérés.",
     "@data_event_deletePlayers_confirm": { "placeholders": { "count": {} } },
+    "data_event_generateSessions_confirm": "Les sessions seront recréées et {count, plural, one {1 badgeage} other {{count} badgeages}} perdus.",
 
     "page_drawList_title": "Tirages",
     "page_drawList_menuItem": "Tirages",
@@ -232,5 +234,23 @@
     "delete_successful": "Supprimé avec succès",
 
     
-    "message_player_scanned": "Joueur {pnumber} a été scanné"
+    "scan_hint_openPlayer": "Scanner une carte pour ouvrir la fiche joueur",
+    "scan_hint_addToGroup": "Scanner une carte pour ajouter le joueur au groupe",
+    "scan_hint_badgeOpenSession": "Scanner une carte pour badger la session ouverte",
+    "scan_hint_badgeThisSession": "Scanner une carte pour badger cette session",
+    "scan_hint_removeFromGroup": "Scanner une carte pour retirer le joueur du groupe",
+    "scan_hint_removeFromSession": "Scanner une carte pour retirer le joueur de cette session",
+    "scan_removedFromGroup": "Joueur {number} retiré du groupe",
+    "scan_notInGroup": "Joueur {number} n'est pas dans le groupe",
+    "scan_removedFromSession": "Joueur {number} retiré de la session {session}",
+    "scan_notPresent": "Joueur {number} n'est pas sur la session {session}",
+    "scan_opened": "Joueur {number} : fiche ouverte",
+    "scan_addedToGroup": "Joueur {number} ajouté au groupe",
+    "scan_alreadyInGroup": "Joueur {number} déjà dans le groupe",
+    "scan_badged": "Joueur {number} badgé sur la session {session}",
+    "scan_alreadyPresent": "Joueur {number} déjà présent sur la session {session}",
+    "scan_noOpenSession": "Aucune session ouverte",
+    "scan_sessionNotOpen": "La session n'est pas ouverte",
+    "scan_invalidCard": "Carte invalide",
+    "scan_noEvent": "Aucun événement sélectionné"
 }

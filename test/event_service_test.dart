@@ -91,6 +91,100 @@ void main() {
     });
   });
 
+  // s1 : 11 h à 11 h 15 ; s2 : 12 h à 12 h 15.
+  final during1 = DateTime(2026, 10, 3, 11, 5);
+  final during2 = DateTime(2026, 10, 3, 12, 5);
+  final between = DateTime(2026, 10, 3, 11, 30);
+
+  group('getPlayerByQrCode', () {
+    test('carte inconnue ou code vide → null', () async {
+      expect(await service().getPlayerByQrCode(event, 'x'), isNull);
+      expect(await service().getPlayerByQrCode(event, ' '), isNull);
+      expect((await service().getPlayerByQrCode(event, '1'))?.id, p1.id);
+    });
+  });
+
+  group('badgeOpenSession', () {
+    test('badge sur la session ouverte, persisté', () async {
+      final result = await service().badgeOpenSession(event, p1, now: during2);
+
+      expect(result, isA<ScanBadged>().having((r) => r.session.id, 'session', s2.id));
+      expect(await badgedSessions(), {s1.id, s2.id});
+    });
+
+    test('aucune session ouverte → erreur, rien n\'est écrit', () async {
+      final result = await service().badgeOpenSession(event, p1, now: between);
+
+      expect(result, isA<ScanNoOpenSession>());
+      expect(await badgedSessions(), {s1.id});
+    });
+
+    test('déjà présent → information, rien n\'est écrit', () async {
+      final result = await service().badgeOpenSession(event, p1, now: during1);
+
+      expect(result, isA<ScanAlreadyPresent>());
+      expect(await badgedSessions(), {s1.id});
+    });
+  });
+
+  group('badgeSession', () {
+    test('session ouverte → badgé', () async {
+      final result = await service().badgeSession(s2, p1, manual: false, now: during2);
+
+      expect(result, isA<ScanBadged>());
+      expect(await badgedSessions(), {s1.id, s2.id});
+    });
+
+    test('session non ouverte → erreur, rien n\'est écrit', () async {
+      final result = await service().badgeSession(s2, p1, manual: false, now: during1);
+
+      expect(result, isA<ScanSessionNotOpen>());
+      expect(await badgedSessions(), {s1.id});
+    });
+
+    test('badgeage manuel → badgé quelle que soit l\'heure', () async {
+      final result = await service().badgeSession(s2, p1, manual: true, now: between);
+
+      expect(result, isA<ScanBadged>());
+      expect(await badgedSessions(), {s1.id, s2.id});
+    });
+
+    test('déjà présent, même en manuel → information', () async {
+      final result = await service().badgeSession(s1, p1, manual: true, now: between);
+
+      expect(result, isA<ScanAlreadyPresent>());
+      expect(await badgedSessions(), {s1.id});
+    });
+  });
+
+  group('unbadgeSession', () {
+    test('présent → retiré, persisté', () async {
+      final result = await service().unbadgeSession(s1, p1);
+
+      expect(result, isA<ScanRemovedFromSession>());
+      expect(await badgedSessions(), <int>{});
+    });
+
+    test('absent → information, rien n\'est écrit', () async {
+      final result = await service().unbadgeSession(s2, p1);
+
+      expect(result, isA<ScanNotPresent>());
+      expect(await badgedSessions(), {s1.id});
+    });
+  });
+
+  group('countBadges', () {
+    test('compte les badgeages de toutes les sessions', () async {
+      expect(await service().countBadges(event), 1);
+      await service().badgeSession(s2, p1, manual: true);
+      expect(await service().countBadges(event), 2);
+    });
+
+    test('un événement pas encore enregistré n\'en a aucun', () async {
+      expect(await service().countBadges(Event()..name = 'Neuf'), 0);
+    });
+  });
+
   group('removePlayerFromSession', () {
     test('retire le joueur, persisté', () async {
       final session = (await isar.sessions.get(s1.id))!;

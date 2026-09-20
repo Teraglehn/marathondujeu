@@ -12,6 +12,7 @@ import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/ui/widgets/delete_player_group_dialog.dart';
+import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 
 class PlayerGroupListPage extends ConsumerStatefulWidget       {
@@ -57,6 +58,7 @@ class _PlayerGroupListPageState extends ConsumerState<PlayerGroupListPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_playerGroupsList_title),
         actions: [
+          const ScanStatus(),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -70,8 +72,6 @@ class _PlayerGroupListPageState extends ConsumerState<PlayerGroupListPage> {
         ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
-        forceSelectedSession: false,
-        success: (player) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).message_player_scanned(player.name)))),
         child : Column(
           children: [
             Container(

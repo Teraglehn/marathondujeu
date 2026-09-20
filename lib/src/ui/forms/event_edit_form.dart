@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/services/formatters_service.dart';
 import 'package:marathondujeu/src/ui/forms/dirty_aware.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/datetime_form_field.dart';
+import 'package:marathondujeu/src/ui/widgets/toast.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 import 'package:uuid/uuid.dart';
 
@@ -51,10 +52,11 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
     _sessionIntervalMinuteController.text = widget.event.sessionIntervalMinutes.toString();
   }
 
-  void save() {
+  Future<void> save() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+    if (generateSessions && !await confirmGenerateSessions()) return;
 
     widget.event.sessionTimeMinutes = int.parse(_sessionTimeMinuteController.text);
     widget.event.sessionIntervalMinutes = int.parse(_sessionIntervalMinuteController.text);
@@ -117,10 +119,28 @@ class _EventEditFormState extends ConsumerState<EventEditForm> implements DirtyA
     );
     if (salt == null || !mounted) return;
     if (salt.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).data_event_recoverSalt_none), duration: const Duration(seconds: 3), showCloseIcon: true));
+      Toast.show(context, S.of(context).data_event_recoverSalt_none, error: true);
       return;
     }
     setState(() => _qrSalt = salt);
+  }
+
+  /// Regénérer les sessions perd leurs badgeages : s'il y en a, on le dit et on demande.
+  Future<bool> confirmGenerateSessions() async {
+    final badges = await ref.read(eventServiceProvider).countBadges(widget.event);
+    if (badges == 0 || !mounted) return true;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context).page_eventList_generateSessions),
+        content: Text(S.of(context).data_event_generateSessions_confirm(badges)),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(S.of(context).utils_button_cancel)),
+          FilledButton(onPressed: () => Navigator.of(context).pop(true), child: Text(S.of(context).utils_button_save)),
+        ],
+      ),
+    );
+    return confirmed == true;
   }
 
   /// Supprime tous les joueurs de l'événement, après confirmation : c'est ce qui débloque la protection.

@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/player_bubble.dart';
+import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
+import 'package:marathondujeu/src/ui/widgets/toast.dart';
 
 class SessionPage extends ConsumerStatefulWidget {
 
@@ -117,23 +119,25 @@ class _SessionPageState extends ConsumerState<SessionPage> {
 
   // Entrée ou le bouton du champ Numéro : badge le joueur de ce numéro, ou le retire en mode
   // suppression. Entrée rend toujours la main ; le champ se vide si le joueur est trouvé.
-  void submitNumber(Session session, List<Player> players, {required bool canSubmit}) {
+  // Le résultat est dit en toast — le même texte qu'un scan.
+  Future<void> submitNumber(Session session, List<Player> players, {required bool canSubmit}) async {
     releaseNumberField();
-    final event = ref.read(selectedEventProvider).value;
     final number = int.tryParse(_numberController.text);
-    if (!canSubmit || event == null || number == null) return;
+    if (!canSubmit || number == null) return;
 
     final player = players.where((p) => p.number == number).firstOrNull;
     setState(() => _unknownNumber = player == null ? number : null);
-    if (player == null) return;
+    if (player == null) {
+      Toast.show(context, S.of(context).page_session_number_unknown(number), error: true);
+      return;
+    }
 
     final service = ref.read(eventServiceProvider);
-    if (removeMode) {
-      service.removePlayerFromSession(session, player);
-    } else {
-      service.forceAddPlayerToSession(event, session, player);
-    }
+    final result = removeMode
+      ? await service.unbadgeSession(session, player)
+      : await service.badgeSession(session, player, manual: true);
     _numberController.clear();
+    if (mounted) Toast.show(context, scanResultText(S.of(context), result), error: result.isError);
   }
 
   Widget bubble(BuildContext context, Player player, {required bool present}) {
@@ -211,11 +215,12 @@ class _SessionPageState extends ConsumerState<SessionPage> {
           icon: const Icon(Icons.arrow_back)
         ),
         title: Text(S.of(context).page_session_title),
+        actions: [ScanStatus(mode: ScanMode.badgeThisSession, remove: removeMode)],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
-        success: (player) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).message_player_scanned(player.name)))),
-        useSelectedSession: !(session?.isOpen() ?? false),
-        forceSelectedSession: manualMode,
+        mode: ScanMode.badgeThisSession,
+        manual: manualMode,
+        remove: removeMode,
         child : session == null ? const SizedBox.shrink() : body(context, session, now, players, sessions),
       )),
     );

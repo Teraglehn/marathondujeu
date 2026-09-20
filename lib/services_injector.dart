@@ -10,7 +10,6 @@ part 'services_injector.g.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 @Riverpod(keepAlive: true) IsarClient _isarClient(Ref ref) => IsarClient(isWeb: kIsWeb, isTesting: kDebugMode);
 

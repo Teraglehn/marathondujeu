@@ -96,7 +96,9 @@ après `build_runner`, ils font partie du commit.
 ## Ce qui est propre à ce projet
 
 - `docs/` accueille les **éléments de définition globaux** de l'application *(acté 2026-09-19)*.
-  Il n'en contient aucun pour l'instant : la cible se lit dans le code et dans les lots.
+  Premier : `docs/gestes.md`, le relevé des gestes de chaque page — chaque geste est **appairé à
+  un tutoriel et à des tests** *(acté 2026-09-19)*. Le reste de la cible se lit dans le code et
+  dans les lots.
 - Identifiant d'organisation : **`com.saroc`** partout *(acté 2026-09-19)*.
 - La base des versions antérieures à 2026-09-19 vivait dans `%LOCALAPPDATA%\com.example\marathondujeu` ;
   elle est reprise par copie au premier lancement et laissée en place, sans suppression prévue
@@ -105,4 +107,6 @@ après `build_runner`, ils font partie du commit.
   que seule la cible Windows soit construite *(acté 2026-09-19)*.
 - **Public non technique** : les utilisateurs de l'application ne sont pas des informaticiens.
   Chaque écran s'explique — légendes, textes d'aide, zone tutoriel par page *(acté 2026-09-19)*.
+- **Notifications en toast, centré en haut** de la fenêtre — jamais en `SnackBar` en bas
+  *(acté 2026-09-19)*. Durée courte, fermeture à la croix.
 - Ce qui sera acté ensuite s'écrira ici, daté.

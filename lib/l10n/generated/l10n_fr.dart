@@ -365,6 +365,11 @@ class SFr extends S {
   String get page_playerList_deletePlayers => 'Supprimer les joueurs';
 
   @override
+  String page_playerList_alreadyExisting(Object count) {
+    return 'Déjà $count joueurs existants';
+  }
+
+  @override
   String get page_playerGroupsList_title => 'Groupes';
 
   @override
@@ -399,12 +404,6 @@ class SFr extends S {
 
   @override
   String get page_sessionList_menuItem => 'Sessions';
-
-  @override
-  String get page_sessionList_generateSessions => 'Générer les sessions';
-
-  @override
-  String get page_sessionList_deleteSessions => 'Supprimer les sessions';
 
   @override
   String get page_session_title => 'Session';
@@ -618,6 +617,22 @@ class SFr extends S {
   }
 
   @override
+  String page_cardGenerator_playerCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count joueurs',
+      one: '1 joueur',
+      zero: 'Aucun joueur',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get page_cardGenerator_generateExtraPlayers =>
+      'Générer les joueurs supplémentaires';
+
+  @override
   String get page_cardGenerator_saved => 'Réglages enregistrés';
 
   @override
@@ -657,6 +672,17 @@ class SFr extends S {
   @override
   String data_event_deletePlayers_confirm(Object count) {
     return 'Supprimer les $count joueurs de cet événement ? Leurs badgeages et les gagnants des tirages seront perdus. Les cartes imprimées ne seront plus reconnues tant que les joueurs ne sont pas regénérés.';
+  }
+
+  @override
+  String data_event_generateSessions_confirm(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count badgeages',
+      one: '1 badgeage',
+    );
+    return 'Les sessions seront recréées et $_temp0 perdus.';
   }
 
   @override
@@ -703,7 +729,83 @@ class SFr extends S {
   String get delete_successful => 'Supprimé avec succès';
 
   @override
-  String message_player_scanned(Object pnumber) {
-    return 'Joueur $pnumber a été scanné';
+  String get scan_hint_openPlayer =>
+      'Scanner une carte pour ouvrir la fiche joueur';
+
+  @override
+  String get scan_hint_addToGroup =>
+      'Scanner une carte pour ajouter le joueur au groupe';
+
+  @override
+  String get scan_hint_badgeOpenSession =>
+      'Scanner une carte pour badger la session ouverte';
+
+  @override
+  String get scan_hint_badgeThisSession =>
+      'Scanner une carte pour badger cette session';
+
+  @override
+  String get scan_hint_removeFromGroup =>
+      'Scanner une carte pour retirer le joueur du groupe';
+
+  @override
+  String get scan_hint_removeFromSession =>
+      'Scanner une carte pour retirer le joueur de cette session';
+
+  @override
+  String scan_removedFromGroup(Object number) {
+    return 'Joueur $number retiré du groupe';
   }
+
+  @override
+  String scan_notInGroup(Object number) {
+    return 'Joueur $number n\'est pas dans le groupe';
+  }
+
+  @override
+  String scan_removedFromSession(Object number, Object session) {
+    return 'Joueur $number retiré de la session $session';
+  }
+
+  @override
+  String scan_notPresent(Object number, Object session) {
+    return 'Joueur $number n\'est pas sur la session $session';
+  }
+
+  @override
+  String scan_opened(Object number) {
+    return 'Joueur $number : fiche ouverte';
+  }
+
+  @override
+  String scan_addedToGroup(Object number) {
+    return 'Joueur $number ajouté au groupe';
+  }
+
+  @override
+  String scan_alreadyInGroup(Object number) {
+    return 'Joueur $number déjà dans le groupe';
+  }
+
+  @override
+  String scan_badged(Object number, Object session) {
+    return 'Joueur $number badgé sur la session $session';
+  }
+
+  @override
+  String scan_alreadyPresent(Object number, Object session) {
+    return 'Joueur $number déjà présent sur la session $session';
+  }
+
+  @override
+  String get scan_noOpenSession => 'Aucune session ouverte';
+
+  @override
+  String get scan_sessionNotOpen => 'La session n\'est pas ouverte';
+
+  @override
+  String get scan_invalidCard => 'Carte invalide';
+
+  @override
+  String get scan_noEvent => 'Aucun événement sélectionné';
 }

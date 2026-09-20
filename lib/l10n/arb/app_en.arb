@@ -156,6 +156,8 @@
     "page_playerList_playerCount": "Players count",
     "page_playerList_generateMissingPlayers": "Generate missing players",
     "page_playerList_deletePlayers": "Delete players",
+    "page_playerList_alreadyExisting": "Already {count} existing players",
+    "@page_playerList_alreadyExisting": { "placeholders": { "count": {} } },
 
     "page_playerGroupsList_title": "Player Groups",
     "page_playerGroupsList_menuItem": "Player Groups",
@@ -171,8 +173,6 @@
 
     "page_sessionList_title": "Sessions",
     "page_sessionList_menuItem": "Sessions",
-    "page_sessionList_generateSessions": "Generate sessions",
-    "page_sessionList_deleteSessions": "Delete sessions",
 
     "page_session_title": "Session",
     "page_session_manualAdd": "Manual badging",
@@ -234,6 +234,9 @@
     "page_cardGenerator_to": "To number",
     "page_cardGenerator_summary": "{count} cards, from number {start} to number {end}, on {pages, plural, one {1 page} other {{pages} pages}}. The last sheet is always complete.",
     "@page_cardGenerator_summary": { "placeholders": { "count": {}, "start": {}, "end": {}, "pages": {} } },
+    "page_cardGenerator_playerCount": "{count, plural, =0 {No player} one {1 player} other {{count} players}}",
+    "@page_cardGenerator_playerCount": { "placeholders": { "count": {} } },
+    "page_cardGenerator_generateExtraPlayers": "Generate the extra players",
     "page_cardGenerator_saved": "Settings saved",
     "page_cardGenerator_quickPreview": "Quick preview",
     "page_cardGenerator_pdfPreview": "PDF preview",
@@ -246,6 +249,8 @@
     "data_event_recoverSalt_none": "This card has no protection.",
     "data_event_deletePlayers_confirm": "Delete the {count} players of this event? Their badges and the draw winners will be lost. Printed cards will not be recognised until the players are generated again.",
     "@data_event_deletePlayers_confirm": { "placeholders": { "count": {} } },
+    "data_event_generateSessions_confirm": "The sessions will be recreated and {count, plural, one {1 badge} other {{count} badges}} lost.",
+    "@data_event_generateSessions_confirm": { "placeholders": { "count": {} } },
 
     "page_drawList_title": "Draws",
     "page_drawList_menuItem": "Draws",
@@ -276,10 +281,32 @@
     "delete_successful": "Deleted successfully",
 
     
-    "message_player_scanned": "Player {pnumber} has been scanned",
-    "@message_player": {
-        "placeholders": {
-            "pnumber": {}
-        }
-    }
+    "scan_hint_openPlayer": "Scan a card to open the player's sheet",
+    "scan_hint_addToGroup": "Scan a card to add the player to the group",
+    "scan_hint_badgeOpenSession": "Scan a card to badge the open session",
+    "scan_hint_badgeThisSession": "Scan a card to badge this session",
+    "scan_hint_removeFromGroup": "Scan a card to remove the player from the group",
+    "scan_hint_removeFromSession": "Scan a card to remove the player from this session",
+    "scan_removedFromGroup": "Player {number} removed from the group",
+    "@scan_removedFromGroup": { "placeholders": { "number": {} } },
+    "scan_notInGroup": "Player {number} is not in the group",
+    "@scan_notInGroup": { "placeholders": { "number": {} } },
+    "scan_removedFromSession": "Player {number} removed from session {session}",
+    "@scan_removedFromSession": { "placeholders": { "number": {}, "session": {} } },
+    "scan_notPresent": "Player {number} is not on session {session}",
+    "@scan_notPresent": { "placeholders": { "number": {}, "session": {} } },
+    "scan_opened": "Player {number}: card opened",
+    "@scan_opened": { "placeholders": { "number": {} } },
+    "scan_addedToGroup": "Player {number} added to the group",
+    "@scan_addedToGroup": { "placeholders": { "number": {} } },
+    "scan_alreadyInGroup": "Player {number} already in the group",
+    "@scan_alreadyInGroup": { "placeholders": { "number": {} } },
+    "scan_badged": "Player {number} badged on session {session}",
+    "@scan_badged": { "placeholders": { "number": {}, "session": {} } },
+    "scan_alreadyPresent": "Player {number} already present on session {session}",
+    "@scan_alreadyPresent": { "placeholders": { "number": {}, "session": {} } },
+    "scan_noOpenSession": "No open session",
+    "scan_sessionNotOpen": "The session is not open",
+    "scan_invalidCard": "Invalid card",
+    "scan_noEvent": "No event selected"
 }

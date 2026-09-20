@@ -366,6 +366,11 @@ class SEn extends S {
   String get page_playerList_deletePlayers => 'Delete players';
 
   @override
+  String page_playerList_alreadyExisting(Object count) {
+    return 'Already $count existing players';
+  }
+
+  @override
   String get page_playerGroupsList_title => 'Player Groups';
 
   @override
@@ -400,12 +405,6 @@ class SEn extends S {
 
   @override
   String get page_sessionList_menuItem => 'Sessions';
-
-  @override
-  String get page_sessionList_generateSessions => 'Generate sessions';
-
-  @override
-  String get page_sessionList_deleteSessions => 'Delete sessions';
 
   @override
   String get page_session_title => 'Session';
@@ -617,6 +616,22 @@ class SEn extends S {
   }
 
   @override
+  String page_cardGenerator_playerCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count players',
+      one: '1 player',
+      zero: 'No player',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get page_cardGenerator_generateExtraPlayers =>
+      'Generate the extra players';
+
+  @override
   String get page_cardGenerator_saved => 'Settings saved';
 
   @override
@@ -655,6 +670,17 @@ class SEn extends S {
   @override
   String data_event_deletePlayers_confirm(Object count) {
     return 'Delete the $count players of this event? Their badges and the draw winners will be lost. Printed cards will not be recognised until the players are generated again.';
+  }
+
+  @override
+  String data_event_generateSessions_confirm(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count badges',
+      one: '1 badge',
+    );
+    return 'The sessions will be recreated and $_temp0 lost.';
   }
 
   @override
@@ -701,7 +727,81 @@ class SEn extends S {
   String get delete_successful => 'Deleted successfully';
 
   @override
-  String message_player_scanned(Object pnumber) {
-    return 'Player $pnumber has been scanned';
+  String get scan_hint_openPlayer => 'Scan a card to open the player\'s sheet';
+
+  @override
+  String get scan_hint_addToGroup =>
+      'Scan a card to add the player to the group';
+
+  @override
+  String get scan_hint_badgeOpenSession =>
+      'Scan a card to badge the open session';
+
+  @override
+  String get scan_hint_badgeThisSession => 'Scan a card to badge this session';
+
+  @override
+  String get scan_hint_removeFromGroup =>
+      'Scan a card to remove the player from the group';
+
+  @override
+  String get scan_hint_removeFromSession =>
+      'Scan a card to remove the player from this session';
+
+  @override
+  String scan_removedFromGroup(Object number) {
+    return 'Player $number removed from the group';
   }
+
+  @override
+  String scan_notInGroup(Object number) {
+    return 'Player $number is not in the group';
+  }
+
+  @override
+  String scan_removedFromSession(Object number, Object session) {
+    return 'Player $number removed from session $session';
+  }
+
+  @override
+  String scan_notPresent(Object number, Object session) {
+    return 'Player $number is not on session $session';
+  }
+
+  @override
+  String scan_opened(Object number) {
+    return 'Player $number: card opened';
+  }
+
+  @override
+  String scan_addedToGroup(Object number) {
+    return 'Player $number added to the group';
+  }
+
+  @override
+  String scan_alreadyInGroup(Object number) {
+    return 'Player $number already in the group';
+  }
+
+  @override
+  String scan_badged(Object number, Object session) {
+    return 'Player $number badged on session $session';
+  }
+
+  @override
+  String scan_alreadyPresent(Object number, Object session) {
+    return 'Player $number already present on session $session';
+  }
+
+  @override
+  String get scan_noOpenSession => 'No open session';
+
+  @override
+  String get scan_sessionNotOpen => 'The session is not open';
+
+  @override
+  String get scan_invalidCard => 'Invalid card';
+
+  @override
+  String get scan_noEvent => 'No event selected';
 }

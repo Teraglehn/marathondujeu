@@ -57,34 +57,43 @@ class EventService {
     await _sessionRepository.saveAll(sessions);
   }
 
+  /// Le nombre de badgeages de l'événement : ce que regénérer les sessions perd.
+  Future<int> countBadges(Event event) async {
+    if(!event.exist) return 0;
+    await event.sessions.load();
+    var count = 0;
+    for (final session in event.sessions) {
+      await session.players.load();
+      count += session.players.length;
+    }
+    return count;
+  }
+
   Future<void> destroySessions(Event event) async {
     await event.sessions.load();
     await _sessionRepository.deleteAll(event.sessions.map((e)=> e.id).toSet());
   }
   
   
-  Future<void> addPlayerToOpenedSession(Event event, Player player, {void Function(Player)? success}) async {
-    final sessions = await _sessionRepository.getOpenned(event.id, DateTime.now());
+  /// Badge le joueur sur la session ouverte à [now] ; aucune → `ScanNoOpenSession`.
+  Future<ScanResult> badgeOpenSession(Event event, Player player, {DateTime? now}) async {
+    final sessions = await _sessionRepository.getOpenned(event.id, now ?? DateTime.now());
+    if(sessions.isEmpty) return const ScanNoOpenSession();
 
-    if(sessions.isEmpty) return;
-
-    final session = sessions.first;
-
-    if(session.players.contains(player)) return;
-    
-    session.addPlayer(player);
-    await _sessionRepository.save(sessions.first);
-    success?.call(player);
+    return badgeSession(sessions.first, player, manual: true, now: now);
   }
 
-
-  Future<void> forceAddPlayerToSession(Event event, Session session, Player player, {void Function(Player)? success}) async {
-    if(session.players.contains(player)) return;
+  /// Badge le joueur sur [session] si elle est ouverte à [now], ou en badgeage [manual] ;
+  /// sinon `ScanSessionNotOpen`. Déjà présent → `ScanAlreadyPresent`, rien n'est écrit.
+  Future<ScanResult> badgeSession(Session session, Player player, {required bool manual, DateTime? now}) async {
+    if(!manual && !session.isOpenAt(now ?? DateTime.now())) return ScanSessionNotOpen(session);
+    if(session.players.contains(player)) return ScanAlreadyPresent(player, session);
 
     session.forceAddPlayer(player);
     await _sessionRepository.save(session);
-    success?.call(player);
+    return ScanBadged(player, session);
   }
+
 
   /// Retire le joueur de la session, écrit tout de suite. Sans effet s'il n'y est pas.
   Future<void> removePlayerFromSession(Session session, Player player) async {
@@ -92,6 +101,14 @@ class EventService {
 
     session.players.remove(player);
     await _sessionRepository.save(session);
+  }
+
+  /// Le mode suppression : retire le joueur, ou dit qu'il n'y était pas (`ScanNotPresent`).
+  Future<ScanResult> unbadgeSession(Session session, Player player) async {
+    if(!session.players.contains(player)) return ScanNotPresent(player, session);
+
+    await removePlayerFromSession(session, player);
+    return ScanRemovedFromSession(player, session);
   }
 
   /// Badge le joueur sur les sessions [added] et le retire des sessions [removed],
@@ -111,19 +128,6 @@ class EventService {
       sessions.add(session);
     }
     await _sessionRepository.saveAll(sessions);
-  }
-
-  void scanPlayerToSession(Event event, String qrCode, {Session? session, bool force = false, void Function(Player)? success}) async {
-    final player = await getPlayerByQrCode(event, qrCode);
-    if(player == null) return;
-    
-    if(session != null){
-      if(force){
-        await forceAddPlayerToSession(event, session, player, success: success);
-      }
-    } else {
-      await addPlayerToOpenedSession(event, player, success: success);
-    }
   }
 
   Future<Player?> getPlayerByQrCode(Event event, String qrCode) async {

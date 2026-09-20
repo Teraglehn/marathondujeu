@@ -118,3 +118,27 @@ chargée, sans méthode de service, et dit « Numéro n inconnu » plutôt que �
 taire Riverpod et la page ne se redessinait pas (`SelectedSession` / `SelectedEvent` ont le
 même défaut latent, signalé) ; la logique « rendre la main à la douchette » est recopiée de la
 page de session, pas partagée.
+
+## 2026-09-20 — L15
+
+**L15 — Retour de scan sur toutes les pages, et gestes manquants.** Un seul retour de scan, dans
+la barre du haut de chaque page (`ScanStatus`, pod `scanStatus`) : au repos, ce qu'un scan fait
+sur la page (« Scanner une carte pour ouvrir la fiche joueur », « … pour badger cette
+session »…) ; après un scan, ce qui s'est passé, vert ou rouge, jusqu'au scan suivant.
+`PlayerSessionScanner` reçoit un mode explicite (`openPlayer` par défaut, `addToGroup`,
+`badgeOpenSession`, `badgeThisSession`) et les indicateurs `manual` / `remove` ; le service
+rend un `ScanResult` (`badgeOpenSession`, `badgeSession`, `unbadgeSession`, testés). Carte
+inconnue → « Carte invalide » ; « déjà présent » est une information. Mode suppression (session,
+groupe) : le scan **retire**, la barre passe sur fond « erreur » et clignote. Notifications en
+toast centré en haut (`Toast`), les `SnackBar` disparaissent ; le champ *Numéro* dit son
+résultat en toast. Joueurs : nombre ≤ existants → champ en erreur, bouton gris ; fermer la
+fenêtre pendant l'écriture d'un bonus la retient. Générateur : « Générer les joueurs
+supplémentaires » au-delà des joueurs. Événement : confirmation avant de regénérer des sessions
+badgées (`countBadges`). Recherche des tirages retirée. `docs/gestes.md` : TR-4 revu, TR-5, EV-8,
+JO-1, JO-2, JO-5, GR-4 à GR-6, GR-10, SE-2, SE-4 à SE-8, SE-10, TI-11, CA-5, CA-7 ; `CLAUDE.md` :
+règle du toast, `docs/gestes.md` cité. *Écarts assumés* : sans événement sélectionné le scan dit
+« Aucun événement sélectionné » (C9) ; une boîte de dialogue ouverte suspend l'écouteur de la
+page (C10) ; en mode suppression tous les messages sont en `onErrorContainer` ; C6 (fermeture
+retenue) : aucun écart relevé à la recette, sans constat explicite ; deux constats hors périmètre notés au
+rapport (clé de message erronée sur le champ *Nombre de joueurs* vide ; un scan qui ouvre une
+fiche remplace un éditeur modifié sans « Quitter / Revenir »).

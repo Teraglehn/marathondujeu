@@ -7,8 +7,9 @@ import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:marathondujeu/src/pods/main_pod.dart';
 import 'package:marathondujeu/src/pods/selected_event.dart';
 import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
+import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
-import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
+import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,20 +21,6 @@ class DrawListPage extends ConsumerStatefulWidget       {
 }
 
 class _DrawListPageState extends ConsumerState<DrawListPage> {
-
-  late SearchCriteria criteria;
-
-  @override
-  void initState() {
-    super.initState();
-    criteria = const SearchCriteria();
-  }
-
-  void search(SearchCriteria criteria){
-    setState(() {
-      this.criteria = criteria;
-    });
-  }
 
   /// Ouvre l'éditeur sur une copie, non enregistrée.
   Future<void> copyDraw(Draw draw) async {
@@ -66,6 +53,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_drawList_title),
         actions: [
+          const ScanStatus(),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -78,15 +66,8 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
           )
         ],
       ),
-      body: EventSelectedGuard(builder: (selectedEvent) => Column(
+      body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            color: Theme.of(context).colorScheme.secondaryContainer,
-            child: SearchWidget(
-              onSearchCriteriaChanged: search,
-            ),
-          ),
           Expanded(
             child: draws.when(
               data: (data) => ListView.separated(
@@ -143,7 +124,7 @@ class _DrawListPageState extends ConsumerState<DrawListPage> {
             ),
           ),
         ],
-      )),
+      ))),
       floatingActionButton: selectedEvent.value == null ? null : FloatingActionButton(
         onPressed: () async => editor.editDraw(await ref.read(drawServiceProvider).createDraw(selectedEvent.value!)),
         child: const Icon(Icons.add),

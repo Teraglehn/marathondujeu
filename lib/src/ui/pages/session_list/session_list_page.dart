@@ -10,6 +10,7 @@ import 'package:marathondujeu/src/pods/sessions.dart';
 import 'package:marathondujeu/src/ui/pages/utils/event_selected_guard.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
+import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -64,6 +65,7 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_sessionList_title),
         actions: [
+          const ScanStatus(mode: ScanMode.badgeOpenSession),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -77,8 +79,7 @@ class _SessionListPageState extends ConsumerState<SessionListPage> {
         ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
-        forceSelectedSession: false,
-        success: (player) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).message_player_scanned(player.name)))),
+        mode: ScanMode.badgeOpenSession,
         child : Column(
           children: [
             Container(

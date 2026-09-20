@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/player_bubble.dart';
+import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
+import 'package:marathondujeu/src/ui/widgets/toast.dart';
 
 class PlayerGroupPage extends ConsumerStatefulWidget {
 
@@ -61,6 +63,7 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
   }
 
   // Entrée ou le bouton : ajoute le joueur de ce numéro. Le champ se vide s'il est ajouté.
+  // Le résultat est dit en toast — le même texte qu'un scan.
   Future<void> submitNumber(PlayerGroup group, List<Player> players) async {
     releaseNumberField();
     final number = int.tryParse(_numberController.text);
@@ -69,12 +72,15 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
     final player = players.where((p) => p.number == number).firstOrNull;
     if (player == null) {
       setState(() { _unknownNumber = number; _alreadyMemberNumber = null; });
+      Toast.show(context, S.of(context).page_session_number_unknown(number), error: true);
       return;
     }
     final added = await ref.read(playerGroupServiceProvider).addPlayer(group, player);
     if (!mounted) return;
     setState(() { _unknownNumber = null; _alreadyMemberNumber = added ? null : number; });
     if (added) _numberController.clear();
+    final result = added ? ScanAddedToGroup(player, group) : ScanAlreadyInGroup(player, group);
+    Toast.show(context, scanResultText(S.of(context), result));
   }
 
   void remove(PlayerGroup group, Player player) {
@@ -95,7 +101,6 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
   Widget build(BuildContext context) {
     final selectedGroup = ref.watch(selectedPlayerGroupProvider);
     final group = selectedGroup.value;
-    final groupService = ref.watch(playerGroupServiceProvider);
     final selectedEvent = ref.watch(selectedEventProvider);
     final players = ref.watch(playersProvider(eventId: selectedEvent.value?.id)).value ?? [];
 
@@ -114,6 +119,7 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
         ),
         title: Text("${S.of(context).page_playerGroup_title} : ${group?.name ?? ''}"),
         actions: [
+          ScanStatus(mode: ScanMode.addToGroup, remove: removeMode),
           if (group != null) IconButton(
             onPressed: () => ref.read(editorPodProvider.notifier).editPlayerGroup(group),
             icon: const Icon(Icons.edit),
@@ -122,9 +128,8 @@ class _PlayerGroupPageState extends ConsumerState<PlayerGroupPage> {
         ],
       ),
       body: EventSelectedGuard(builder: (selectedEvent) => PlayerSessionScanner(
-        onScanned: (p) {
-          if (group != null) groupService.addPlayer(group, p);
-        },
+        mode: ScanMode.addToGroup,
+        remove: removeMode,
         child: group == null ? const SizedBox.shrink() : body(context, group, players),
       )),
     );

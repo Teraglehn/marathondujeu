@@ -29,7 +29,6 @@ class _MarathonAppState extends State<MarathonApp> {
 
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp.router(
-      scaffoldMessengerKey: scaffoldMessengerKey,
       theme: theme.light(),
       highContrastTheme: theme.lightHighContrast(),
       darkTheme: theme.dark(),

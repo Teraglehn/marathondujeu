@@ -607,6 +607,12 @@ abstract class S {
   /// **'Delete players'**
   String get page_playerList_deletePlayers;
 
+  /// No description provided for @page_playerList_alreadyExisting.
+  ///
+  /// In en, this message translates to:
+  /// **'Already {count} existing players'**
+  String page_playerList_alreadyExisting(Object count);
+
   /// No description provided for @page_playerGroupsList_title.
   ///
   /// In en, this message translates to:
@@ -666,18 +672,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Sessions'**
   String get page_sessionList_menuItem;
-
-  /// No description provided for @page_sessionList_generateSessions.
-  ///
-  /// In en, this message translates to:
-  /// **'Generate sessions'**
-  String get page_sessionList_generateSessions;
-
-  /// No description provided for @page_sessionList_deleteSessions.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete sessions'**
-  String get page_sessionList_deleteSessions;
 
   /// No description provided for @page_session_title.
   ///
@@ -1020,6 +1014,18 @@ abstract class S {
     num pages,
   );
 
+  /// No description provided for @page_cardGenerator_playerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0 {No player} one {1 player} other {{count} players}}'**
+  String page_cardGenerator_playerCount(num count);
+
+  /// No description provided for @page_cardGenerator_generateExtraPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate the extra players'**
+  String get page_cardGenerator_generateExtraPlayers;
+
   /// No description provided for @page_cardGenerator_saved.
   ///
   /// In en, this message translates to:
@@ -1085,6 +1091,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Delete the {count} players of this event? Their badges and the draw winners will be lost. Printed cards will not be recognised until the players are generated again.'**
   String data_event_deletePlayers_confirm(Object count);
+
+  /// No description provided for @data_event_generateSessions_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'The sessions will be recreated and {count, plural, one {1 badge} other {{count} badges}} lost.'**
+  String data_event_generateSessions_confirm(num count);
 
   /// No description provided for @page_drawList_title.
   ///
@@ -1170,11 +1182,119 @@ abstract class S {
   /// **'Deleted successfully'**
   String get delete_successful;
 
-  /// No description provided for @message_player_scanned.
+  /// No description provided for @scan_hint_openPlayer.
   ///
   /// In en, this message translates to:
-  /// **'Player {pnumber} has been scanned'**
-  String message_player_scanned(Object pnumber);
+  /// **'Scan a card to open the player\'s sheet'**
+  String get scan_hint_openPlayer;
+
+  /// No description provided for @scan_hint_addToGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a card to add the player to the group'**
+  String get scan_hint_addToGroup;
+
+  /// No description provided for @scan_hint_badgeOpenSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a card to badge the open session'**
+  String get scan_hint_badgeOpenSession;
+
+  /// No description provided for @scan_hint_badgeThisSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a card to badge this session'**
+  String get scan_hint_badgeThisSession;
+
+  /// No description provided for @scan_hint_removeFromGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a card to remove the player from the group'**
+  String get scan_hint_removeFromGroup;
+
+  /// No description provided for @scan_hint_removeFromSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a card to remove the player from this session'**
+  String get scan_hint_removeFromSession;
+
+  /// No description provided for @scan_removedFromGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number} removed from the group'**
+  String scan_removedFromGroup(Object number);
+
+  /// No description provided for @scan_notInGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number} is not in the group'**
+  String scan_notInGroup(Object number);
+
+  /// No description provided for @scan_removedFromSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number} removed from session {session}'**
+  String scan_removedFromSession(Object number, Object session);
+
+  /// No description provided for @scan_notPresent.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number} is not on session {session}'**
+  String scan_notPresent(Object number, Object session);
+
+  /// No description provided for @scan_opened.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number}: card opened'**
+  String scan_opened(Object number);
+
+  /// No description provided for @scan_addedToGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number} added to the group'**
+  String scan_addedToGroup(Object number);
+
+  /// No description provided for @scan_alreadyInGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number} already in the group'**
+  String scan_alreadyInGroup(Object number);
+
+  /// No description provided for @scan_badged.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number} badged on session {session}'**
+  String scan_badged(Object number, Object session);
+
+  /// No description provided for @scan_alreadyPresent.
+  ///
+  /// In en, this message translates to:
+  /// **'Player {number} already present on session {session}'**
+  String scan_alreadyPresent(Object number, Object session);
+
+  /// No description provided for @scan_noOpenSession.
+  ///
+  /// In en, this message translates to:
+  /// **'No open session'**
+  String get scan_noOpenSession;
+
+  /// No description provided for @scan_sessionNotOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'The session is not open'**
+  String get scan_sessionNotOpen;
+
+  /// No description provided for @scan_invalidCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid card'**
+  String get scan_invalidCard;
+
+  /// No description provided for @scan_noEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'No event selected'**
+  String get scan_noEvent;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

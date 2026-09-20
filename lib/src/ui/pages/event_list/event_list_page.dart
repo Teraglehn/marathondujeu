@@ -4,7 +4,9 @@ import 'package:marathondujeu/src/pods/events.dart';
 import 'package:marathondujeu/src/pods/editor_pod.dart';
 import 'package:marathondujeu/src/pods/main_pod.dart';
 import 'package:marathondujeu/src/pods/selected_event.dart';
+import 'package:marathondujeu/src/ui/pages/utils/player_session_scanner.dart';
 import 'package:marathondujeu/src/ui/widgets/fields/event_selector.dart';
+import 'package:marathondujeu/src/ui/widgets/scan_status.dart';
 import 'package:marathondujeu/src/ui/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -66,6 +68,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
       appBar: AppBar(
         title: Text(S.of(context).page_eventList_title),
         actions: [
+          const ScanStatus(),
           Container(
             width: 350,
             decoration: BoxDecoration(
@@ -78,7 +81,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
           )
         ],
       ),
-      body: Column(
+      body: PlayerSessionScanner(child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
@@ -111,7 +114,7 @@ class _EventListPageState extends ConsumerState<EventListPage> {
             ),
           ),
         ],
-      ),
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () => editor.editEvent(null),
         child: const Icon(Icons.add),
